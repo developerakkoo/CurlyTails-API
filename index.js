@@ -1,15 +1,21 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
-const mongoose = require('mongoose');
+const path= require('path');
+app.use( express.static('public'));
+app.use("/public", express.static(path.join(__dirname, "public")));
+
 require('dotenv').config();
 //Routes
-const {CategoryRoutes,subCategoryRoutes,productCategoryRoutes}= require('./routes/index.routes');
+const {CategoryRoutes,ProductRoutes,subCategoryRoutes,productCategoryRoutes}= require('./routes/index.routes');
 
+app.use(ProductRoutes);
 app.use(CategoryRoutes);
 app.use(subCategoryRoutes);
 app.use(productCategoryRoutes);
+
 app.all("*", (req, res, next) => {
     res.status(404).json({
         message:"Page not found"

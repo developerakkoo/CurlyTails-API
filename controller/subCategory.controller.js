@@ -14,7 +14,7 @@ exports.addSubCategory = async(req,res)=>{
         }
         const savedSubCategory = await subCategory.findOne({name:req.body.name});
         if (savedSubCategory) {
-            return res.status(404).json({message:`Sub Category Already Exist with Name:${req.body.name}, Please Try With Different Name`});
+            return res.status(400).json({message:`Sub Category Already Exist with Name:${req.body.name}, Please Try With Different Name`});
             }
         const createdSubCategory = await subCategory.create(dataObj);
         res.status(201).json({message:'subCategory Created Successfully!',createdSubCategory});
@@ -95,7 +95,7 @@ exports.getSubCategoryByCategoryId = async(req,res)=>{
         if (!savedSubCategory) {
         return res.status(404).json({message:'subCategory Not found'})
         }
-        res.status(200).json({message:'subCategory Fetched Successfully',savedSubCategory});
+        res.status(200).json({message:'subCategory Fetched Successfully',count:savedSubCategory.length,savedSubCategory});
     } catch (error) {
         res.status(500).json({message:error.message,status:'ERROR'});
     }

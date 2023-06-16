@@ -63,7 +63,7 @@ exports.updateProductCategory = async(req,res)=>{
 
 exports.getAllProductCategory = async(req,res)=>{
     try {
-        const savedProductCategory =  await productCategory.find().populate('CategoryId');
+        const savedProductCategory =  await productCategory.find().populate('CategoryId') .populate('subCategoryId')
         if (!savedProductCategory) {
         return res.status(404).json({message:'Product Category Not found'})
         }
@@ -75,7 +75,7 @@ exports.getAllProductCategory = async(req,res)=>{
 
 exports.getProductCategoryById = async(req,res)=>{
     try {
-        const savedProductCategory =  await productCategory.findOne({_id:req.params.productCategoryId}).populate('CategoryId','subCategoryId');
+        const savedProductCategory =  await productCategory.findOne({_id:req.params.productCategoryId}).populate('CategoryId') .populate('subCategoryId');
         if (!savedProductCategory) {
         return res.status(404).json({message:'Product Category Not found'})
         }
@@ -102,10 +102,10 @@ exports.deleteProductCategory = async(req,res)=>{
 exports.getProductCategoryByCategoryId = async(req,res)=>{
     try {
         const savedProductCategory =  await productCategory.find({CategoryId:req.params.CategoryId}).populate('CategoryId');
-        if (!savedProductCategory) {
-        return res.status(404).json({message:'Product Category Not found'})
+        if (savedProductCategory[0] === undefined) {
+        return res.status(404).json({message:`Product Category Not found With This Category ID:${req.params.CategoryId}`})
         }
-        res.status(200).json({message:'Product Category Fetched Successfully',savedProductCategory});
+        res.status(200).json({message:'Product Category Fetched Successfully',count:savedProductCategory.length,savedProductCategory});
     } catch (error) {
         res.status(500).json({message:error.message,status:'ERROR'});
     }
@@ -114,10 +114,10 @@ exports.getProductCategoryByCategoryId = async(req,res)=>{
 exports.getProductCategoryBySubCategoryId = async(req,res)=>{
     try {
         const savedProductCategory =  await productCategory.find({subCategoryId:req.params.subCategoryId}).populate('subCategoryId');
-        if (!savedProductCategory) {
-        return res.status(404).json({message:'Product Category Not found'})
+        if (savedProductCategory[0]===undefined) {
+        return res.status(404).json({message:`Product Category Not found With This subCategory ID:${req.params.subCategoryId}`})
         }
-        res.status(200).json({message:'Product Category Fetched Successfully',savedProductCategory});
+        res.status(200).json({message:'Product Category Fetched Successfully',count:savedProductCategory.length,savedProductCategory});
     } catch (error) {
         res.status(500).json({message:error.message,status:'ERROR'});
     }
