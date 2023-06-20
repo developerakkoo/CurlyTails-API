@@ -9,11 +9,15 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 
 require('dotenv').config();
 //Routes
-const {CategoryRoutes,ProductRoutes,subCategoryRoutes,productCategoryRoutes}= require('./routes/index.routes');
+const {CategoryRoutes,ProductRoutes,subCategoryRoutes,BannerRoutes,productCategoryRoutes,BlogRoutes,AdminRoutes,UserRoutes}= require('./routes/index.routes');
 
+app.use(UserRoutes);
+app.use(AdminRoutes);
 app.use(ProductRoutes);
 app.use(CategoryRoutes);
 app.use(subCategoryRoutes);
+app.use(BannerRoutes);
+app.use(BlogRoutes);
 app.use(productCategoryRoutes);
 
 app.all("*", (req, res, next) => {
