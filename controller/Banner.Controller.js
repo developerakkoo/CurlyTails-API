@@ -23,7 +23,7 @@ exports.addBanner = async (req,res) => {
 exports.getBanners = async (req, res, next) => {
     try {
         const banner = await Banner.find({});
-        if (!banner) {
+        if (banner.length == 0) {
             return res.status(404).json({message:'Banner Not Found',status: false, statusCode: 404,});
         }
         res.status(200).json({message:'Banner Fetched Successfully',status: true, statusCode: 200,length:banner.length, data: banner  });
@@ -88,7 +88,7 @@ exports.deleteBanner = async (req, res, next) => {
         deleteImage.clearImage(path[1]);
 /********************************************************/   
         await banner.deleteOne({_id:req.params.bannerId})     
-        res.status(201).json({
+        res.status(200).json({
                 message:"Banner Deleted Successfully",
                 statusCode:200
             })

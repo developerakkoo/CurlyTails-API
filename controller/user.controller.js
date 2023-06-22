@@ -20,12 +20,12 @@ try {
             phoneNo:createdUser.phoneNo,
             address:createdUser.address
         }
-        res.status(201).json({message:'User Created Successfully',postRes});
+        res.status(200).json({message:'User Created Successfully',statusCode:200,data:postRes});
     } catch (error) {
         if(error.code == 11000){
-            return res.status(400).json({message: `user With This  Email Or Phone Number Is Already Exist Please Try With Different  Email Or Phone Number` })
+            return res.status(400).json({message: `User With This  Email Or Phone Number Is Already Exist Please Try With Different  Email Or Phone Number` })
         }
-        res.status(500).send({message:error.message,status:'ERROR'});
+        res.status(500).send({message:error.message,statusCode:500,status:'ERROR'});
     }
 }
 
@@ -36,10 +36,10 @@ exports.loginUser = async (req,res) => {
         const password = req.body.password
         const savedUser = await User.findOne({email:email});
         if(!savedUser){
-            return res.status(404).json({message:`User not found with this email ${req.body.email}`})
+            return res.status(404).json({message:`User not found with this email ${req.body.email}`,statusCode:404})
         }
         if(!(await bcrypt.compare(password, savedUser.password))){
-            return res.status(401).json({message:`Incorrect Password`});
+            return res.status(401).json({message:`Incorrect Password`,statusCode:401});
         }
         const payload = {
             userId: savedUser._id,
@@ -51,9 +51,9 @@ exports.loginUser = async (req,res) => {
             Id:savedUser._id,
             accessToken : token
         }
-        res.status(202).json({message:`User login successfully`,postRes});
+        res.status(200).json({message:`User login successfully`,statusCode:200,data:postRes});
     }catch(error){
-        res.status(500).json({status:'ERROR',Message:error.message});
+        res.status(500).json({Message:error.message,status:'ERROR',statusCode:500});
     }
 }
 
@@ -62,7 +62,7 @@ exports.UpdateUsers = async (req,res)=>{
         console.log('here');
         const savedUser = await User.findOne({_id:req.params.userId});
         if (!savedUser) {
-            return res.status(400).json({message:'User Not Found'});
+            return res.status(404).json({message:'User Not Found',statusCode:404});
         }
         savedUser.name = req.body.name != undefined
         ? req.body.name
@@ -90,21 +90,21 @@ exports.UpdateUsers = async (req,res)=>{
 
         const updatedUser = await savedUser.save();
         
-        res.status(200).json({message:'User Updated Successfully',updatedUser});
+        res.status(200).json({message:'User Updated Successfully',statusCode:200,data:updatedUser});
     } catch (error) {
-        res.status(500).json({message:error.message,status:'ERROR'});
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
 }
 
 exports.getAllUsers = async (req,res)=>{
     try {
         const savedUser = await User.find().select('-password');
-        if (!savedUser[0]) {
-            return res.status(400).json({message:'Users Not Found'});
+        if (savedUser.length == 0) {
+            return res.status(404).json({message:'Users Not Found',statusCode:404});
         }
-        res.status(200).json({message:'Users Fetched Successfully',count:savedUser.length,savedUser});
+        res.status(200).json({message:'Users Fetched Successfully',statusCode:200,length:savedUser.length,data:savedUser});
     } catch (error) {
-        res.status(500).json({message:error.message,status:'ERROR'});
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
 }
 
@@ -112,11 +112,11 @@ exports.getUsersById = async (req,res)=>{
     try {
         const savedUser = await User.findOne({_id:req.params.userId}).select('-password');
         if (!savedUser) {
-            return res.status(400).json({message:'User Not Found'});
+            return res.status(404).json({message:'User Not Found',statusCode:404});
         }
-        res.status(200).json({message:'User Fetched Successfully',savedUser});
+        res.status(200).json({message:'User Fetched Successfully',statusCode:200,data:savedUser});
     } catch (error) {
-        res.status(500).json({message:error.message,status:'ERROR'});
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
 }
 
@@ -124,11 +124,11 @@ exports.deleteUsers = async (req,res)=>{
     try {
         const savedUser = await User.findOne({_id:req.params.userId});
         if (!savedUser) {
-            return res.status(400).json({message:'User Not Found'});
+            return res.status(404).json({message:'User Not Found',statusCode:404});
         }
         await savedUser.deleteOne({_id:req.params.userId});
-        res.status(200).json({message:'User Deleted Successfully'});
+        res.status(200).json({message:'User Deleted Successfully',statusCode:200});
     } catch (error) {
-        res.status(500).json({message:error.message,status:'ERROR'});
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
 }

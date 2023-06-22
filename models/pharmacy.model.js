@@ -11,7 +11,7 @@ const pharmacySchema =new Schema({
         unique:true
     },
     description:{
-        type:Number,
+        type:String,
         require:true,
     },
     imageUrl:{
@@ -26,7 +26,7 @@ const pharmacySchema =new Schema({
         default:false
     },
     price:{
-        type:String,
+        type:Number,
         require:true,
     },
 },{ timestamps: true});

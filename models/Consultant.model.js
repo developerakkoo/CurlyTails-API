@@ -10,7 +10,7 @@ const ConsultantSchema =new Schema({
         require:[true, "expertise Is Require"]
     },
     description:{
-        type:Number,
+        type:String,
         require:[true, "description Is Require"]
     },
     imageUrl:{

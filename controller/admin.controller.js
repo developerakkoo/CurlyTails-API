@@ -14,7 +14,7 @@ try {
         }
         const checkAdmin =  await Admin.findOne({email:req.body.email});
         if(checkAdmin){
-        return res.status(202).json({message:`Admin Already Exist with Email ${req.body.email} Please With Different Email `});
+        return res.status(400).json({message:`Admin Already Exist with Email ${req.body.email} Please With Different Email `,statusCode:400});
         }
         const createdAdmin = await Admin.create(adminData);
         postRes = {
@@ -24,9 +24,9 @@ try {
             email: createdAdmin.email,
             
         }
-        res.status(201).json({message:'Admin Created Successfully',postRes});
+        res.status(200).json({message:'Admin Created Successfully',statusCode:200,data:postRes});
     } catch (error) {
-        res.status(500).send({message:error.message,status:'ERROR'});
+        res.status(500).send({message:error.message,statusCode:500,status:'ERROR'});
     }
 }
 
@@ -36,10 +36,10 @@ exports.AdminLogin = async (req,res) => {
         const password = req.body.password
         const savedAdmin = await Admin.findOne({email:email});
         if(!savedAdmin){
-            return res.status(404).json({message:`Admin Not Found With This Email ${req.body.email}`})
+            return res.status(404).json({message:`Admin Not Found With This Email ${req.body.email}`,statusCode:404})
         }
         if(!(await bcrypt.compare(password, savedAdmin.password))){
-            return res.status(401).json({message:`Incorrect Password`});
+            return res.status(401).json({message:`Incorrect Password`,statusCode:401});
         }
         const payload = {
             userId: savedAdmin._id,
@@ -51,9 +51,9 @@ exports.AdminLogin = async (req,res) => {
             User : savedAdmin.name,
             accessToken : token
         }
-        res.status(202).json({message:`User login successfully`,postRes});
+        res.status(200).json({message:`User login successfully`,statusCode:200,data:postRes});
     }catch(error){
-        res.status(500).json({status:'ERROR',Message:error.message});
+        res.status(500).json({status:'ERROR',statusCode:500,Message:error.message});
     }
 }
 
@@ -61,7 +61,7 @@ exports.updateAdmin = async (req,res)=>{
     try {
         const savedAdmin = await Admin.findOne({_id:req.params.adminId}).select('-password');
         if (!savedAdmin) {
-            return res.status(404).json({message:`Admin  Not Found With ID:${req.params.adminId}`});
+            return res.status(404).json({message:`Admin  Not Found With ID:${req.params.adminId}`,statusCode:404});
         }
         savedAdmin.name = req.body.name != undefined
         ?req.body.name
@@ -74,9 +74,9 @@ exports.updateAdmin = async (req,res)=>{
         :savedAdmin.email
         
         const updatedAdmin = await savedAdmin.save();
-        res.status(200).json({message:'Admin Updated Successfully',updatedAdmin});
+        res.status(201).json({message:'Admin Updated Successfully',statusCode:201,data:updatedAdmin});
     } catch (error) {
-        res.status(500).json({message:error.message,status:'ERROR'});
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
 }
 
@@ -84,12 +84,12 @@ exports.getAdminById = async (req,res)=>{
     try {
         const savedAdmin = await Admin.findOne({_id:req.params.adminId}).select('-password');
         if (!savedAdmin) {
-            return res.status(404).json({message:`Admin  Not Found With ID:${req.params.adminId}`});
+            return res.status(404).json({message:`Admin  Not Found With ID:${req.params.adminId}`,statusCode:404});
         }        
 
-        res.status(200).json({message:'Admin Fetched Successfully',savedAdmin});
+        res.status(200).json({message:'Admin Fetched Successfully',statusCode:200,data:savedAdmin});
     } catch (error) {
-        res.status(500).json({message:error.message,status:'ERROR'});
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
 }
 
@@ -98,11 +98,11 @@ exports.getAllAdmin = async(req,res) =>{
     try {
         const savedAdmin = await Admin.find().select('-password');
         if (savedAdmin.length == 0) {
-            return res.status(404).json({message:`Admin Not Found`});
+            return res.status(404).json({message:`Admin Not Found`,statusCode:404});
         }
-        res.status(200).json({message:'Admin Fetched Successfully',count: savedAdmin.length,savedAdmin});
+        res.status(200).json({message:'Admin Fetched Successfully',statusCode:200,length: savedAdmin.length,data:savedAdmin});
     } catch (error) {
-        res.status(500).json({message:error.message,status:'ERROR'});
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
 }
 
@@ -111,12 +111,12 @@ exports.deleteAdmin = async (req,res)=>{
     try {
         const savedAdmin = await Admin.findOne({_id:req.params.adminId});
         if (!savedAdmin) {
-            return res.status(404).json({message:`Admin  Not Found With ID:${req.params.adminId}`});
+            return res.status(404).json({message:`Admin  Not Found With ID:${req.params.adminId}`,statusCode:404});
         }        
         await savedAdmin.deleteOne({_id:req.params.adminId})
-        res.status(200).json({message:'Admin Deleted Successfully'});
+        res.status(200).json({message:'Admin Deleted Successfully',statusCode:200});
     } catch (error) {
-        res.status(500).json({message:error.message,status:'ERROR'});
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
 }
 

@@ -5,8 +5,9 @@ const{ProductRoutes}=require('./product.route');
 const{UserRoutes} = require('./user.route');
 const{AdminRoutes} = require('./admin.route');
 const {BannerRoutes}=require('./Banner.route');
-const {BlogRoutes}= require('./Blog.route')
-
+const {BlogRoutes}= require('./Blog.route');
+const {PharmacyRoutes} = require('./Pharmacy .route');
+const {ConsultantRoutes} = require('./Consultant.route');
 
 module.exports = {
     UserRoutes,
@@ -17,4 +18,6 @@ module.exports = {
     productCategoryRoutes,
     BannerRoutes,
     BlogRoutes,
+    ConsultantRoutes,
+    PharmacyRoutes,
 }

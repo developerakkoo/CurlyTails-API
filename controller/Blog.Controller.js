@@ -76,7 +76,7 @@ exports.updateBlog= async (req, res, next) => {
 exports.getAllBlogs = async(req,res) =>{
     try {
         const savedBlog = await Blog.find({});
-        if (!savedBlog) {
+        if (savedBlog.length == 0 ) {
             return res.status(404).json({msg: "Blog Not Found",statusCode:404});
         }
         res.status(200).json({message:'Blog Fetched Successfully',statusCode:200,length:savedBlog.length,data:savedBlog});
@@ -112,7 +112,7 @@ exports.deleteBlog= async (req, res, next) => {
 /********************************************************/   
         await savedBlog.deleteOne({_id:req.params.blogId})         
         res.status(201).json({
-                message:"Blog Updated Successfully",
+                message:"Blog Deleted Successfully",
                 statusCode:200
             })
         
