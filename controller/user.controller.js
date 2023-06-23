@@ -9,7 +9,7 @@ try {
         name : req.body.name,
         email: req.body.email,
         phoneNo:req.body.phoneNo,
-        password: await bcrypt.hash(req.body.password,16),
+        password: await bcrypt.hash(req.body.password,12),
         address:req.body.address
         }
         const createdUser = await User.create(userData);

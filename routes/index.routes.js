@@ -8,6 +8,9 @@ const {BannerRoutes}=require('./Banner.route');
 const {BlogRoutes}= require('./Blog.route');
 const {PharmacyRoutes} = require('./Pharmacy .route');
 const {ConsultantRoutes} = require('./Consultant.route');
+const {verifyRoute} = require('./verify.route');
+
+
 
 module.exports = {
     UserRoutes,
@@ -20,4 +23,6 @@ module.exports = {
     BlogRoutes,
     ConsultantRoutes,
     PharmacyRoutes,
+    verifyRoute
+
 }

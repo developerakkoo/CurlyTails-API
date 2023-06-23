@@ -10,7 +10,7 @@ try {
         name : req.body.name,
         email: req.body.email,
         phoneNo:req.body.phoneNo,
-        password: await bcrypt.hash(req.body.password,16)
+        password: await bcrypt.hash(req.body.password,12)
         }
         const checkAdmin =  await Admin.findOne({email:req.body.email});
         if(checkAdmin){
