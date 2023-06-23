@@ -97,3 +97,52 @@ exports.deleteBanner = async (req, res, next) => {
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
 }
+
+
+exports.isTopBanner = async (req, res, next) => {
+    try {
+        let banner = await Banner.findById(req.params.bannerId);
+        if (!banner) {
+            return res.status(404).json({message:'Banner Not Found',status: false, statusCode: 404,});
+        }
+
+        banner.isTopBanner = req.body.isTopBanner != undefined
+        ? req.body.isTopBanner
+        : banner.isTopBanner
+
+        banner.isTrendingBanner = req.body.isTrendingBanner != undefined
+        ? req.body.isTrendingBanner
+        : banner.isTrendingBanner
+
+        const updatedBanner = await banner.save()
+
+        res.status(200).json({message:'Banner Fetched Successfully',status: true, statusCode: 200, data: updatedBanner  });
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+
+    }
+}
+
+exports.getTopBanner = async (req, res, next) => {
+    try {
+        let banner = await Banner.findOne({isTopBanner:true});
+        if (!banner) {
+            return res.status(404).json({message:'Top Banner Not Found',status: false, statusCode: 404,});
+        }
+        res.status(200).json({message:'top Banner Fetched Successfully',status: true, statusCode: 200, data: banner  });
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+exports.getTrendingBanner = async (req, res, next) => {
+    try {
+        let banner = await Banner.findOne({isTrendingBanner:true});
+        if (!banner) {
+            return res.status(404).json({message:'Trending Banner Not Found',status: false, statusCode: 404,});
+        }
+        res.status(200).json({message:'Trending Banner Fetched Successfully',status: true, statusCode: 200, data: banner  });
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}

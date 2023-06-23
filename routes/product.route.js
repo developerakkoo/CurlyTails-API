@@ -10,6 +10,10 @@ route.put('/update/product/:productId',productController.updateProduct);
 
 route.get('/getAll/product',productController.getAllProduct);
 
+route.get('/get-top/product',productController.getTopProduct);
+
+route.get('/get-trending/product',productController.getTrendingProduct);
+
 route.get('/get/product/:productId',productController.getProductById);
 
 route.delete('/delete/product/:productId',productController.deleteProduct)

@@ -7,9 +7,11 @@ route.post('/create/category',CategoryMiddleware.validatePostCategory,CategoryCo
 
 route.put('/update/category/:categoryId',CategoryController.updateCategory);
 
-route.get('/get/category',CategoryController.getAllCategory);
+route.get('/getAll/category',CategoryController.getAllCategory);
 
 route.get('/get/category/:categoryId',CategoryController.getCategoryById);
+
+route.get('/get/Top-category',CategoryController.getTopCategory);
 
 route.delete('/delete/category/:categoryId',CategoryController.deleteCategory);
 

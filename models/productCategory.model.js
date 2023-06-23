@@ -18,6 +18,14 @@ const productCategorySchema =new Schema({
         type:String,
         require:true
     },
+    isTopProductCategory:{
+        type:Boolean,
+        default:false
+    },
+    isTrendingProductCategory:{
+        type:Boolean,
+        default:false
+    },
 
 },{ timestamps: true});
 

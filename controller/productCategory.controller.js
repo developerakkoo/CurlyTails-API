@@ -48,6 +48,13 @@ exports.updateProductCategory = async(req,res)=>{
         savedProductCategory.description = req.body.description != undefined
         ? req.body.description
         :savedProductCategory.description 
+
+        savedProductCategory.isTopProductCategory = req.body.isTopProductCategory != undefined
+        ? req.body.isTopProductCategory
+        :savedProductCategory.isTopProductCategory 
+        savedProductCategory.isTrendingProductCategory = req.body.isTrendingProductCategory != undefined
+        ? req.body.isTrendingProductCategory
+        :savedProductCategory.isTrendingProductCategory 
         
         const updatedProductCategory = await savedProductCategory.save();
 
@@ -118,6 +125,30 @@ exports.getProductCategoryBySubCategoryId = async(req,res)=>{
         return res.status(404).json({message:`Product Category Not found With This subCategory ID:${req.params.subCategoryId}`,statusCode:404})
         }
         res.status(200).json({message:'Product Category Fetched Successfully',statusCode:200,length:savedProductCategory.length,data:savedProductCategory});
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+exports.TopProductCategory = async(req,res)=>{
+    try {
+        const savedProductCategory =  await productCategory.find({isTopProductCategory:true}).select('-__v')   //.populate('CategoryId') .populate('subCategoryId')
+        if (savedProductCategory.length == 0) {
+        return res.status(404).json({message:'Top Product Category Not found',statusCode:404})
+        }
+        res.status(200).json({message:'Top Product Category Fetched Successfully',statusCode:200,length:savedProductCategory.length,data:savedProductCategory});
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+exports.TrendingProductCategory = async(req,res)=>{
+    try {
+        const savedProductCategory =  await productCategory.find({isTrendingProductCategory:true}).select('-__v')  //.populate('CategoryId') .populate('subCategoryId')
+        if (savedProductCategory.length == 0) {
+        return res.status(404).json({message:'Trending Product Category Not found',statusCode:404})
+        }
+        res.status(200).json({message:'Trending Product Category Fetched Successfully',statusCode:200,length:savedProductCategory.length,data:savedProductCategory});
     } catch (error) {
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }

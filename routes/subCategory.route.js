@@ -7,7 +7,11 @@ route.post('/create/subCategory',subCategoryMiddleware.validatePostSubCategory,s
 
 route.put('/update/subCategory/:subCategoryId',subCategoryController.updateSubCategory);
 
-route.get('/get/subCategory',subCategoryController.getAllSubCategory);
+route.get('/getAll/subCategory',subCategoryController.getAllSubCategory);
+
+route.get('/get-top/subCategory',subCategoryController.getTopSubCategory);
+
+route.get('/get-trending/subCategory',subCategoryController.getTrendingCategory);
 
 route.get('/get/subCategory/category/:CategoryId',subCategoryController.getSubCategoryByCategoryId);
 

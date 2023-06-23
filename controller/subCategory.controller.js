@@ -38,6 +38,13 @@ exports.updateSubCategory = async(req,res)=>{
         savedSubCategory.description = req.body.description != undefined
         ? req.body.description
         :savedSubCategory.description 
+
+        savedSubCategory.isTopSUBCategory = req.body.isTopSUBCategory != undefined
+        ? req.body.isTopSUBCategory
+        :savedSubCategory.isTopSUBCategory 
+        savedSubCategory.isTrendingSUBCategory = req.body.isTrendingSUBCategory != undefined
+        ? req.body.isTrendingSUBCategory
+        :savedSubCategory.isTrendingSUBCategory 
         
         const updatedSubCategory = await savedSubCategory.save();
 
@@ -53,7 +60,7 @@ exports.updateSubCategory = async(req,res)=>{
 
 exports.getAllSubCategory = async(req,res)=>{
     try {
-        const savedSubCategory =  await subCategory.find().populate('CategoryId');
+        const savedSubCategory =  await subCategory.find() //.populate('CategoryId');
         if (savedSubCategory.length == 0) {
         return res.status(404).json({message:'subCategory Not found',statusCode:404})
         }
@@ -96,6 +103,31 @@ exports.getSubCategoryByCategoryId = async(req,res)=>{
         return res.status(404).json({message:'subCategory Not found',statusCode:404});
         }
         res.status(200).json({message:'subCategory Fetched Successfully',statusCode:200,length:savedSubCategory.length,data:savedSubCategory});
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+
+exports.getTopSubCategory = async(req,res)=>{
+    try {
+        const savedSubCategory =  await subCategory.find({isTopSUBCategory:true}) //.populate('CategoryId');
+        if (savedSubCategory.length == 0) {
+        return res.status(404).json({message:'Top subCategory Not found',statusCode:404})
+        }
+        res.status(200).json({message:'Top subCategory Fetched Successfully',statusCode:200,length:savedSubCategory.length,data:savedSubCategory});
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+exports.getTrendingCategory = async(req,res)=>{
+    try {
+        const savedSubCategory =  await subCategory.find({isTrendingSUBCategory:true}) //.populate('CategoryId');
+        if (savedSubCategory.length == 0) {
+        return res.status(404).json({message:'Trending subCategory Not found',statusCode:404})
+        }
+        res.status(200).json({message:'Trending subCategory Fetched Successfully',statusCode:200,length:savedSubCategory.length,data:savedSubCategory});
     } catch (error) {
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }

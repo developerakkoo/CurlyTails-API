@@ -21,7 +21,7 @@ exports.getAllConsultant = async (req,res)=>{
         if (savedConsultant.length == 0) {
         return res.status(404).json({message:'Consultant Not Found',statusCode:404});
         }
-        return res.status(200).json({message:'Consultant Fetched Successfully',statusCode:200,data:savedConsultant});
+        return res.status(200).json({message:'Consultant Fetched Successfully',statusCode:200,length:savedConsultant.length,data:savedConsultant});
 
     } catch (error) {
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
@@ -71,6 +71,10 @@ exports.updatedConsultant = async (req,res) =>{
         savedConsultant.isBlocked = req.body.isBlocked != undefined
         ? req.body.isBlocked
         :savedConsultant.isBlocked
+
+        savedConsultant.isTopConsultant = req.body.isTopConsultant != undefined
+        ? req.body.isTopConsultant
+        :savedConsultant.isTopConsultant
 
         const updatedConsultant = await savedConsultant.save()
 
@@ -133,6 +137,23 @@ exports.deleteConsultant = async (req, res, next) => {
                 statusCode:200
             })
         
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+
+exports.getTopConsultant = async (req,res)=>{
+    try {
+        const savedConsultant = await Consultant.find({
+            isTopConsultant:true,
+            isActive:true
+        });
+        if (savedConsultant.length == 0) {
+        return res.status(404).json({message:'Top Consultant Not Found',statusCode:404});
+        }
+        return res.status(200).json({message:'Top Consultant Fetched Successfully',statusCode:200,length:savedConsultant.length,data:savedConsultant});
+
     } catch (error) {
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }

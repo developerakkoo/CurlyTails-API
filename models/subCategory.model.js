@@ -14,6 +14,14 @@ const subCategorySchema =new Schema({
         type:String,
         require:true
     },
+    isTopSUBCategory:{
+        type:Boolean,
+        default:false
+    },
+    isTrendingSUBCategory:{
+        type:Boolean,
+        default:false
+    },
 
 },{ timestamps: true});
 

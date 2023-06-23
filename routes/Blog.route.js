@@ -13,6 +13,8 @@ route.put('/update/blog/:blogId',BlogController.updateBlog);
 
 route.get('/getAll/Blog',BlogController.getAllBlogs);
 
+route.get('/get-top/Blog',BlogController.getTopBlogs);
+
 route.get('/get/Blog/:blogId',BlogController.getBlogById);
 
 route.delete('/delete/Blog/:blogId',BlogController.deleteBlog);

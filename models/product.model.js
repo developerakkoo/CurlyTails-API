@@ -53,6 +53,14 @@ const productSchema =new Schema({
         type:Array,
         default:[]
     },
+    isTrendingProduct:{
+        type:Boolean,
+        default:false
+    },
+    isTopProduct:{
+        type:Boolean,
+        default:false
+    },
 },{ timestamps: true});
 
 module.exports = mongoose.model("Product",productSchema);

@@ -7,13 +7,13 @@ route.post('/user/signUp',Validate.validateUser,UserController.postSignup);
 
 route.post('/user/login',UserController.loginUser);
 
-route.put('/user/update/:userId',UserController.UpdateUsers);
+route.put('/update/user/:userId',UserController.UpdateUsers);
 
-route.get('/user/get',UserController.getAllUsers);
+route.get('/getAll/user',UserController.getAllUsers);
 
-route.get('/user/get/:userId',UserController.getUsersById);
+route.get('/get/user/:userId',UserController.getUsersById);
 
-route.delete('/user/delete/:userId',UserController.deleteUsers);
+route.delete('/delete/user/:userId',UserController.deleteUsers);
 
 
 module.exports = {UserRoutes : route}

@@ -31,9 +31,11 @@ exports.updateCategory = async(req,res)=>{
         savedCategory.description = req.body.description != undefined
         ? req.body.description
         :savedCategory.description 
+        savedCategory.isTopCategory = req.body.isTopCategory != undefined
+        ? req.body.isTopCategory
+        :savedCategory.isTopCategory 
         
         const updatedCategory = await savedCategory.save();
-
         res.status(200).json({message:'Category Updated Successfully',statusCode:200,data:updatedCategory});
         
     } catch (error) {
@@ -77,6 +79,20 @@ exports.deleteCategory = async(req,res)=>{
         }
         await savedCategory.deleteOne({_id:req.params.categoryId})
         res.status(200).json({message:'Category Deleted Successfully',statusCode:200});
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+
+
+exports.getTopCategory = async(req,res)=>{
+    try {
+        const savedCategory =  await Category.findOne({isTopCategory:true});
+        if (!savedCategory) {
+        return res.status(404).json({message:'Top Category Not found',statusCode:404})
+        }
+        res.status(200).json({message:'Top Category Fetched Successfully',data:savedCategory});
     } catch (error) {
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }

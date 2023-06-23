@@ -12,6 +12,8 @@ route.get('/getAll/consultant',consultantController.getAllConsultant);
 
 route.get('/get/consultant/:consultantId',consultantController.getConsultantById);
 
+route.get('/get-Top/consultant',consultantController.getTopConsultant);
+
 route.put('/update/consultant/details/:consultantId',consultantController.updatedConsultant);
 
 

@@ -7,7 +7,11 @@ route.post('/create/productCategory',productCategoryMiddleware.validatePostProdu
 
 route.put('/update/productCategory/:productCategoryId',productCategoryController.updateProductCategory);
 
-route.get('/get/productCategory',productCategoryController.getAllProductCategory);
+route.get('/getAll/productCategory',productCategoryController.getAllProductCategory);
+
+route.get('/get-top/productCategory',productCategoryController.TopProductCategory);
+
+route.get('/get-Trending/productCategory',productCategoryController.TrendingProductCategory);
 
 route.get('/get/productCategory/:productCategoryId',productCategoryController.getProductCategoryById);
 

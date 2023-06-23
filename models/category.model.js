@@ -13,6 +13,10 @@ const categorySchema =new Schema({
     subCategoryId:{
         type:String,
     },
+    isTopCategory:{
+        type:Boolean,
+        default:false
+    },
 
 },{ timestamps: true});
 

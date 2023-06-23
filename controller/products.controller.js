@@ -70,6 +70,14 @@ exports.updateProduct = async(req,res)=>{
         ? req.body.price
         :savedProduct.price
 
+        savedProduct.isTrendingProduct = req.body.isTrendingProduct != undefined
+        ? req.body.isTrendingProduct
+        :savedProduct.isTrendingProduct
+
+        savedProduct.isTopProduct = req.body.isTopProduct != undefined
+        ? req.body.isTopProduct
+        :savedProduct.isTopProduct
+
         const updatedProduct = await savedProduct.save();
         res.status(200).json({message:'Product Updated Successfully',statusCode:200,data:updatedProduct});
     } catch (error) {
@@ -178,3 +186,28 @@ exports.ProductSearchOption = async (req, res, next)=> {
     }
 };
 
+
+
+exports.getTopProduct = async (req,res)=>{
+    try {
+        const savedProduct = await Products.find({isTopProduct:true}) .select('-__v')
+        if (savedProduct.length == 0) {
+        return res.status(404).json({message:'Top Products Not Found',statusCode:404});
+        }
+        res.status(200).json({message:'Top Product Fetched Successfully',statusCode:200,length:savedProduct.length,data:savedProduct});
+    } catch (error) {
+    res.status(500).json({message:error.message,statusCode:500,Status:'ERROR'});
+    }
+}
+
+exports.getTrendingProduct = async (req,res)=>{
+    try {
+        const savedProduct = await Products.find({isTrendingProduct:true}).select('-__v')
+        if (savedProduct.length == 0) {
+        return res.status(404).json({message:'Trending Products Not Found',statusCode:404});
+        }
+        res.status(200).json({message:'Trending Product Fetched Successfully',statusCode:200,length:savedProduct.length,data:savedProduct});
+    } catch (error) {
+    res.status(500).json({message:error.message,statusCode:500,Status:'ERROR'});
+    }
+}

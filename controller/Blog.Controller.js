@@ -61,6 +61,10 @@ exports.updateBlog= async (req, res, next) => {
         ? req.body.description
         :savedBlog.description 
 
+        savedBlog.isTopBlog = req.body.isTopBlog != undefined
+        ? req.body.isTopBlog
+        :savedBlog.isTopBlog 
+
         const updatedBlog = await savedBlog.save()         
         res.status(201).json({
                 message:"Blog Updated Successfully",
@@ -116,6 +120,18 @@ exports.deleteBlog= async (req, res, next) => {
                 statusCode:200
             })
         
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+exports.getTopBlogs = async(req,res) =>{
+    try {
+        const savedBlog = await Blog.find({isTopBlog:true});
+        if (savedBlog.length == 0 ) {
+            return res.status(404).json({msg: "Top Blog Not Found",statusCode:404});
+        }
+        res.status(200).json({message:'Top Blog Fetched Successfully',statusCode:200,length:savedBlog.length,data:savedBlog});
     } catch (error) {
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }

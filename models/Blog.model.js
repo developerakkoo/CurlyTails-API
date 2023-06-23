@@ -14,6 +14,10 @@ const blogSchema =new Schema({
         type: String,
         require:[true, "Blog Image Require"]
     },
+    isTopBlog:{
+        type:Boolean,
+        default:false
+    },
 },{ timestamps: true});
 
 module.exports = mongoose.model("Blog",blogSchema);

@@ -29,6 +29,10 @@ const ConsultantSchema =new Schema({
         type:Boolean,
         default:false
     },
+    isTopConsultant:{
+        type:Boolean,
+        default:false
+    },
 },{ timestamps: true});
 
 module.exports = mongoose.model("Consultant",ConsultantSchema);

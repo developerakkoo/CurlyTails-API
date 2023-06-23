@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
+const cors = require('cors');
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 const path= require('path');
@@ -9,8 +10,9 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 
 require('dotenv').config();
 //Routes
-const {CategoryRoutes,verifyRoute,ProductRoutes,subCategoryRoutes,PharmacyRoutes,ConsultantRoutes,BannerRoutes,productCategoryRoutes,BlogRoutes,AdminRoutes,UserRoutes}= require('./routes/index.routes');
 
+const {CategoryRoutes,verifyRoute,ProductRoutes,subCategoryRoutes,PharmacyRoutes,ConsultantRoutes,BannerRoutes,productCategoryRoutes,BlogRoutes,AdminRoutes,UserRoutes}= require('./routes/index.routes');
+app.use(cors());
 app.use(UserRoutes);
 app.use(AdminRoutes);
 app.use(ProductRoutes);
@@ -29,7 +31,13 @@ app.all("*", (req, res, next) => {
     });
 });
 
-
+app.use(function (req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+    });
 
 mongoose.connect(process.env.DB_URL,{
     useUnifiedTopology: true,
