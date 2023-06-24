@@ -11,7 +11,7 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 require('dotenv').config();
 //Routes
 
-const {CategoryRoutes,verifyRoute,ProductRoutes,subCategoryRoutes,PharmacyRoutes,ConsultantRoutes,BannerRoutes,productCategoryRoutes,BlogRoutes,AdminRoutes,UserRoutes}= require('./routes/index.routes');
+const {CategoryRoutes,CartRoutes,verifyRoute,ProductRoutes,subCategoryRoutes,PharmacyRoutes,ConsultantRoutes,BannerRoutes,productCategoryRoutes,BlogRoutes,AdminRoutes,UserRoutes}= require('./routes/index.routes');
 app.use(cors());
 app.use(UserRoutes);
 app.use(AdminRoutes);
@@ -24,6 +24,7 @@ app.use(ConsultantRoutes);
 app.use(PharmacyRoutes);
 app.use(productCategoryRoutes);
 app.use(verifyRoute);
+app.use(CartRoutes);
 
 app.all("*", (req, res, next) => {
     res.status(404).json({

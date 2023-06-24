@@ -1,4 +1,6 @@
 const User = require('../models/user.model');
+const Cart = require('../models/cart.model');
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -13,6 +15,10 @@ try {
         address:req.body.address
         }
         const createdUser = await User.create(userData);
+        const cartObj = {
+            userId:createdUser._id
+        }
+        await Cart.create(cartObj);
         const postRes = {
             userId:createdUser._id,
             name : createdUser.name,

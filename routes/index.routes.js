@@ -9,7 +9,7 @@ const {BlogRoutes}= require('./Blog.route');
 const {PharmacyRoutes} = require('./Pharmacy .route');
 const {ConsultantRoutes} = require('./Consultant.route');
 const {verifyRoute} = require('./verify.route');
-
+const {CartRoutes} = require('./cart.route');
 
 
 module.exports = {
@@ -23,6 +23,6 @@ module.exports = {
     BlogRoutes,
     ConsultantRoutes,
     PharmacyRoutes,
-    verifyRoute
-
+    verifyRoute,
+    CartRoutes
 }
