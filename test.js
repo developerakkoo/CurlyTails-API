@@ -1,13 +1,19 @@
-const apps = [
-    {id:1, name:'Jon'}, 
-    {id:2, name:'Dave'},
-    {id:3, name:'Joe'}
-  ]
+// const apps = [
+//     {id:1, name:'Jon'}, 
+//     {id:2, name:'Dave'},
+//     {id:3, name:'Joe'}
+//   ]
   
-  //remove item with id=2
-  const itemToBeRemoved = {id:1}
+//   //remove item with id=2
+//   const itemToBeRemoved = {id:1}
   
-  apps.splice(apps.findIndex(a => a.id === itemToBeRemoved.id) , 1)
+//   apps.splice(apps.findIndex(a => a.id === itemToBeRemoved.id) , 1)
   
-  //print result
-  console.log(apps)
+//   //print result
+//   console.log(apps)
+
+
+const { generateCustomUuid, generateShortUuid, generateStrongCompactUuid } = require('custom-uuid');
+console.log(generateCustomUuid("012345678911223344ABCDEFGHIJKLMNOPQRSTUVWXYZ", 20));; // ⇨ 'B5B6699247862A569998'
+generateShortUuid() // ⇨ 'DMDvkPec8QUyV9O1'
+generateStrongCompactUuid(); // ⇨ 'xRC4JggRQQFdPwn6MhZs'

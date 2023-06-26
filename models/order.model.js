@@ -3,15 +3,16 @@ const Schema = mongoose.Schema;
 const OrderSchema =new Schema({
     OrderId:{
         type:String,
-        require:[true, "Title Is Require"]
+        require:[true, "OrderId Is Require"]
     },
     BillingId:{
         type:String,
-        require:[true, "Title Is Require"]
+        // require:[true, "Title Is Require"],
+        ref:'Billing'
     },
     userId:{
         type:String,
-        require:[true, "Title Is Require"],
+        require:[true, "BillingId Is Require"],
         ref:'User'
     },
     orderItems:[
@@ -26,6 +27,10 @@ const OrderSchema =new Schema({
         default:0
     },
     isDelivered: {
+        type: Boolean,
+        default: false
+    },
+    isCancel: {
         type: Boolean,
         default: false
     },

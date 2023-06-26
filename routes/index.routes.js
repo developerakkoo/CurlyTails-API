@@ -10,7 +10,8 @@ const {PharmacyRoutes} = require('./Pharmacy .route');
 const {ConsultantRoutes} = require('./Consultant.route');
 const {verifyRoute} = require('./verify.route');
 const {CartRoutes} = require('./cart.route');
-
+const {OrderRoute} = require('./order.route');
+const {RefundRoutes} = require('./refund.route');
 
 module.exports = {
     UserRoutes,
@@ -24,5 +25,7 @@ module.exports = {
     ConsultantRoutes,
     PharmacyRoutes,
     verifyRoute,
-    CartRoutes
+    CartRoutes,
+    OrderRoute,
+    RefundRoutes
 }
