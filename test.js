@@ -13,7 +13,12 @@
 //   console.log(apps)
 
 
-const { generateCustomUuid, generateShortUuid, generateStrongCompactUuid } = require('custom-uuid');
-console.log(generateCustomUuid("012345678911223344ABCDEFGHIJKLMNOPQRSTUVWXYZ", 20));; // ⇨ 'B5B6699247862A569998'
-generateShortUuid() // ⇨ 'DMDvkPec8QUyV9O1'
-generateStrongCompactUuid(); // ⇨ 'xRC4JggRQQFdPwn6MhZs'
+// const { generateCustomUuid, generateShortUuid, generateStrongCompactUuid } = require('custom-uuid');
+// console.log(generateCustomUuid("012345678911223344ABCDEFGHIJKLMNOPQRSTUVWXYZ", 20));; // ⇨ 'B5B6699247862A569998'
+// generateShortUuid() // ⇨ 'DMDvkPec8QUyV9O1'
+// generateStrongCompactUuid(); // ⇨ 'xRC4JggRQQFdPwn6MhZs'
+
+
+let text ="http://localhost/public/1696491056026.jpeg";
+// const myArray = 
+console.log(text.split("http://localhost/"));

@@ -10,14 +10,10 @@ const categorySchema =new Schema({
         type:String,
         require:true
     },
-    subCategoryId:{
-        type:String,
-    },
     isTopCategory:{
         type:Boolean,
         default:false
     },
-
 },{ timestamps: true});
 
 module.exports = mongoose.model("Category",categorySchema);

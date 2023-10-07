@@ -26,10 +26,10 @@ try {
             phoneNo:createdUser.phoneNo,
             address:createdUser.address
         }
-        res.status(200).json({message:'User Created Successfully',statusCode:200,data:postRes});
+        res.status(201).json({message:'User Created Successfully',statusCode:200,data:postRes});
     } catch (error) {
         if(error.code == 11000){
-            return res.status(400).json({message: `User With This  Email Or Phone Number Is Already Exist Please Try With Different  Email Or Phone Number` })
+            return res.status(406).json({message: `User With This  Email Or Phone Number Is Already Exist Please Try With Different  Email Or Phone Number` })
         }
         res.status(500).send({message:error.message,statusCode:500,status:'ERROR'});
     }
@@ -96,7 +96,7 @@ exports.UpdateUsers = async (req,res)=>{
 
         const updatedUser = await savedUser.save();
         
-        res.status(200).json({message:'User Updated Successfully',statusCode:200,data:updatedUser});
+        res.status(201).json({message:'User Updated Successfully',statusCode:201,data:updatedUser});
     } catch (error) {
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }

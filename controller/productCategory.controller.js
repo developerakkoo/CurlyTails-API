@@ -20,10 +20,10 @@ exports.addProductCategory = async(req,res)=>{
         }
         const savedProductCategory = await productCategory.findOne({name:req.body.name});
         if (savedProductCategory) {
-            return res.status(400).json({message:`Product Category Already Exist with Name:${req.body.name}, Please Try With Different Name `,statusCode:400});
+            return res.status(406).json({message:`Product Category Already Exist with Name:${req.body.name}, Please Try With Different Name `,statusCode:406});
             }
         const createdProductCategory = await productCategory.create(dataObj);
-        res.status(200).json({message:'Product Category Created Successfully!',statusCode:200,data:createdProductCategory});
+        res.status(201).json({message:'Product Category Created Successfully!',statusCode:201,data:createdProductCategory});
     } catch (error) {
         console.log(error);
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
@@ -62,7 +62,7 @@ exports.updateProductCategory = async(req,res)=>{
         
     } catch (error) {
         if(err.code == 11000){
-            return res.status(400).json({message: `Product Category Already Exist with Name:${req.body.name}, Please Try With Different Name `,statusCode:400 })
+            return res.status(406).json({message: `Product Category Already Exist with Name:${req.body.name}, Please Try With Different Name `,statusCode:400 })
         }
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
@@ -70,7 +70,7 @@ exports.updateProductCategory = async(req,res)=>{
 
 exports.getAllProductCategory = async(req,res)=>{
     try {
-        const savedProductCategory =  await productCategory.find().populate('CategoryId') .populate('subCategoryId')
+        const savedProductCategory =  await productCategory.find().populate({path:'CategoryId',select:['-createdAt','-updatedAt','-__v']}) .populate({path:'subCategoryId',select:['-createdAt','-updatedAt','-__v']}).select(['-createdAt','-updatedAt','-__v']);
         if (savedProductCategory.length == 0) {
         return res.status(404).json({message:'Product Category Not found',statusCode:404})
         }
@@ -82,7 +82,7 @@ exports.getAllProductCategory = async(req,res)=>{
 
 exports.getProductCategoryById = async(req,res)=>{
     try {
-        const savedProductCategory =  await productCategory.findOne({_id:req.params.productCategoryId}).populate('CategoryId') .populate('subCategoryId');
+        const savedProductCategory =  await productCategory.findOne({_id:req.params.productCategoryId}).populate({path:'CategoryId',select:['-createdAt','-updatedAt','-__v']}) .populate({path:'subCategoryId',select:['-createdAt','-updatedAt','-__v']}).select(['-createdAt','-updatedAt','-__v']);
         if (!savedProductCategory) {
         return res.status(404).json({message:'Product Category Not found',statusCode:404});
         }
@@ -108,7 +108,7 @@ exports.deleteProductCategory = async(req,res)=>{
 
 exports.getProductCategoryByCategoryId = async(req,res)=>{
     try {
-        const savedProductCategory =  await productCategory.find({CategoryId:req.params.CategoryId}).populate('CategoryId');
+        const savedProductCategory =  await productCategory.find({CategoryId:req.params.CategoryId}).populate({path:'CategoryId',select:['-createdAt','-updatedAt','-__v']}) .populate({path:'subCategoryId',select:['-createdAt','-updatedAt','-__v']}).select(['-createdAt','-updatedAt','-__v']);
         if (savedProductCategory.length == 0) {
         return res.status(404).json({message:`Product Category Not found With This Category ID:${req.params.CategoryId}`,statusCode:404})
         }
@@ -120,7 +120,7 @@ exports.getProductCategoryByCategoryId = async(req,res)=>{
 
 exports.getProductCategoryBySubCategoryId = async(req,res)=>{
     try {
-        const savedProductCategory =  await productCategory.find({subCategoryId:req.params.subCategoryId}).populate('subCategoryId');
+        const savedProductCategory =  await productCategory.find({subCategoryId:req.params.subCategoryId}).populate({path:'CategoryId',select:['-createdAt','-updatedAt','-__v']}) .populate({path:'subCategoryId',select:['-createdAt','-updatedAt','-__v']}).select(['-createdAt','-updatedAt','-__v']);
         if (savedProductCategory.length == 0) {
         return res.status(404).json({message:`Product Category Not found With This subCategory ID:${req.params.subCategoryId}`,statusCode:404})
         }
@@ -132,7 +132,7 @@ exports.getProductCategoryBySubCategoryId = async(req,res)=>{
 
 exports.TopProductCategory = async(req,res)=>{
     try {
-        const savedProductCategory =  await productCategory.find({isTopProductCategory:true}).select('-__v')   //.populate('CategoryId') .populate('subCategoryId')
+        const savedProductCategory =  await productCategory.find({isTopProductCategory:true}).select(['-createdAt','-updatedAt','-__v']);  //.populate('CategoryId') .populate('subCategoryId')
         if (savedProductCategory.length == 0) {
         return res.status(404).json({message:'Top Product Category Not found',statusCode:404})
         }
@@ -144,7 +144,7 @@ exports.TopProductCategory = async(req,res)=>{
 
 exports.TrendingProductCategory = async(req,res)=>{
     try {
-        const savedProductCategory =  await productCategory.find({isTrendingProductCategory:true}).select('-__v')  //.populate('CategoryId') .populate('subCategoryId')
+        const savedProductCategory =  await productCategory.find({isTrendingProductCategory:true}).select(['-createdAt','-updatedAt','-__v']);  //.populate('CategoryId') .populate('subCategoryId')
         if (savedProductCategory.length == 0) {
         return res.status(404).json({message:'Trending Product Category Not found',statusCode:404})
         }

@@ -12,7 +12,7 @@ const OrderSchema =new Schema({
     },
     userId:{
         type:String,
-        require:[true, "BillingId Is Require"],
+        require:[true, "UserId Is Require"],
         ref:'User'
     },
     orderItems:[

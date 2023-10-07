@@ -12,7 +12,7 @@ exports.addBanner = async (req,res) => {
         }
         
         const banner = await Banner.create(bannerObj);
-        res.status(200).json({message:'Banner Added Successfully',statusCode:200,data:banner});
+        res.status(201).json({message:'Banner Added Successfully',statusCode:201,data:banner});
     } catch (error) {
         
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});

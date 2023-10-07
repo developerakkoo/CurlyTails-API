@@ -12,7 +12,7 @@ exports.postRefund = async (req,res)=>{
         const createdRefund = await Refund.create(refundObj);
         res.status(200).json({message:'Refund Request Created',statusCode:200,data:createdRefund});
     } catch (error) {
-        res.status(400).json({message:error.message,statusCode:500,status:'ERROR'});
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
 }
 
@@ -73,7 +73,7 @@ exports.updateRefundRequestStatus = async(req,res) =>{
         
         
     } catch (error) {
-        res.status(400).json({message:error.message,statusCode:500,status:'ERROR'});
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
 }
 

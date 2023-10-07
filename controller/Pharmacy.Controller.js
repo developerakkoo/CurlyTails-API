@@ -7,11 +7,11 @@ exports.postPharmacy = async (req,res) =>{
             BrandName : req.body.BrandName,
             medicineName : req.body.medicineName,
             description :req.body.description,
-            price:req.body.price
+            price:req.body.price,
+            Stock:req.body.Stock
         }
         const createdPharmacy = await Pharmacy.create(dataObj);
-        res.status(200).json({message:'Pharmacy Added Successfully',statusCode:200,data:createdPharmacy});
-
+        res.status(201).json({message:'Pharmacy Added Successfully',statusCode:201,data:createdPharmacy});
     } catch (error) {
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
@@ -107,7 +107,7 @@ exports.updatedPharmacy= async(req,res) =>{
 
         const updatedPharmacy = await savedPharmacy.save()
 
-        res.status(200).json({message:'Pharmacy Updated Successfully',statusCode:201,data:updatedPharmacy});
+        res.status(200).json({message:'Pharmacy Updated Successfully',statusCode:200,data:updatedPharmacy});
     } catch (error) {
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }

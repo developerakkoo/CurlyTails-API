@@ -9,7 +9,7 @@ exports.addConsultant = async (req,res) => {
             description:req.body.description,
         }
         const createdConsultant = await Consultant.create(dataObj);
-        res.status(200).json({message:'Consultant Created Successfully',statusCode:200,data:createdConsultant});
+        res.status(201).json({message:'Consultant Created Successfully',statusCode:201,data:createdConsultant});
     } catch (error) {
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
@@ -132,7 +132,7 @@ exports.deleteConsultant = async (req, res, next) => {
         deleteImage.clearImage(path[1]);
 /********************************************************/   
         await savedConsultant.deleteOne({_id:req.params.consultantId})         
-        res.status(201).json({
+        res.status(200).json({
                 message:"Consultant Deleted Successfully",
                 statusCode:200
             })

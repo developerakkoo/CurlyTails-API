@@ -10,10 +10,10 @@ exports.addCategory = async(req,res)=>{
         
         const savedCategory = await Category.findOne({name:req.body.name});
         if (savedCategory) {
-        return res.status(400).json({message:`Category Already Exist with Name:${req.body.name}, Please Try With Different Name `,statusCode:400});
+        return res.status(406).json({message:`Category Already Exist with Name:${req.body.name}, Please Try With Different Name `,statusCode:406});
         }
         const createdCategory = await Category.create(dataObj);
-        res.status(200).json({message:'Category Created Successfully!',statusCode:200,data:createdCategory});
+        res.status(201).json({message:'Category Created Successfully!',statusCode:201,data:createdCategory});
     } catch (error) {
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
@@ -40,8 +40,8 @@ exports.updateCategory = async(req,res)=>{
         
     } catch (error) {
         console.log(error);
-        if(err.code == 11000){
-            return res.status(500).json({message: `Category Already Exist with Name:${req.body.name}, Please Try With Different Name`,statusCode:500 })
+        if(error.code == 11000){
+            return res.status(406).json({message: `Category Already Exist with Name:${req.body.name}, Please Try With Different Name`,statusCode:406 })
         }
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
@@ -88,8 +88,8 @@ exports.deleteCategory = async(req,res)=>{
 
 exports.getTopCategory = async(req,res)=>{
     try {
-        const savedCategory =  await Category.findOne({isTopCategory:true});
-        if (!savedCategory) {
+        const savedCategory =  await Category.find({isTopCategory:true});
+        if (savedCategory.length == 0) {
         return res.status(404).json({message:'Top Category Not found',statusCode:404})
         }
         res.status(200).json({message:'Top Category Fetched Successfully',data:savedCategory});

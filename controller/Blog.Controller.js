@@ -10,7 +10,7 @@ exports.postBlog = async(req,res) => {
             imageUrl:req.protocol +"://"+req.hostname +"/"+req.file.path.replace(/\\/g, "/")
         } 
         const createdBlog = await Blog.create(blogObj);
-        res.status(200).json({message:'Blog Created Successfully',statusCode:200,data:createdBlog});
+        res.status(201).json({message:'Blog Created Successfully',statusCode:201,data:createdBlog});
     } catch (error) {
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }

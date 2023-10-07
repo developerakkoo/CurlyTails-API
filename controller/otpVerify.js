@@ -24,6 +24,7 @@ const Admin = require('../models/admin.model');
                 success: success,
             })
         }).catch((error) => {
+            console.log(error);
             res.status(500).json({
                 statusCode:'500',
                 status: 'error',

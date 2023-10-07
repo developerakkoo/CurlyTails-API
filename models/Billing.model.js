@@ -11,13 +11,20 @@ const billingSchema = new Schema({
         //required: [true, 'Invoice number is required']
     },
 
-    userId: { type: Schema.Types.ObjectId, ref: 'User' },
-
-    cartId: { type: Schema.Types.ObjectId, ref: 'Cart' },
-
-    amount: { type: Number, },
-
-    paymentStatus: { type: String },
+    userId: { 
+        type: Schema.Types.ObjectId, 
+        ref: 'User' 
+},
+    cartId: { 
+        type: Schema.Types.ObjectId, 
+        ref: 'Cart' 
+},
+    amount: { 
+        type: Number, 
+    },
+    paymentStatus: { 
+        type: String 
+    },
 }, {
     timestamps: true
 });

@@ -1,6 +1,6 @@
 const Products = require('../models/product.model');
 const APIFeatures = require('../utils/ApiFeature')
-
+const {clearImage}= require('../utils/deleteFile')
 
 exports.addProduct = async(req,res)=>{
     try {
@@ -29,7 +29,7 @@ exports.addProduct = async(req,res)=>{
         // console.log(req.files);
         // console.log(productObj);
         const createdProduct = await Products.create(productObj);
-        res.status(200).json({message:'Product Created Successfully',statusCode:200,data:createdProduct});
+        res.status(201).json({message:'Product Created Successfully',statusCode:201,data:createdProduct});
     } catch (error) {
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
@@ -117,6 +117,11 @@ exports.deleteProduct = async (req,res)=>{
         if (!savedProduct) {
         return res.status(404).json({message:`Product Not Found With ProductId:${req.params.productId}`,statusCode:404});
         }
+        savedProduct.images.forEach(element => {
+            const url = element.split("http://localhost/");//local server
+            // const url = element.split("https://localhost/");//live server
+            clearImage(url[1])
+        });
         await savedProduct.deleteOne({_id:req.params.productId});
 
         res.status(200).json({message:`Product Deleted Successfully With ProductId:${req.params.productId}`,statusCode:200});

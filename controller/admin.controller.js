@@ -1,20 +1,22 @@
 const Admin = require('../models/admin.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const User = require('../models/user.model');
+const Category = require('../models/category.model');
+const subCategory = require('../models/subCategory.model');
+const productCategory = require('../models/productCategory.model');
+const Product = require('../models/product.model'); 
 require('dotenv').config();
-
 
 exports.postSignup = async (req, res, next) => {
 try {
         const adminData = {
-        name : req.body.name,
         email: req.body.email,
-        phoneNo:req.body.phoneNo,
         password: await bcrypt.hash(req.body.password,12)
         }
         const checkAdmin =  await Admin.findOne({email:req.body.email});
         if(checkAdmin){
-        return res.status(400).json({message:`Admin Already Exist with Email ${req.body.email} Please With Different Email `,statusCode:400});
+        return res.status(406).json({message:`Admin Already Exist with Email ${req.body.email} Please With Different Email `,statusCode:406});
         }
         const createdAdmin = await Admin.create(adminData);
         postRes = {
@@ -24,7 +26,7 @@ try {
             email: createdAdmin.email,
             
         }
-        res.status(200).json({message:'Admin Created Successfully',statusCode:200,data:postRes});
+        res.status(201).json({message:'Admin Created Successfully',statusCode:200,data:postRes});
     } catch (error) {
         res.status(500).send({message:error.message,statusCode:500,status:'ERROR'});
     }
@@ -98,7 +100,7 @@ exports.getAllAdmin = async(req,res) =>{
     try {
         const savedAdmin = await Admin.find().select('-password');
         if (savedAdmin.length == 0) {
-            return res.status(404).json({message:`Admin Not Found`,statusCode:404});
+            return res.status(404).json({message:`Admins Not Found`,statusCode:404});
         }
         res.status(200).json({message:'Admin Fetched Successfully',statusCode:200,length: savedAdmin.length,data:savedAdmin});
     } catch (error) {
@@ -106,6 +108,52 @@ exports.getAllAdmin = async(req,res) =>{
     }
 }
 
+
+
+exports.getAllUserCount = async(req,res) =>{
+    try {
+        const savedUserCount = await User.count()
+        res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:savedUserCount});
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+exports.getAllCategoryCount = async(req,res) =>{
+    try {
+        const savedCategoryCount = await Category.count()
+        res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:savedCategoryCount});
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+exports.getAllSubCategoryCount = async(req,res) =>{
+    try {
+        const savedSubCategoryCount = await subCategory.count()
+        res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:savedSubCategoryCount});
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+exports.getAllProductCategoryCount = async(req,res) =>{
+    try {
+        const ProductCategoryCount = await productCategory.count()
+        res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:ProductCategoryCount});
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+exports.getAllProductCount = async(req,res) =>{
+    try {
+        const savedProductCount = await Product.count()
+        res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:savedProductCount});
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
 
 exports.deleteAdmin = async (req,res)=>{
     try {
