@@ -16,7 +16,11 @@ const OrderSchema =new Schema({
         ref:'User'
     },
     orderItems:[
-        { }
+        { 
+            productId:{
+            type: Schema.Types.ObjectId,
+            ref: 'Product',
+            },}
     ],
     TotalItems:{
         type:Number,

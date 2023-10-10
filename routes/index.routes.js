@@ -12,6 +12,7 @@ const {verifyRoute} = require('./verify.route');
 const {CartRoutes} = require('./cart.route');
 const {OrderRoute} = require('./order.route');
 const {RefundRoutes} = require('./refund.route');
+const {NotificationRoutes} = require('./notification.route');
 
 module.exports = {
     UserRoutes,
@@ -27,5 +28,6 @@ module.exports = {
     verifyRoute,
     CartRoutes,
     OrderRoute,
-    RefundRoutes
+    RefundRoutes,
+    NotificationRoutes
 }

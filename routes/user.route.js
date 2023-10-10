@@ -8,13 +8,13 @@ route.post('/user/singUp',Validate.validateUser,UserController.postSignup);
 
 route.post('/user/login',UserController.loginUser);
 
-route.put('/update/user/:userId',verifyToken,UserController.UpdateUsers);
+route.put('/update/user/:userId',UserController.UpdateUsers);
 
-route.get('/getAll/user',verifyToken,UserController.getAllUsers);
+route.get('/getAll/user',UserController.getAllUsers);
 
-route.get('/get/user/:userId',verifyToken,UserController.getUsersById);
+route.get('/get/user/:userId',UserController.getUsersById);
 
-route.delete('/delete/user/:userId',verifyToken,UserController.deleteUsers);
+route.delete('/delete/user/:userId',UserController.deleteUsers);
 
 
 module.exports = {UserRoutes : route}

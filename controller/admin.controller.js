@@ -6,6 +6,8 @@ const Category = require('../models/category.model');
 const subCategory = require('../models/subCategory.model');
 const productCategory = require('../models/productCategory.model');
 const Product = require('../models/product.model'); 
+const Refund = require('../models/refund.model');
+const Order = require('../models/order.model');
 require('dotenv').config();
 
 exports.postSignup = async (req, res, next) => {
@@ -91,6 +93,8 @@ exports.getAdminById = async (req,res)=>{
 
         res.status(200).json({message:'Admin Fetched Successfully',statusCode:200,data:savedAdmin});
     } catch (error) {
+        console.log(error,'?????????');
+
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
 }
@@ -98,62 +102,68 @@ exports.getAdminById = async (req,res)=>{
 
 exports.getAllAdmin = async(req,res) =>{
     try {
-        const savedAdmin = await Admin.find().select('-password');
+        const savedAdmin = await Admin.find().select('-password').populate('userId').populate('orderItems.productId')
         if (savedAdmin.length == 0) {
             return res.status(404).json({message:`Admins Not Found`,statusCode:404});
         }
         res.status(200).json({message:'Admin Fetched Successfully',statusCode:200,length: savedAdmin.length,data:savedAdmin});
     } catch (error) {
+        console.log(error)
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
     }
 }
 
 
 
-exports.getAllUserCount = async(req,res) =>{
-    try {
-        const savedUserCount = await User.count()
-        res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:savedUserCount});
-    } catch (error) {
-        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
-    }
-}
+// exports.getAllUserCount = async(req,res) =>{
+//     try {
+//         const savedUserCount = await User.count()
+//         const savedProductCount = await Product.count()
+//         const ProductCategoryCount = await productCategory.count()
+//         const savedSubCategoryCount = await subCategory.count()
+//         const savedCategoryCount = await Category.count()
 
-exports.getAllCategoryCount = async(req,res) =>{
-    try {
-        const savedCategoryCount = await Category.count()
-        res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:savedCategoryCount});
-    } catch (error) {
-        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
-    }
-}
+//         res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:savedUserCount});
+//     } catch (error) {
+//         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+//     }
+// }
 
-exports.getAllSubCategoryCount = async(req,res) =>{
-    try {
-        const savedSubCategoryCount = await subCategory.count()
-        res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:savedSubCategoryCount});
-    } catch (error) {
-        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
-    }
-}
+// exports.getAllCategoryCount = async(req,res) =>{
+//     try {
+//         const savedCategoryCount = await Category.count()
+//         res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:savedCategoryCount});
+//     } catch (error) {
+//         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+//     }
+// }
 
-exports.getAllProductCategoryCount = async(req,res) =>{
-    try {
-        const ProductCategoryCount = await productCategory.count()
-        res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:ProductCategoryCount});
-    } catch (error) {
-        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
-    }
-}
+// exports.getAllSubCategoryCount = async(req,res) =>{
+//     try {
+//         const savedSubCategoryCount = await subCategory.count()
+//         res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:savedSubCategoryCount});
+//     } catch (error) {
+//         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+//     }
+// }
 
-exports.getAllProductCount = async(req,res) =>{
-    try {
-        const savedProductCount = await Product.count()
-        res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:savedProductCount});
-    } catch (error) {
-        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
-    }
-}
+// exports.getAllProductCategoryCount = async(req,res) =>{
+//     try {
+//         const ProductCategoryCount = await productCategory.count()
+//         res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:ProductCategoryCount});
+//     } catch (error) {
+//         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+//     }
+// }
+
+// exports.getAllProductCount = async(req,res) =>{
+//     try {
+//         const savedProductCount = await Product.count()
+//         res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:savedProductCount});
+//     } catch (error) {
+//         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+//     }
+// }
 
 exports.deleteAdmin = async (req,res)=>{
     try {
@@ -164,7 +174,129 @@ exports.deleteAdmin = async (req,res)=>{
         await savedAdmin.deleteOne({_id:req.params.adminId})
         res.status(200).json({message:'Admin Deleted Successfully',statusCode:200});
     } catch (error) {
+        console.log(error);
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+
+exports.getAllRefundRequest = async(req,res) =>{
+    try {
+        const pageNo = parseInt(req.query.page) ||1;
+        const savedRefund = await Refund.find().skip((pageNo-1)*10).limit(10);
+        res.status(200).json({message:'Refund Request Fetched Successfully',statusCode:200,count:savedRefund.length,data:savedRefund});
+    } catch (error) {
+        res.status(400).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+
+exports.getAllOrders = async(req,res) => {
+    try {
+        const pageNo = parseInt(req.query.page) ||1;
+        const savedOrder = await Order.find().skip((pageNo-1)*10).limit(10).populate('userId').populate('orderItems.productId');
+        res.status(200).json({message:'All Order Fetched Successfully',statusCode:200,count:savedOrder.length,data:savedOrder});
+    } catch (error) {
+        res.status(500).json({Message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+
+exports.getAllCount = async(req,res) =>{
+    try {
+        const savedUserCount = await User.count()
+        const savedProductCount = await Product.count()
+        const ProductCategoryCount = await productCategory.count()
+        const savedSubCategoryCount = await subCategory.count()
+        const savedCategoryCount = await Category.count()
+        res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:[{userCount:savedUserCount},{totalCategory:savedCategoryCount},{totalSubCategory:savedSubCategoryCount},{totalProductCategory:ProductCategoryCount},{totalProduct:savedProductCount}]});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+
+exports.monthlyEarnings = async(req,res) => {
+    try {
+        const pipeline = 
+        [
+            {
+                '$project': {
+                'SubTotal': true, 
+                'createdAt': {
+                    '$month': '$createdAt'
+                }
+            }
+            }, {
+                '$group': {
+                '_id': {
+                    'month': '$createdAt'
+                }, 
+                'total': {
+                    '$sum': '$SubTotal'
+                }
+            }
+            }
+        ]
+        const savedOrder = await Order.aggregate(pipeline)
+        res.status(200).json({message:'Monthly Earning Fetched Successfully',statusCode:200,data:savedOrder});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({Message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+exports.yearlyEarnings = async(req,res) => {
+    try {
+        const pipeline = 
+        [
+            {
+                '$project': {
+                'SubTotal': true, 
+                'createdAt': {
+                    '$year': '$createdAt'
+                }
+            }
+            }, {
+                '$group': {
+                '_id': {
+                    'year': '$createdAt'
+                }, 
+                'total': {
+                    '$sum': '$SubTotal'
+                }
+            }
+            }
+        ]
+        const savedOrder = await Order.aggregate(pipeline);
+        res.status(200).json({message:'Yearly Earning Fetched Successfully',statusCode:200,data:savedOrder});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({Message:error.message,statusCode:500,status:'ERROR'});
+    }
+}
+
+
+
+exports.totalEarnings = async(req,res) => {
+    try {
+        const pipeline = 
+        [
+            {
+                '$group': {
+                '_id': null, 
+                'totalEarnings': {
+                    '$sum': '$SubTotal'
+                }
+            }
+            }
+            ]
+        const savedOrder = await Order.aggregate(pipeline);
+        res.status(200).json({message:'Total Earning Fetched Successfully',statusCode:200,data:savedOrder});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({Message:error.message,statusCode:500,status:'ERROR'});
     }
 }
 

@@ -19,6 +19,24 @@
 // generateStrongCompactUuid(); // ⇨ 'xRC4JggRQQFdPwn6MhZs'
 
 
-let text ="http://localhost/public/1696491056026.jpeg";
-// const myArray = 
-console.log(text.split("http://localhost/"));
+// let text ="http://localhost/public/1696491056026.jpeg";
+// // const myArray = 
+// console.log(text.split("http://localhost/"));
+
+const io = require('socket.io-client');
+console.log('here')
+const socket = io('http://192.168.0.113:8000'); // Replace with the actual IP address of your laptop
+
+
+
+socket.on('connect', () => {
+  console.log('Mobile connected to Socket.io');
+  socket.on('get:Nifty50', (text) => {
+    console.log('Received data:', text);
+    console.log('done');
+  });
+});
+
+socket.on('disconnect', () => {
+  console.log('Mobile disconnected from Socket.io');
+});

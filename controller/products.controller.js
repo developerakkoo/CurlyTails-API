@@ -1,6 +1,8 @@
 const Products = require('../models/product.model');
-const APIFeatures = require('../utils/ApiFeature')
-const {clearImage}= require('../utils/deleteFile')
+const APIFeatures = require('../utils/ApiFeature');
+const {clearImage}= require('../utils/deleteFile');
+const { generateCustomUuid} = require('custom-uuid');
+
 
 exports.addProduct = async(req,res)=>{
     try {
@@ -8,8 +10,9 @@ exports.addProduct = async(req,res)=>{
         let links = [];
         
         for (let imagesNo=0; imagesNo <=images.length-1;imagesNo++){
-            let url = req.protocol +"://"+req.hostname +"/"+images[imagesNo].path.replace(/\\/g, "/")
-            links.push(url)
+            // let url = req.protocol +"://"+req.hostname +"/"+images[imagesNo].path.replace(/\\/g, "/")
+            let url = req.protocol +"://"+req.hostname+':8000' +"/"+images[imagesNo].path.replace(/\\/g, "/");
+            links.push({Id:await generateCustomUuid("012345678911223344ABCDEFGHIJKLMNOPQRSTUVWXYZ",6)+Math.ceil(Math.random() * 100000+1984567),link:url})
         }
         const productObj ={
             CategoryId:req.body.CategoryId,
@@ -24,6 +27,8 @@ exports.addProduct = async(req,res)=>{
             BreedSize:req.body.BreedSize,
             flavor:req.body.flavor,
             vegNonVeg:req.body.vegNonVeg,
+            isTopProduct: req.body.isTopProduct,
+            isTrendingProduct:req.body.isTrendingProduct,
             images:links
         }
         // console.log(req.files);
@@ -73,13 +78,33 @@ exports.updateProduct = async(req,res)=>{
         savedProduct.isTrendingProduct = req.body.isTrendingProduct != undefined
         ? req.body.isTrendingProduct
         :savedProduct.isTrendingProduct
-
         savedProduct.isTopProduct = req.body.isTopProduct != undefined
         ? req.body.isTopProduct
         :savedProduct.isTopProduct
-
         const updatedProduct = await savedProduct.save();
         res.status(200).json({message:'Product Updated Successfully',statusCode:200,data:updatedProduct});
+    } catch (error) {
+        res.status(500).json({message:error.message,statusCode:500,Status:'ERROR'});
+    }
+}
+
+
+exports.updatedImage = async (req,res)=>{
+    try {
+        const images= req.files
+        let links = [];
+        const savedProduct = await Products.findOne({_id:req.params.productId});
+        for (let imagesNo=0; imagesNo <=images.length-1;imagesNo++){
+            // let url = req.protocol +"://"+req.hostname +"/"+images[imagesNo].path.replace(/\\/g, "/")
+            let url = req.protocol +"://"+req.hostname+':8000' +"/"+images[imagesNo].path.replace(/\\/g, "/");
+            links.push({Id:await generateCustomUuid("012345678911223344ABCDEFGHIJKLMNOPQRSTUVWXYZ",6)+Math.ceil(Math.random() * 100000+1984567),link:url})
+        }
+        links.forEach(async(element) => {
+            savedProduct.images.push(element);
+            await savedProduct.images.save()
+        });
+        // const updatedImages = await savedProduct.images.save();
+        res.status(200).json({message:'Product Images Updated Successfully',statusCode:200,data:savedProduct.images});
     } catch (error) {
         res.status(500).json({message:error.message,statusCode:500,Status:'ERROR'});
     }
@@ -88,9 +113,9 @@ exports.updateProduct = async(req,res)=>{
 exports.getAllProduct = async (req,res)=>{
     try {
         const savedProduct = await Products.find();
-        if (savedProduct.length == 0) {
-        return res.status(404).json({message:'Products Not Found',statusCode:404});
-        }
+        // if (savedProduct.length == 0) {
+        // return res.status(404).json({message:'Products Not Found',statusCode:404});
+        // }
         res.status(200).json({message:'Product Fetched Successfully',statusCode:200,length:savedProduct.length,data:savedProduct});
     } catch (error) {
     res.status(500).json({message:error.message,statusCode:500,Status:'ERROR'});
@@ -118,12 +143,12 @@ exports.deleteProduct = async (req,res)=>{
         return res.status(404).json({message:`Product Not Found With ProductId:${req.params.productId}`,statusCode:404});
         }
         savedProduct.images.forEach(element => {
-            const url = element.split("http://localhost/");//local server
+            const url = element.link.split(`http://192.168.0.113:8000`);//local server
             // const url = element.split("https://localhost/");//live server
+            // console.log(url);
             clearImage(url[1])
         });
         await savedProduct.deleteOne({_id:req.params.productId});
-
         res.status(200).json({message:`Product Deleted Successfully With ProductId:${req.params.productId}`,statusCode:200});
     } catch (error) {
     res.status(500).json({message:error.message,statusCode:500,Status:'ERROR'});
@@ -212,6 +237,33 @@ exports.getTrendingProduct = async (req,res)=>{
         return res.status(404).json({message:'Trending Products Not Found',statusCode:404});
         }
         res.status(200).json({message:'Trending Product Fetched Successfully',statusCode:200,length:savedProduct.length,data:savedProduct});
+    } catch (error) {
+    res.status(500).json({message:error.message,statusCode:500,Status:'ERROR'});
+    }
+}
+
+
+
+
+exports.deleteImage = async (req,res)=>{
+    try {
+        const savedProduct = await Products.findOne({_id:req.params.productId});
+        const itemToBeRemoved = req.params.imageId.toString();
+        if (!savedProduct) {
+        return res.status(404).json({message:`Product Not Found With ProductId:${req.body.productId}`,statusCode:404});
+        }
+        const updatedImageArr = savedProduct.images.filter(todoItem => todoItem.Id !== itemToBeRemoved);
+        savedProduct.images.forEach(element => {
+            if (element.Id == itemToBeRemoved ) {
+                const url = element.link.split(`http://192.168.0.113:8000`);//local server
+                //const url = element.link.split(`http://192.168.0.113:8000`);//local server
+                console.log('image need to remove',url);
+                clearImage(url[1])
+            }
+        });
+        savedProduct.images = updatedImageArr
+        const savedImg = await savedProduct.save();
+        res.status(200).json({message:`Product Image Deleted Successfully`,data:savedImg,statusCode:200});
     } catch (error) {
     res.status(500).json({message:error.message,statusCode:500,Status:'ERROR'});
     }

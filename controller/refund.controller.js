@@ -47,7 +47,7 @@ exports.updateRefundRequestStatus = async(req,res) =>{
         if (!savedRefund) {
             return res.status(404).json({message:`Refund Request Not Found`,statusCode:404});
         }
-        if(req.body.status == 'accepted'){
+        if(req.body.status == 'REFUND_INITIATED'){
             savedRefund.refundStatus = status.Accept != undefined
             ? status.Accept
             : savedRefund.refundStatus = status.Accept
@@ -55,7 +55,7 @@ exports.updateRefundRequestStatus = async(req,res) =>{
             return res.status(200).json({message:'Refund Request Status Updated Successfully',statusCode:200,data:UpdatedStatus});
         }
 
-        else if(req.body.status == 'refunded'){
+        else if(req.body.status == 'ACCEPTED'){
             savedRefund.refundStatus = status.Refund != undefined
             ? status.Refund
             : savedRefund.refundStatus = status.Refund
@@ -63,7 +63,7 @@ exports.updateRefundRequestStatus = async(req,res) =>{
             return res.status(200).json({message:'Refund Request Status Updated Successfully',statusCode:200,data:UpdatedStatus});
         }
 
-        if(req.body.status == 'reject'){
+        if(req.body.status == 'REJECTED'){
             savedRefund.refundStatus = status.Reject != undefined
             ? status.Reject
             : savedRefund.refundStatus = status.Reject

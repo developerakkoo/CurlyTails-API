@@ -3,7 +3,7 @@ const Order = require('../models/order.model');
 const Billing = require('../models/Billing.model');
 const { generateCustomUuid} = require('custom-uuid');
 const Refund = require('../models/refund.model');
-
+const {getIO} = require('../socket');
 exports.placeOrder = async(req,res)=>{
     try {
         const savedCart = await Cart.findOne({userId:req.params.userId});
@@ -15,7 +15,7 @@ exports.placeOrder = async(req,res)=>{
         //     return res.status(404).json({message:`Bill Not Found With This UserId:${req.params.userId}`,statusCode:404});
         // }
         const orderObj ={
-            OrderId: await generateCustomUuid("012345678911223344ABCDEFGHIJKLMNOPQRSTUVWXYZ", 20),
+            OrderId: Math.ceil(Math.random() * 1000000+1984567),
             // BillingId:savedBill._id,
             userId:savedCart.userId,
             orderItems:savedCart.cartItems,
@@ -40,6 +40,8 @@ exports.placeOrder = async(req,res)=>{
         :savedCart.__v = tem 
         await savedCart.save();
         console.log(savedCart);
+        const recentOrders = await Order.find().limit(10).sort(-1);
+        getIO.emit('admin:recentOrders',recentOrders);
         res.status(200).json({msg:'Order Placed Successfully',statusCode:200,data:createdOrder});
     } catch (error) {
         res.status(500).json({Message:error.message,statusCode:500,status:'ERROR'});
@@ -86,11 +88,11 @@ exports.UpdateOrderDeliveryStatus= async(req,res) => {
 
 exports.getAllOrders = async(req,res) => {
     try {
-        const savedOrder = await Order.find({});
+        const savedOrder = await Order.find().limit(10).sort({'createdAt': -1});
         if (savedOrder.length == 0) {
             return res.status(404).json({message:'Orders Not Found',statusCode:404});
         }
-        res.status(200).json({message:'All Order Fetched Successfully',statusCode:200,data:savedOrder});
+        res.status(200).json({message:'All Order Fetched Successfully',statusCode:200,count:savedOrder.length,data:savedOrder});
     } catch (error) {
         res.status(500).json({Message:error.message,statusCode:500,status:'ERROR'});
     }

@@ -8,6 +8,8 @@ route.post('/addProduct',Upload.array('images'),Validation.validateProduct,produ
 
 route.put('/update/product/:productId',productController.updateProduct);
 
+route.put('/update/images/:productId',Upload.array('images'),productController.updatedImage)
+
 route.get('/getAll/product',productController.getAllProduct);
 
 route.get('/get-top/product',productController.getTopProduct);
@@ -24,7 +26,11 @@ route.get('/get/product/subCategoryId/:subCategoryId',productController.getProdu
 
 route.get('/get/product/productCategoryId/:productCategoryId',productController.getProductByProductCategoryId);
 
-route.get('/search/product',productController.ProductSearchOption)
+route.get('/search/product',productController.ProductSearchOption);
+
+route.delete('/delete/image/:productId/:imageId',productController.deleteImage);
+
+
 
 module.exports ={ProductRoutes:route}
 

@@ -14,20 +14,32 @@ route.get('/admin/getAll/',adminController.getAllAdmin);
 
 route.get('/admin/get/:adminId',adminController.getAdminById);
 
-route.get('/admin/getAll/usersCount',adminController.getAllUserCount);
+// route.get('/admin/getAll/usersCount',adminController.getAllUserCount);
 
-route.get('/admin/getAll/productsCount',adminController.getAllProductCount);
+// route.get('/admin/getAll/productsCount',adminController.getAllProductCount);
 
-route.get('/admin/getAll/productCategoryCount',adminController.getAllProductCategoryCount);
+// route.get('/admin/getAll/productCategoryCount',adminController.getAllProductCategoryCount);
 
-route.get('/admin/getAll/subCategoryCount',adminController.getAllSubCategoryCount);
-
-
-route.get('/admin/getAll/categoryCount',adminController.getAllCategoryCount);
+// route.get('/admin/getAll/subCategoryCount',adminController.getAllSubCategoryCount);
 
 
+// route.get('/admin/getAll/categoryCount',adminController.getAllCategoryCount);
+
+route.get('/admin/getAll/refundReq',adminController.getAllRefundRequest);
+
+route.get('/admin/getAll/orders',adminController.getAllOrders);
+
+route.get('/admin/getAll/Count',adminController.getAllCount);
 
 route.delete('/admin/delete/:adminId',adminController.deleteAdmin);
+
+route.get('/admin/get-monthly-earnings',adminController.monthlyEarnings);
+
+route.get('/admin/get-yearly-earnings',adminController.yearlyEarnings);
+
+route.get('/admin/get-total-earnings',adminController.totalEarnings);
+
+
 
 module.exports = {AdminRoutes : route}
 

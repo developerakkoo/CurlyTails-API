@@ -59,7 +59,7 @@ app.use(
     swaggerUi.setup(specs)
 );
 const {verifyToken} = require('./middleware/jwtVerify');
-const {CategoryRoutes,RefundRoutes,OrderRoute,CartRoutes,verifyRoute,ProductRoutes,subCategoryRoutes,PharmacyRoutes,ConsultantRoutes,BannerRoutes,productCategoryRoutes,BlogRoutes,AdminRoutes,UserRoutes}= require('./routes/index.routes');
+const {CategoryRoutes,NotificationRoutes,RefundRoutes,OrderRoute,CartRoutes,verifyRoute,ProductRoutes,subCategoryRoutes,PharmacyRoutes,ConsultantRoutes,BannerRoutes,productCategoryRoutes,BlogRoutes,AdminRoutes,UserRoutes}= require('./routes/index.routes');
 app.use(cors());
 app.use(UserRoutes);
 app.use(AdminRoutes);
@@ -76,9 +76,7 @@ app.use(productCategoryRoutes);
 app.use(CartRoutes);
 app.use(OrderRoute);
 app.use(RefundRoutes);
-
-
-
+app.use(NotificationRoutes);
 
 app.all("*", (req, res, next) => {
     res.status(404).json({
@@ -97,12 +95,16 @@ app.use(function (req, res, next) {
 mongoose.connect(process.env.DB_URL,{
     useUnifiedTopology: true,
     useNewUrlParser: true,
-})
-const db = mongoose.connection
-db.on("error", () => console.log("ERROR while connecting to DB"))  //code for connecting mongodb
-db.once("open", () => {console.log("Connected to mongoDB ")
-})
-
-
-app.listen(8000,()=> 
-console.log('Running at localhost:8000 🚀'));
+})    .then((result) => {
+    const server = app.listen(8000);
+    console.log("app is running")
+    const io = require("./socket").init(server);  
+    io.on("connection", (socket) => {
+        console.log("Connected a User");
+        socket.on("disconnect", () => {
+        console.log("User Disconnected");
+        });
+    });
+    }).catch((err) => {
+    console.log(err);
+    });

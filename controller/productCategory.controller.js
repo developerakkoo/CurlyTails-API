@@ -8,7 +8,10 @@ exports.addProductCategory = async(req,res)=>{
             CategoryId:req.body.CategoryId,
             subCategoryId:req.body.subCategoryId,
             name:req.body.name,
-            description:req.body.description
+            description:req.body.description,
+            isTopProductCategory:req.body.isTopProductCategory,
+            isTrendingProductCategory:req.body.isTrendingProductCategory,
+
         }
         const savedCategory = await Category.findOne({_id:req.body.CategoryId});
         if (!savedCategory) {

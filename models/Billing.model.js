@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 
 
 const billingSchema = new Schema({
-
     
     invoiceNumber:{
         type: String,

@@ -24,7 +24,7 @@ const refundSchema = new Schema({
         type: String,
         default:status.InProcess
     }
-})
+},{ timestamps: true})
 
 
 module.exports = mongoose.model('Refund', refundSchema);
