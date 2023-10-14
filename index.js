@@ -79,9 +79,7 @@ app.use(RefundRoutes);
 app.use(NotificationRoutes);
 
 app.all("*", (req, res, next) => {
-    res.status(404).json({
-        message:"Page not found"
-    });
+    res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
 app.use(function (req, res, next) {

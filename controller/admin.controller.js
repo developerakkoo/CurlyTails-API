@@ -241,10 +241,9 @@ exports.getAllCount = async(req,res) =>{
                 },
                 
             }
-            },
-            
+            }
         ]
-        const monthlyEarnings = await Order.aggregate(pipelineMonth);
+        const monthlyEarnings = await Order.aggregate(pipelineMonth).sort({createdAt: -1});
         const yearlyEarnings = await Order.aggregate(pipelineYear);
         const savedUserCount = await User.count()
         const savedProductCount = await Product.count()
