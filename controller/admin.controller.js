@@ -23,8 +23,6 @@ try {
         const createdAdmin = await Admin.create(adminData);
         postRes = {
             adminId:createdAdmin._id,
-            name : createdAdmin.name,
-            phoneNo:createdAdmin.phoneNo,
             email: createdAdmin.email,
             
         }
@@ -204,12 +202,56 @@ exports.getAllOrders = async(req,res) => {
 
 exports.getAllCount = async(req,res) =>{
     try {
+        const pipelineMonth = 
+        [
+            {
+                '$project': {
+                'SubTotal': true, 
+                'createdAt': {
+                    '$month': '$createdAt'
+                }
+            }
+            }, {
+                '$group': {
+                '_id': {
+                    'month': '$createdAt'
+                }, 
+                'total': {
+                    '$sum': '$SubTotal'
+                }
+            }
+            }
+        ]
+        const pipelineYear = 
+        [
+            {
+                '$project': {
+                'SubTotal': true, 
+                'createdAt': {
+                    '$year': '$createdAt'
+                }
+            }
+            }, {
+                '$group': {
+                '_id': {
+                    'year': '$createdAt'
+                }, 
+                'total': {
+                    '$sum': '$SubTotal'
+                },
+                
+            }
+            },
+            
+        ]
+        const monthlyEarnings = await Order.aggregate(pipelineMonth);
+        const yearlyEarnings = await Order.aggregate(pipelineYear);
         const savedUserCount = await User.count()
         const savedProductCount = await Product.count()
         const ProductCategoryCount = await productCategory.count()
         const savedSubCategoryCount = await subCategory.count()
         const savedCategoryCount = await Category.count()
-        res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:[{userCount:savedUserCount},{totalCategory:savedCategoryCount},{totalSubCategory:savedSubCategoryCount},{totalProductCategory:ProductCategoryCount},{totalProduct:savedProductCount}]});
+        res.status(200).json({message:'Data Fetched Successfully',statusCode:200,data:[{userCount:savedUserCount},{totalCategory:savedCategoryCount},{totalSubCategory:savedSubCategoryCount},{totalProductCategory:ProductCategoryCount},{totalProduct:savedProductCount},{monthlyEarnings:monthlyEarnings},{yearlyEarnings:yearlyEarnings}]});
     } catch (error) {
         console.log(error);
         res.status(500).json({message:error.message,statusCode:500,status:'ERROR'});
@@ -267,6 +309,9 @@ exports.yearlyEarnings = async(req,res) => {
                     '$sum': '$SubTotal'
                 }
             }
+            },
+            {
+                '$sort':'-1'
             }
         ]
         const savedOrder = await Order.aggregate(pipeline);

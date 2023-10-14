@@ -7,6 +7,7 @@ const {getIO} = require('../socket');
 exports.placeOrder = async(req,res)=>{
     try {
         const savedCart = await Cart.findOne({userId:req.params.userId});
+        // console.log(savedCart);
         if (!savedCart) {
             return res.status(404).json({message:`Cart Not Found With This UserId:${req.params.userId}`,statusCode:404});
         }
@@ -35,15 +36,16 @@ exports.placeOrder = async(req,res)=>{
         savedCart.SubTotal = tem != undefined
         ? tem
         :savedCart.SubTotal = tem 
-        savedCart.__v = tem != undefined
-        ? tem
-        :savedCart.__v = tem 
+        // savedCart.__v = tem != undefined
+        // ? tem
+        // :savedCart.__v = tem 
         await savedCart.save();
         console.log(savedCart);
-        const recentOrders = await Order.find().limit(10).sort(-1);
-        getIO.emit('admin:recentOrders',recentOrders);
+        const recentOrders = await Order.find({}).limit(10).sort('-1');
+        getIO().emit('admin:recentOrders',recentOrders);
         res.status(200).json({msg:'Order Placed Successfully',statusCode:200,data:createdOrder});
     } catch (error) {
+        console.log(error);
         res.status(500).json({Message:error.message,statusCode:500,status:'ERROR'});
     }
 }

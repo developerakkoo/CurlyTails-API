@@ -30,7 +30,7 @@ exports.addToCart = async(req,res) =>{
                 : savedCart.SubTotal
                 // console.log(savedCart.cartItems[itemNo]);
                 updatedCart = await savedCart.save();
-                getIO.emit('cart:get',{data:updatedCart});
+                getIO().emit('cart:get',{data:updatedCart});
                 return res.status(201).json({message:'Product Added To Cart Successfully',statusCode:201,data:updatedCart});
             } 
         }
@@ -49,7 +49,7 @@ exports.addToCart = async(req,res) =>{
     ? (req.body.price*req.body.quantity)
     : savedCart.SubTotal
     updatedCart = await savedCart.save();
-    getIO.emit('cart:get',{data:updatedCart});
+    getIO().emit('cart:get',{data:updatedCart});
     res.status(201).json({message:'Product Added To Cart Successfully',statusCode:201,data:updatedCart});
 
     } catch (error) {
@@ -87,12 +87,12 @@ exports.updateCartProductQuantity = async(req,res) =>{
                     savedCart.cartItems.splice(savedCart.cartItems.findIndex(a => a.id === itemToBeRemoved) , 1)
                     // savedCart.cartItems = savedCartItems;
                     updatedCart = await savedCart.save();
-                getIO.emit('cart:update',{data:updatedCart});
+                getIO().emit('cart:update',{data:updatedCart});
                     return res.status(201).json({message:'Product Deleted From Cart Successfully',statusCode:201,data:updatedCart});
                 }
                 // console.log(savedCart.cartItems[itemNo]);
                 updatedCart = await savedCart.save();
-                getIO.emit('cart:update',{data:updatedCart});
+                getIO().emit('cart:update',{data:updatedCart});
                 return res.status(201).json({message:'Product Remove From Cart Successfully',statusCode:201,data:updatedCart});
             } 
         }
@@ -126,7 +126,7 @@ exports.deleteProductFromCart = async(req,res) =>{
     : savedCart.SubTotal
         savedCart.cartItems.splice(savedCart.cartItems.findIndex(a => a.id === itemToBeRemoved) , 1);
         updatedCart = await savedCart.save();
-        getIO.emit('cart:delete',{data:updatedCart});
+        getIO().emit('cart:delete',{data:updatedCart});
         res.status(200).json({msg:'Product Removed From Cart',statusCode:200,data:updatedCart})
     } catch (error) {
         console.log(error);
