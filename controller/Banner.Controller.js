@@ -125,8 +125,8 @@ exports.isTopBanner = async (req, res, next) => {
 
 exports.getTopBanner = async (req, res, next) => {
     try {
-        let banner = await Banner.findOne({isTopBanner:true});
-        if (!banner) {
+        let banner = await Banner.find({isTopBanner:true});
+        if (banner.length == 0) {
             return res.status(404).json({message:'Top Banner Not Found',status: false, statusCode: 404,});
         }
         res.status(200).json({message:'top Banner Fetched Successfully',status: true, statusCode: 200, data: banner  });
@@ -137,8 +137,8 @@ exports.getTopBanner = async (req, res, next) => {
 
 exports.getTrendingBanner = async (req, res, next) => {
     try {
-        let banner = await Banner.findOne({isTrendingBanner:true});
-        if (!banner) {
+        let banner = await Banner.find({isTrendingBanner:true});
+        if (banner.length == 0) {
             return res.status(404).json({message:'Trending Banner Not Found',status: false, statusCode: 404,});
         }
         res.status(200).json({message:'Trending Banner Fetched Successfully',status: true, statusCode: 200, data: banner  });

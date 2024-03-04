@@ -1,48 +1,44 @@
-const express = require('express');
+const express = require("express");
 const route = express.Router();
-const adminController = require('../controller/admin.controller');
-const Validate = require('../middleware/admin.middleware');
-const {verifyToken} = require('../middleware/jwtVerify');
+const adminController = require("../controller/admin.controller");
+const Validate = require("../middleware/admin.middleware");
+const { verifyToken } = require("../middleware/jwtVerify");
 
-route.post('/admin/singUp',Validate.validateAdmin,adminController.postSignup);
+route.post("/admin/singUp", Validate.validateAdmin, adminController.postSignup);
 
-route.post('/admin/login',adminController.AdminLogin);
+route.post("/admin/login", adminController.AdminLogin);
 
-route.put('/admin/update/:adminId',adminController.updateAdmin);
+route.put("/admin/update/:adminId", adminController.updateAdmin);
 
-route.get('/admin/getAll/',adminController.getAllAdmin);
+route.get("/admin/getAll/", adminController.getAllAdmin);
 
-route.get('/admin/get/:adminId',adminController.getAdminById);
+route.get("/admin/get/:adminId", adminController.getAdminById);
 
 // route.get('/admin/getAll/usersCount',adminController.getAllUserCount);
 
-// route.get('/admin/getAll/productsCount',adminController.getAllProductCount);
+// route.get('/admin/getAll/productsCount',adminController.getAllProductCount)
 
 // route.get('/admin/getAll/productCategoryCount',adminController.getAllProductCategoryCount);
 
 // route.get('/admin/getAll/subCategoryCount',adminController.getAllSubCategoryCount);
 
-
 // route.get('/admin/getAll/categoryCount',adminController.getAllCategoryCount);
 
-route.get('/admin/getAll/refundReq',adminController.getAllRefundRequest);
+route.get("/admin/getAll/refundReq", adminController.getAllRefundRequest);
 
-route.get('/admin/getAll/orders',adminController.getAllOrders);
+route.get("/admin/getAll/orders", adminController.getAllOrders);
 
-route.get('/admin/getAll/Count',adminController.getAllCount);
+route.get("/admin/getAll/Count", adminController.getAllCount);
 
-route.delete('/admin/delete/:adminId',adminController.deleteAdmin);
+route.delete("/admin/delete/:adminId", adminController.deleteAdmin);
 
-route.get('/admin/get-monthly-earnings',adminController.monthlyEarnings);
+route.get("/admin/get-monthly-earnings", adminController.monthlyEarnings);
 
-route.get('/admin/get-yearly-earnings',adminController.yearlyEarnings);
+route.get("/admin/get-yearly-earnings", adminController.yearlyEarnings);
 
-route.get('/admin/get-total-earnings',adminController.totalEarnings);
+route.get("/admin/get-total-earnings", adminController.totalEarnings);
 
-
-
-module.exports = {AdminRoutes : route}
-
+module.exports = { AdminRoutes: route };
 
 /**
  * @swagger
@@ -55,42 +51,41 @@ module.exports = {AdminRoutes : route}
  *         - description
  *         - finished
  *       properties:
- * 
+ *
  *         id:
  *           type: string
- *           description: The auto-generated id 
+ *           description: The auto-generated id
  *         name:
  *           type: string
  *           description: Admin name filed is require
  *         email:
  *           type: string
  *           description: Admin email filed is require
- * 
+ *
  *         phoneNo:
  *           type: number
  *           description: Admin phoneNo filed is require
- * 
- *         password: 
+ *
+ *         password:
  *           type: string
  *           description: Admin Password Admin phoneNo filed is require
- * 
+ *
  *         createdAt:
  *           type: string
  *           format: timestamps
  *           description: The date the data was added
- * 
+ *
  *         updatedAt:
  *           type: string
  *           format: timestamps
  *           description: The date the data was updated
- *     
+ *
  */
-
 
 /**
  * @swagger
  * tags:
- *   name: Admin 
+ *   name: Admin
  *   description: Admin API's
  * /admin/singUp:
  *   post:
@@ -101,21 +96,21 @@ module.exports = {AdminRoutes : route}
  *           application/json:
  *             schema:
  *                type: object
- *                properties: 
+ *                properties:
  *                  name:
  *                     type: string
  *                     required: true
  *                  email:
  *                     type: string
  *                     required: true
-  *                  phoneNo:
+ *                  phoneNo:
  *                     type: number
  *                     required: true
-  *                  password:
+ *                  password:
  *                     type: string
  *                     required: true
- * 
- * 
+ *
+ *
  *     responses:
  *       201:
  *         description: Created
@@ -123,7 +118,7 @@ module.exports = {AdminRoutes : route}
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Admin'
- * 
+ *
  *       406:
  *         description: Not Acceptable
  *         content:
@@ -134,7 +129,7 @@ module.exports = {AdminRoutes : route}
  *              properties:
  *                message:
  *                 type : string
- * 
+ *
  *       400:
  *         description: Bad Request
  *         content:
@@ -144,8 +139,8 @@ module.exports = {AdminRoutes : route}
  *              object:
  *              properties:
  *                message:
- *                 type : string 
- * 
+ *                 type : string
+ *
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -157,19 +152,19 @@ module.exports = {AdminRoutes : route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string     
- * 
+ *                 type : string
+ *
  * /App/verifyUser/sendOtp:
  *   post:
  *     description: Admin send Otp
  *     tags: [Admin]
- *  
+ *
  *     requestBody:
  *        content:
  *           application/json:
  *             schema:
  *                type: object
- *                properties: 
+ *                properties:
  *                  phonenumber:
  *                     type: number
  *                     required: true
@@ -188,7 +183,7 @@ module.exports = {AdminRoutes : route}
  *                 type : string
  *                data:
  *                 type : string
- *  
+ *
  *       404:
  *         description: Not Found
  *         content:
@@ -201,8 +196,8 @@ module.exports = {AdminRoutes : route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -214,27 +209,27 @@ module.exports = {AdminRoutes : route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string    
- * 
- * 
+ *                 type : string
+ *
+ *
  * /App/admin/verify:
  *   post:
  *     description: Admin verify otp
  *     tags: [Admin]
- *  
+ *
  *     requestBody:
  *        content:
  *           application/json:
  *             schema:
  *                type: object
- *                properties: 
+ *                properties:
  *                  phonenumber:
  *                     type: number
  *                     required: true
  *                  code:
- *                      type: number 
+ *                      type: number
  *                      required: true
- * 
+ *
  *     responses:
  *       200:
  *         description: Successful
@@ -259,10 +254,10 @@ module.exports = {AdminRoutes : route}
  *              object:
  *              properties:
  *                message:
- *                 type : string 
+ *                 type : string
  *                statusCode:
  *                 type : string
- *  
+ *
  *       404:
  *         description: Not Found
  *         content:
@@ -275,8 +270,8 @@ module.exports = {AdminRoutes : route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -288,27 +283,27 @@ module.exports = {AdminRoutes : route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string    
- *      
- * 
+ *                 type : string
+ *
+ *
  * /admin/login:
  *   post:
  *     description: Admin login
  *     tags: [Admin]
- *  
+ *
  *     requestBody:
  *        content:
  *           application/json:
  *             schema:
  *                type: object
- *                properties: 
+ *                properties:
  *                  email:
  *                     type: string
  *                     required: true
  *                  password:
- *                      type: string 
+ *                      type: string
  *                      required: true
- * 
+ *
  *     responses:
  *       200:
  *         description: Successful
@@ -333,10 +328,10 @@ module.exports = {AdminRoutes : route}
  *              object:
  *              properties:
  *                message:
- *                 type : string 
+ *                 type : string
  *                statusCode:
  *                 type : string
- *  
+ *
  *       404:
  *         description: Not Found
  *         content:
@@ -349,8 +344,8 @@ module.exports = {AdminRoutes : route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -362,8 +357,8 @@ module.exports = {AdminRoutes : route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string      
- *  
+ *                 type : string
+ *
  * /admin/update/{adminId}:
  *   put:
  *     description: Update admin
@@ -383,17 +378,17 @@ module.exports = {AdminRoutes : route}
  *           application/json:
  *             schema:
  *                type: object
- *                properties: 
+ *                properties:
  *                  name:
  *                     type: string
  *                  email:
  *                     type: string
-  *                  phoneNo:
+ *                  phoneNo:
  *                     type: number
-  *                  password:
+ *                  password:
  *                     type: string
- *            
- *  
+ *
+ *
  *     responses:
  *       201:
  *         description: Updated
@@ -401,7 +396,7 @@ module.exports = {AdminRoutes : route}
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Admin'
- * 
+ *
  *       401:
  *         description: Unauthorized
  *         content:
@@ -434,8 +429,8 @@ module.exports = {AdminRoutes : route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -447,8 +442,8 @@ module.exports = {AdminRoutes : route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string    
- *  
+ *                 type : string
+ *
  * /admin/get/{adminId}:
  *   get:
  *     description: Get admin by Id
@@ -463,7 +458,7 @@ module.exports = {AdminRoutes : route}
  *            description: adminId
  *            required: true
  *            type: formData
- *  
+ *
  *     responses:
  *       200:
  *         description: Successful
@@ -471,7 +466,7 @@ module.exports = {AdminRoutes : route}
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Admin'
- *  
+ *
  *       401:
  *         description: Unauthorized
  *         content:
@@ -504,8 +499,8 @@ module.exports = {AdminRoutes : route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -517,12 +512,12 @@ module.exports = {AdminRoutes : route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string    
- * 
- * 
+ *                 type : string
+ *
+ *
  * /admin/getAll:
  *   get:
- *     description: Get all admin 
+ *     description: Get all admin
  *     tags: [Admin]
  *     parameters:
  *          - in: header
@@ -536,7 +531,7 @@ module.exports = {AdminRoutes : route}
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Admin'
- *  
+ *
  *       401:
  *         description: Unauthorized
  *         content:
@@ -569,8 +564,8 @@ module.exports = {AdminRoutes : route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -582,11 +577,11 @@ module.exports = {AdminRoutes : route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string    
- *  
-  * /admin/delete/{adminId}:
+ *                 type : string
+ *
+ * /admin/delete/{adminId}:
  *   delete:
- *     description: Delete admin 
+ *     description: Delete admin
  *     tags: [Admin]
  *     parameters:
  *          - in: header
@@ -598,7 +593,7 @@ module.exports = {AdminRoutes : route}
  *            description: adminId
  *            required: true
  *            type: formData
- *  
+ *
  *     responses:
  *       200:
  *         description: Successful
@@ -612,7 +607,7 @@ module.exports = {AdminRoutes : route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
+ *
  *       401:
  *         description: Unauthorized
  *         content:
@@ -645,8 +640,8 @@ module.exports = {AdminRoutes : route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -658,9 +653,6 @@ module.exports = {AdminRoutes : route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string    
- *                               
+ *                 type : string
+ *
  */
-
-
-

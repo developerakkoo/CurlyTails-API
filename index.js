@@ -63,7 +63,7 @@ const {CategoryRoutes,NotificationRoutes,RefundRoutes,OrderRoute,CartRoutes,veri
 app.use(cors());
 app.use(UserRoutes);
 app.use(AdminRoutes);
-app.use(verifyRoute);
+// app.use(verifyRoute);
 // app.use(verifyToken);
 app.use(ProductRoutes);
 app.use(CategoryRoutes);
@@ -95,7 +95,7 @@ mongoose.connect(process.env.DB_URL,{
     useNewUrlParser: true,
 })    .then((result) => {
     const server = app.listen(8000);
-    console.log("app is running")
+    console.log("🌼... App Ruining http://localhost:8000")
     const io = require("./socket").init(server);  
     io.on("connection", (socket) => {
         console.log("Connected a User");

@@ -100,7 +100,7 @@ exports.getAdminById = async (req,res)=>{
 
 exports.getAllAdmin = async(req,res) =>{
     try {
-        const savedAdmin = await Admin.find().select('-password').populate('userId').populate('orderItems.productId')
+        const savedAdmin = await Admin.find().select('-password')
         if (savedAdmin.length == 0) {
             return res.status(404).json({message:`Admins Not Found`,statusCode:404});
         }
