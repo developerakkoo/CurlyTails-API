@@ -194,14 +194,22 @@ exports.getProductByProductCategoryId = async (req,res)=>{
 exports.ProductSearchOption = async (req, res, next)=> {
 
     try {
-        const query = req.query.query;
-        const term = req.query.term;
-        console.log(query + term);
-        const features = await new APIFeatures(Products.find(), req.query)
-        .filter()
-        .sort()
+        const { q } = req.query;
+        // const term = req.query.term;
+        // console.log(name);
+        // const product = await Products.find({ $text: { $search: name} });
+        const   dbQuery = {
+            $or: [
+                { name: { $regex: `^${q}`, $options: "i" } },
+                { flavor: { $regex: `^${q}`, $options: "i" } },
+                { brand: { $regex: `^${q}`, $options: "i" } },
+                { description: { $regex: `^${q}`, $options: "i" } },
+                { flavor: { $regex: `^${q}`, $options: "i" } },
+                { vegNonVeg: { $regex: `^${q}`, $options: "i" } },
+            ],
+            };
 
-        const product = await features.query;
+        const product = await  Products.find(dbQuery);
 
         res.status(200).json({
         message:'Product Fetched Successfully',

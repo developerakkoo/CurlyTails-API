@@ -1,43 +1,61 @@
-const express = require('express');
+const express = require("express");
 const route = express.Router();
-const productController = require('../controller/products.controller');
-const Validation = require('../middleware/product.middleware');
-const Upload = require('../middleware/Upload');
+const productController = require("../controller/products.controller");
+const Validation = require("../middleware/product.middleware");
+const Upload = require("../middleware/Upload");
 
-route.post('/addProduct',Upload.array('images'),Validation.validateProduct,productController.addProduct);
+route.post(
+  "/addProduct",
+  Upload.array("images"),
+  Validation.validateProduct,
+  productController.addProduct
+);
 
-route.put('/update/product/:productId',productController.updateProduct);
+route.put("/update/product/:productId", productController.updateProduct);
 
-route.put('/update/images/:productId',Upload.array('images'),productController.updatedImage)
+route.put(
+  "/update/images/:productId",
+  Upload.array("images"),
+  productController.updatedImage
+);
 
-route.get('/getAll/product',productController.getAllProduct);
+route.get("/getAll/product", productController.getAllProduct);
 
-route.get('/get-top/product',productController.getTopProduct);
+route.get("/get-top/product", productController.getTopProduct);
 
-route.get('/get-trending/product',productController.getTrendingProduct);
+route.get("/get-trending/product", productController.getTrendingProduct);
 
-route.get('/get/product/:productId',productController.getProductById);
+route.get("/get/product/:productId", productController.getProductById);
 
-route.delete('/delete/product/:productId',productController.deleteProduct)
+route.delete("/delete/product/:productId", productController.deleteProduct);
 
-route.get('/get/product/CategoryId/:CategoryId',productController.getProductByCategoryId);
+route.get(
+  "/get/product/CategoryId/:CategoryId",
+  productController.getProductByCategoryId
+);
 
-route.get('/get/product/subCategoryId/:subCategoryId',productController.getProductBySubCategoryId);
+route.get(
+  "/get/product/subCategoryId/:subCategoryId",
+  productController.getProductBySubCategoryId
+);
 
-route.get('/get/product/productCategoryId/:productCategoryId',productController.getProductByProductCategoryId);
+route.get(
+  "/get/product/productCategoryId/:productCategoryId",
+  productController.getProductByProductCategoryId
+);
 
-route.get('/search/product',productController.ProductSearchOption);
+route.get("/search/product", productController.ProductSearchOption);
 
-route.delete('/delete/image/:productId/:imageId',productController.deleteImage);
+route.delete(
+  "/delete/image/:productId/:imageId",
+  productController.deleteImage
+);
 
-
-
-module.exports ={ProductRoutes:route}
+module.exports = { ProductRoutes: route };
 
 /**
  * TODO: Septate image upload and update  the api's
-*/
-
+ */
 
 /**
  * @swagger
@@ -50,10 +68,10 @@ module.exports ={ProductRoutes:route}
  *         - description
  *         - finished
  *       properties:
- * 
+ *
  *         id:
  *           type: string
- *           description: The auto-generated id 
+ *           description: The auto-generated id
  *         CategoryId:
  *           type: Schema.Types.ObjectId
  *           description:  CategoryId filed is require
@@ -90,24 +108,23 @@ module.exports ={ProductRoutes:route}
  *         images:
  *           type: array
  *           description: product images default []
- *         isTopProduct: 
+ *         isTopProduct:
  *           type: boolean
  *           description: Default false
- *         isTrendingProduct: 
+ *         isTrendingProduct:
  *           type: boolean
  *           description: Default false
  *         createdAt:
  *           type: string
  *           format: timestamps
  *           description: The date data was added
- * 
+ *
  *         updatedAt:
  *           type: string
  *           format: timestamps
  *           description: The date data was updated
- *     
+ *
  */
-
 
 /**
  * @swagger
@@ -128,7 +145,7 @@ module.exports ={ProductRoutes:route}
  *           multipart/form-data:
  *             schema:
  *                type: object
- *                properties: 
+ *                properties:
  *                  CategoryId:
  *                     type: string
  *                     required: true
@@ -166,13 +183,13 @@ module.exports ={ProductRoutes:route}
  *                     type: number
  *                     required: true
  *                  images:
- *                      type: array 
+ *                      type: array
  *                      items:
  *                         type: string
  *                         format: binary
  *                         required: true
- *                      
- *  
+ *
+ *
  *     responses:
  *       201:
  *         description: Created
@@ -198,7 +215,7 @@ module.exports ={ProductRoutes:route}
  *                 type : string
  *                statusCode:
  *                 type : string
- * 
+ *
  *       401:
  *         description: Unauthorized
  *         content:
@@ -230,11 +247,11 @@ module.exports ={ProductRoutes:route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string          
- * 
+ *                 type : string
+ *
  * /update/product/{productId}:
  *   put:
- *     description: Update product 
+ *     description: Update product
  *     tags: [Product]
  *     parameters:
  *          - in: header
@@ -251,7 +268,7 @@ module.exports ={ProductRoutes:route}
  *           application/json:
  *             schema:
  *                type: object
- *                properties: 
+ *                properties:
  *                  CategoryId:
  *                     type: string
  *                     required: true
@@ -288,9 +305,9 @@ module.exports ={ProductRoutes:route}
  *                  price:
  *                     type: number
  *                     required: true
-  *                  isTopProduct:
+ *                  isTopProduct:
  *                     type: boolean
-  *                  isTrendingProduct  :
+ *                  isTrendingProduct  :
  *                     type: boolean
  *     responses:
  *       200:
@@ -307,7 +324,7 @@ module.exports ={ProductRoutes:route}
  *                 type : string
  *                data:
  *                 type : string
- *  
+ *
  *       404:
  *         description: Not Found
  *         content:
@@ -330,7 +347,7 @@ module.exports ={ProductRoutes:route}
  *              properties:
  *                message:
  *                 type : string
- *  
+ *
  *       401:
  *         description: Unauthorized
  *         content:
@@ -362,8 +379,8 @@ module.exports ={ProductRoutes:route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string      
- *  
+ *                 type : string
+ *
  * /get/product/{productId}:
  *   get:
  *     description: Get product by Id
@@ -378,7 +395,7 @@ module.exports ={ProductRoutes:route}
  *            description: productId
  *            required: true
  *            type: formData
- *  
+ *
  *     responses:
  *       200:
  *         description: Successful
@@ -401,8 +418,8 @@ module.exports ={ProductRoutes:route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       401:
  *         description: Unauthorized
  *         content:
@@ -434,8 +451,8 @@ module.exports ={ProductRoutes:route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string  
- *  
+ *                 type : string
+ *
  * /get/product/subCategoryId/{subCategoryId}:
  *   get:
  *     description: Get product by subCategoryId
@@ -450,7 +467,7 @@ module.exports ={ProductRoutes:route}
  *            description: subCategoryId
  *            required: true
  *            type: formData
- *  
+ *
  *     responses:
  *       200:
  *         description: Successful
@@ -473,8 +490,8 @@ module.exports ={ProductRoutes:route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       401:
  *         description: Unauthorized
  *         content:
@@ -506,8 +523,8 @@ module.exports ={ProductRoutes:route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string    
- * 
+ *                 type : string
+ *
  * /get/product/categoryId/{categoryId}:
  *   get:
  *     description: Get product by categoryId
@@ -522,7 +539,7 @@ module.exports ={ProductRoutes:route}
  *            description: categoryId
  *            required: true
  *            type: formData
- *  
+ *
  *     responses:
  *       200:
  *         description: Successful
@@ -545,8 +562,8 @@ module.exports ={ProductRoutes:route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       401:
  *         description: Unauthorized
  *         content:
@@ -578,8 +595,8 @@ module.exports ={ProductRoutes:route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string    
- *  
+ *                 type : string
+ *
  * /get/product/productCategoryId/{productCategoryId}:
  *   get:
  *     description: Get product by productCategoryId
@@ -594,7 +611,7 @@ module.exports ={ProductRoutes:route}
  *            description: productCategoryId
  *            required: true
  *            type: formData
- *  
+ *
  *     responses:
  *       200:
  *         description: Successful
@@ -617,8 +634,8 @@ module.exports ={ProductRoutes:route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       401:
  *         description: Unauthorized
  *         content:
@@ -650,8 +667,8 @@ module.exports ={ProductRoutes:route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string   
- * 
+ *                 type : string
+ *
  * /getAll/product:
  *   get:
  *     description: Get all product
@@ -673,11 +690,11 @@ module.exports ={ProductRoutes:route}
  *                message:
  *                 type : string
  *                data:
- *                 type : string    
+ *                 type : string
  *                length:
- *                 type : string    
- *  
- *  
+ *                 type : string
+ *
+ *
  *       404:
  *         description: Not Found
  *         content:
@@ -690,8 +707,8 @@ module.exports ={ProductRoutes:route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       401:
  *         description: Unauthorized
  *         content:
@@ -723,9 +740,9 @@ module.exports ={ProductRoutes:route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string    
- * 
- * 
+ *                 type : string
+ *
+ *
  * /get-top/product:
  *   get:
  *     description: Get top-product
@@ -747,8 +764,8 @@ module.exports ={ProductRoutes:route}
  *                message:
  *                 type : string
  *                data:
- *                 type : string  
- *  
+ *                 type : string
+ *
  *       404:
  *         description: Not Found
  *         content:
@@ -761,8 +778,8 @@ module.exports ={ProductRoutes:route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       401:
  *         description: Unauthorized
  *         content:
@@ -794,7 +811,7 @@ module.exports ={ProductRoutes:route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string    
+ *                 type : string
  * /get-trending/product:
  *   get:
  *     description: Get trending-product
@@ -816,8 +833,8 @@ module.exports ={ProductRoutes:route}
  *                message:
  *                 type : string
  *                data:
- *                 type : string  
- *  
+ *                 type : string
+ *
  *       404:
  *         description: Not Found
  *         content:
@@ -830,8 +847,8 @@ module.exports ={ProductRoutes:route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       401:
  *         description: Unauthorized
  *         content:
@@ -863,8 +880,8 @@ module.exports ={ProductRoutes:route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string    
- *  
+ *                 type : string
+ *
  * /search/product:
  *   get:
  *     description: Search product
@@ -874,46 +891,10 @@ module.exports ={ProductRoutes:route}
  *            name: x-access-token
  *            description: Authorization header
  *            required: true
- *          - name: CategoryId
+ *          - name: q
  *            in: query
- *            type: formData
- *          - name: subCategoryId
- *            in: query
- *            type: formData
- *          - name: productCategoryId
- *            in: query
- *            type: formData
- *          - name: name
- *            in: query
- *            type: formData
- *          - name: brand
- *            in: query
- *            type: formData
- *          - name: description
- *            in: query
- *            type: formData
- *          - name: LifeStage
- *            in: query
- *            type: formData
- *          - name: BreedSize
- *            in: query
- *            type: formData
- *          - name: flavor
- *            in: query
- *            type: formData 
- *          - name: vegNonVeg
- *            in: query
- *            type: formData
- *          - name: size
- *            in: query
- *            type: formData
- *          - name: isTopProduct
- *            in: query
- *            type: formData
- *          - name: isTrendingProduct
- *            in: query
- *            type: formData
- * 
+ *            description: Search term
+ *           
  *     responses:
  *       200:
  *         description: Successful
@@ -926,8 +907,8 @@ module.exports ={ProductRoutes:route}
  *                message:
  *                 type : string
  *                data:
- *                 type : string  
- *  
+ *                 type : string
+ *
  *       404:
  *         description: Not Found
  *         content:
@@ -940,8 +921,8 @@ module.exports ={ProductRoutes:route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       401:
  *         description: Unauthorized
  *         content:
@@ -973,11 +954,11 @@ module.exports ={ProductRoutes:route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string  
- *  
-  * /delete/product/{productId}:
+ *                 type : string
+ *
+ * /delete/product/{productId}:
  *   delete:
- *     description: Delete product 
+ *     description: Delete product
  *     tags: [Product]
  *     parameters:
  *          - in: header
@@ -989,7 +970,7 @@ module.exports ={ProductRoutes:route}
  *            description: productId
  *            required: true
  *            type: formData
- *  
+ *
  *     responses:
  *       200:
  *         description: Successful
@@ -1001,7 +982,7 @@ module.exports ={ProductRoutes:route}
  *              properties:
  *                message:
  *                 type : string
- *  
+ *
  *       404:
  *         description: Not Found
  *         content:
@@ -1014,8 +995,8 @@ module.exports ={ProductRoutes:route}
  *                 type : string
  *                statusCode:
  *                 type : string
- *  
- *  
+ *
+ *
  *       401:
  *         description: Unauthorized
  *         content:
@@ -1047,6 +1028,6 @@ module.exports ={ProductRoutes:route}
  *                message:
  *                 type : string
  *                status:
- *                 type : string    
- *                               
+ *                 type : string
+ *
  */
