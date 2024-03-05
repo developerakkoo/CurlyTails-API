@@ -258,20 +258,19 @@ exports.getProductByCategoryId = async (req, res) => {
           statusCode: 404,
         });
     }
-    const data = {
-      savedProduct,
-    };
+
     res
       .status(200)
       .json({
         message: "Products Fetched Successfully",
         statusCode: 200,
         length: savedProduct.length,
-        data,
-        brands,
-        flavor,
-        BreedSize,
-        LifeStage,
+        savedProduct,
+        filterData:[
+            brands,
+            flavor,
+            BreedSize,
+            LifeStage]
       });
   } catch (error) {
     res
