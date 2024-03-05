@@ -266,11 +266,11 @@ exports.getProductByCategoryId = async (req, res) => {
         statusCode: 200,
         length: savedProduct.length,
         savedProduct,
-        filterData:[
+        filterData:{
             brands,
             flavor,
             BreedSize,
-            LifeStage]
+            LifeStage}
       });
   } catch (error) {
     res
