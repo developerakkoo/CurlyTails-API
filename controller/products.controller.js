@@ -260,10 +260,6 @@ exports.getProductByCategoryId = async (req, res) => {
     }
     const data = {
       savedProduct,
-      brands,
-      flavor,
-      BreedSize,
-      LifeStage,
     };
     res
       .status(200)
@@ -272,6 +268,10 @@ exports.getProductByCategoryId = async (req, res) => {
         statusCode: 200,
         length: savedProduct.length,
         data,
+        brands,
+        flavor,
+        BreedSize,
+        LifeStage,
       });
   } catch (error) {
     res
