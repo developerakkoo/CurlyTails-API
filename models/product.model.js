@@ -16,6 +16,7 @@ const productSchema =new Schema({
     name:{
         type:String,
         require:true,
+        index:true
     },
     brand:{
         type:String,
@@ -23,7 +24,8 @@ const productSchema =new Schema({
     },
     description:{
         type:String,
-        require:true
+        require:true,
+        index:true
     },
     LifeStage:{
         type:String,

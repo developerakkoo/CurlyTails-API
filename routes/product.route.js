@@ -49,6 +49,12 @@ route.get("/search/product", productController.ProductSearchOption);
 route.delete(
   "/delete/image/:productId/:imageId",
   productController.deleteImage
+
+);
+
+route.get(
+  "/filter/product/:categoryId",
+  productController.productFilter
 );
 
 module.exports = { ProductRoutes: route };
