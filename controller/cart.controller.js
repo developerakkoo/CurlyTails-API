@@ -110,8 +110,8 @@ exports.deleteProductFromCart = async(req,res) =>{
         const savedCart = await Cart.findOne({userId:req.params.userId});
         if (!savedCart) {
             return res.status(404).json({message:`Cart Not Found With This UserId:${req.params.userId}`,statusCode:404})
-        }
-        const result = savedCart.cartItems.filter(word => word.productId.toString() === req.body.productId.toString());
+        }      
+        const  result = savedCart.cartItems.filter(product =>!req.body.productId.some(id => id.toString() === product.productId.toString()));
     if(result.length==0){
         return res.status(404).json({msg:`Product Not Found With This ProductId:${req.body.productId}`})
     }
