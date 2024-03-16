@@ -19,28 +19,25 @@ exports.placeOrder = async(req,res)=>{
             OrderId: Math.ceil(Math.random() * 1000000+1984567),
             // BillingId:savedBill._id,
             userId:savedCart.userId,
-            orderItems:savedCart.cartItems,
-            TotalItems:savedCart.TotalItems,
-            SubTotal:savedCart.SubTotal
+            orderItems:req.body.cartItems,
+            TotalItems:req.body.TotalItems,
+            SubTotal:req.body.SubTotal
         }
+        const idsToRemove = req.body.productIds
+        let removedOrderedProductsFromCart = savedCart.cartItems.filter(product =>!idsToRemove.some(id => id.toString() === product._id.toString()));
         const createdOrder = await Order.create(orderObj);
-        let arr =[]
-        let  tem = 0
-        savedCart.cartItems = arr!= undefined
-        ? arr
-        : savedCart.cartItems = arr
 
-        savedCart.TotalItems = tem != undefined
-        ? tem
-        :savedCart.TotalItems = tem 
-        savedCart.SubTotal = tem != undefined
-        ? tem
-        :savedCart.SubTotal = tem 
-        // savedCart.__v = tem != undefined
-        // ? tem
-        // :savedCart.__v = tem 
+
+        savedCart.cartItems = removedOrderedProductsFromCart
+        savedCart.SubTotal =  savedCart.SubTotal - req.body.SubTotal
+        savedCart.TotalItems =  savedCart.TotalItems - req.body.TotalItems
+
+        // }
+        // // savedCart.__v = tem != undefined
+        // // ? tem
+        // // :savedCart.__v = tem 
         await savedCart.save();
-        console.log(savedCart);
+        // console.log(savedCart);
         const recentOrders = await Order.find({}).limit(10).sort('-1');
         getIO().emit('admin:recentOrders',recentOrders);
         res.status(200).json({msg:'Order Placed Successfully',statusCode:200,data:createdOrder});
