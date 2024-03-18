@@ -140,7 +140,14 @@ exports.getOrdersByDeliveryStatus= async(req,res) => {
 
 exports.getOrdersByUserId= async(req,res) => {
     try {
-        const savedOrder = await Order.find({userId:req.params.userId});
+        const savedOrder = await Order.find({userId:req.params.userId})
+        .populate({
+            path:'orderItems.productId',
+            select:[
+                '-__v','-updatedAt','-createdAt','-isTopProduct','-isTrendingProduct',
+                
+            ]
+            });
         if (savedOrder.length == 0) {
             return res.status(404).json({message:'Orders Not Found',statusCode:404});
         }
