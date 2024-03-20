@@ -11,32 +11,48 @@ exports.placeOrder = async(req,res)=>{
         if (!savedCart) {
             return res.status(404).json({message:`Cart Not Found With This UserId:${req.params.userId}`,statusCode:404});
         }
+        let createdOrder
         // const savedBill = await Billing.findOne({userId:req.params.userId});
         // if (!savedBill) {
         //     return res.status(404).json({message:`Bill Not Found With This UserId:${req.params.userId}`,statusCode:404});
         // }
-        const orderObj ={
-            OrderId: Math.ceil(Math.random() * 1000000+1984567),
-            // BillingId:savedBill._id,
-            userId:savedCart.userId,
-            orderItems:req.body.cartItems,
-            TotalItems:req.body.TotalItems,
-            SubTotal:req.body.SubTotal
+        if (req.body.cartItems) {
+            const orderObj ={
+                OrderId: Math.ceil(Math.random() * 1000000+1984567),
+                // BillingId:savedBill._id,
+                userId:savedCart.userId,
+                orderItems:req.body.cartItems,
+                TotalItems:req.body.TotalItems,
+                SubTotal:req.body.SubTotal
+            }
+            const idsToRemove = req.body.productIds
+            let removedOrderedProductsFromCart = savedCart.cartItems.filter(product =>!idsToRemove.some(id => id.toString() === product._id.toString()));
+            createdOrder = await Order.create(orderObj);
+    
+    
+            savedCart.cartItems = removedOrderedProductsFromCart
+            savedCart.SubTotal =  savedCart.SubTotal - req.body.SubTotal
+            savedCart.TotalItems =  savedCart.TotalItems - req.body.TotalItems
+            await savedCart.save();
+        }else{
+            const orderObj ={
+                OrderId: Math.ceil(Math.random() * 1000000+1984567),
+                // BillingId:savedBill._id,
+                userId:savedCart.userId,
+                orderItems:savedCart.cartItems,
+                TotalItems:savedCart.TotalItems,
+                SubTotal:savedCart.SubTotal
+            }
+            createdOrder = await Order.create(orderObj);
+            savedCart.cartItems = []
+            savedCart.SubTotal =  0
+            savedCart.TotalItems =  0
+            await savedCart.save();
         }
-        const idsToRemove = req.body.productIds
-        let removedOrderedProductsFromCart = savedCart.cartItems.filter(product =>!idsToRemove.some(id => id.toString() === product._id.toString()));
-        const createdOrder = await Order.create(orderObj);
-
-
-        savedCart.cartItems = removedOrderedProductsFromCart
-        savedCart.SubTotal =  savedCart.SubTotal - req.body.SubTotal
-        savedCart.TotalItems =  savedCart.TotalItems - req.body.TotalItems
-
         // }
         // // savedCart.__v = tem != undefined
         // // ? tem
         // // :savedCart.__v = tem 
-        await savedCart.save();
         // console.log(savedCart);
         const recentOrders = await Order.find({}).limit(10).sort('-1');
         getIO().emit('admin:recentOrders',recentOrders);
