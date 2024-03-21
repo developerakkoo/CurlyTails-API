@@ -116,7 +116,7 @@ exports.getAllOrders = async(req,res) => {
 
 exports.getOrdersById= async(req,res) => {
     try {
-        const savedOrder = await Order.findOne({_id:req.params.Id});
+        const savedOrder = await Order.findOne({_id:req.params.Id}).populate('orderItems.productId');;
         if (savedOrder.length == 0) {
             return res.status(404).json({message:'Orders Not Found',statusCode:404});
         }
@@ -128,7 +128,7 @@ exports.getOrdersById= async(req,res) => {
 
 exports.getOrdersByOrderId= async(req,res) => {
     try {
-        const savedOrder = await Order.findOne({OrderId:req.params.orderId});
+        const savedOrder = await Order.findOne({OrderId:req.params.orderId}).populate('orderItems.productId');
         if (savedOrder.length == 0) {
             return res.status(404).json({message:'Orders Not Found',statusCode:404});
         }
