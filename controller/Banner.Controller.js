@@ -7,9 +7,13 @@ exports.addBanner = async (req,res) => {
         if(!req.file){
         return res.status(400).json({message:'Please Provide Image File',statusCode:400})
         }
-        const bannerObj={
-            imageUrl : req.protocol +"://"+req.hostname +"/"+req.file.path.replace(/\\/g, "/")
+        let bannerObj = {
+            imageUrl : `${req.protocol}://${req.hostname}/${req.file.path.replace(/\\/g, "/")}`
         }
+        if (process.env.NODE_ENV !== 'production') {
+        bannerObj.imageUrl = `${req.protocol}://${req.hostname}:8000/${req.file.path.replace(/\\/g, "/")}`
+        }
+
         
         const banner = await Banner.create(bannerObj);
         res.status(201).json({message:'Banner Added Successfully',statusCode:201,data:banner});

@@ -9,14 +9,10 @@ exports.addProduct = async (req, res) => {
     let links = [];
 
     for (let imagesNo = 0; imagesNo <= images.length - 1; imagesNo++) {
-      // let url = req.protocol +"://"+req.hostname +"/"+images[imagesNo].path.replace(/\\/g, "/")
-      let url =
-        req.protocol +
-        "://" +
-        req.hostname +
-        ":8000" +
-        "/" +
-        images[imagesNo].path.replace(/\\/g, "/");
+        let url = `${req.protocol}://${req.hostname}/${images[imagesNo].path.replace(/\\/g, "/")}`
+    if (process.env.NODE_ENV !== 'production') {
+        url = `${req.protocol}://${req.hostname}:8000/${images[imagesNo].path.replace(/\\/g, "/")}`
+    }
       links.push({
         Id:
           (await generateCustomUuid(
@@ -46,13 +42,11 @@ exports.addProduct = async (req, res) => {
     // console.log(req.files);
     // console.log(productObj);
     const createdProduct = await Products.create(productObj);
-    res
-      .status(201)
-      .json({
-        message: "Product Created Successfully",
-        statusCode: 201,
-        data: createdProduct,
-      });
+    res.status(201).json({
+      message: "Product Created Successfully",
+      statusCode: 201,
+      data: createdProduct,
+    });
   } catch (error) {
     res
       .status(500)
@@ -107,13 +101,11 @@ exports.updateProduct = async (req, res) => {
         ? req.body.isTopProduct
         : savedProduct.isTopProduct;
     const updatedProduct = await savedProduct.save();
-    res
-      .status(200)
-      .json({
-        message: "Product Updated Successfully",
-        statusCode: 200,
-        data: updatedProduct,
-      });
+    res.status(200).json({
+      message: "Product Updated Successfully",
+      statusCode: 200,
+      data: updatedProduct,
+    });
   } catch (error) {
     res
       .status(500)
@@ -127,14 +119,17 @@ exports.updatedImage = async (req, res) => {
     let links = [];
     const savedProduct = await Products.findOne({ _id: req.params.productId });
     for (let imagesNo = 0; imagesNo <= images.length - 1; imagesNo++) {
-      // let url = req.protocol +"://"+req.hostname +"/"+images[imagesNo].path.replace(/\\/g, "/")
-      let url =
-        req.protocol +
-        "://" +
-        req.hostname +
-        ":8000" +
-        "/" +
-        images[imagesNo].path.replace(/\\/g, "/");
+      let url = `${req.protocol}://${req.hostname}/${images[imagesNo].path.replace(/\\/g, "/")}`
+      if (process.env.NODE_ENV !== 'production') {
+          url = `${req.protocol}://${req.hostname}:8000/${images[imagesNo].path.replace(/\\/g, "/")}`
+      }
+      // let url =
+      //   req.protocol +
+      //   "://" +
+      //   req.hostname +
+      //   ":8000" +
+      //   "/" +
+      //   images[imagesNo].path.replace(/\\/g, "/");
       links.push({
         Id:
           (await generateCustomUuid(
@@ -149,13 +144,11 @@ exports.updatedImage = async (req, res) => {
       await savedProduct.images.save();
     });
     // const updatedImages = await savedProduct.images.save();
-    res
-      .status(200)
-      .json({
-        message: "Product Images Updated Successfully",
-        statusCode: 200,
-        data: savedProduct.images,
-      });
+    res.status(200).json({
+      message: "Product Images Updated Successfully",
+      statusCode: 200,
+      data: savedProduct.images,
+    });
   } catch (error) {
     res
       .status(500)
@@ -169,14 +162,12 @@ exports.getAllProduct = async (req, res) => {
     // if (savedProduct.length == 0) {
     // return res.status(404).json({message:'Products Not Found',statusCode:404});
     // }
-    res
-      .status(200)
-      .json({
-        message: "Product Fetched Successfully",
-        statusCode: 200,
-        length: savedProduct.length,
-        data: savedProduct,
-      });
+    res.status(200).json({
+      message: "Product Fetched Successfully",
+      statusCode: 200,
+      length: savedProduct.length,
+      data: savedProduct,
+    });
   } catch (error) {
     res
       .status(500)
@@ -188,20 +179,16 @@ exports.getProductById = async (req, res) => {
   try {
     const savedProduct = await Products.findOne({ _id: req.params.productId });
     if (!savedProduct) {
-      return res
-        .status(404)
-        .json({
-          message: `Product Not Found With ProductId:${req.params.productId}`,
-          statusCode: 404,
-        });
-    }
-    res
-      .status(200)
-      .json({
-        message: "Product Fetched Successfully",
-        statusCode: 200,
-        data: savedProduct,
+      return res.status(404).json({
+        message: `Product Not Found With ProductId:${req.params.productId}`,
+        statusCode: 404,
       });
+    }
+    res.status(200).json({
+      message: "Product Fetched Successfully",
+      statusCode: 200,
+      data: savedProduct,
+    });
   } catch (error) {
     res
       .status(500)
@@ -213,12 +200,10 @@ exports.deleteProduct = async (req, res) => {
   try {
     const savedProduct = await Products.findOne({ _id: req.params.productId });
     if (!savedProduct) {
-      return res
-        .status(404)
-        .json({
-          message: `Product Not Found With ProductId:${req.params.productId}`,
-          statusCode: 404,
-        });
+      return res.status(404).json({
+        message: `Product Not Found With ProductId:${req.params.productId}`,
+        statusCode: 404,
+      });
     }
     savedProduct.images.forEach((element) => {
       const url = element.link.split(`http://192.168.0.113:8000`); //local server
@@ -227,12 +212,10 @@ exports.deleteProduct = async (req, res) => {
       clearImage(url[1]);
     });
     await savedProduct.deleteOne({ _id: req.params.productId });
-    res
-      .status(200)
-      .json({
-        message: `Product Deleted Successfully With ProductId:${req.params.productId}`,
-        statusCode: 200,
-      });
+    res.status(200).json({
+      message: `Product Deleted Successfully With ProductId:${req.params.productId}`,
+      statusCode: 200,
+    });
   } catch (error) {
     res
       .status(500)
@@ -251,27 +234,24 @@ exports.getProductByCategoryId = async (req, res) => {
     const LifeStage = await Products.distinct("LifeStage");
 
     if (savedProduct.length == 0) {
-      return res
-        .status(404)
-        .json({
-          message: `Product Not Found With CategoryId:${req.params.CategoryId}`,
-          statusCode: 404,
-        });
+      return res.status(404).json({
+        message: `Product Not Found With CategoryId:${req.params.CategoryId}`,
+        statusCode: 404,
+      });
     }
 
-    res
-      .status(200)
-      .json({
-        message: "Products Fetched Successfully",
-        statusCode: 200,
-        length: savedProduct.length,
-        savedProduct,
-        filterData:{
-            brands,
-            flavor,
-            BreedSize,
-            LifeStage}
-      });
+    res.status(200).json({
+      message: "Products Fetched Successfully",
+      statusCode: 200,
+      length: savedProduct.length,
+      savedProduct,
+      filterData: {
+        brands,
+        flavor,
+        BreedSize,
+        LifeStage,
+      },
+    });
   } catch (error) {
     res
       .status(500)
@@ -319,14 +299,12 @@ exports.productFilter = async (req, res) => {
       };
     }
     const productData = await Products.find(dbQuery);
-    res
-      .status(200)
-      .json({
-        message: "Products Fetched Successfully",
-        statusCode: 200,
-        length: productData.length,
-        data: productData,
-      });
+    res.status(200).json({
+      message: "Products Fetched Successfully",
+      statusCode: 200,
+      length: productData.length,
+      data: productData,
+    });
   } catch (error) {
     res
       .status(500)
@@ -340,21 +318,17 @@ exports.getProductBySubCategoryId = async (req, res) => {
       subCategoryId: req.params.subCategoryId,
     });
     if (!savedProduct) {
-      return res
-        .status(404)
-        .json({
-          message: `Product Not Found With SubCategoryId:${req.params.subCategoryId}`,
-          statusCode: 404,
-        });
-    }
-    res
-      .status(200)
-      .json({
-        message: "Products Fetched Successfully",
-        statusCode: 200,
-        length: savedProduct.length,
-        savedProduct,
+      return res.status(404).json({
+        message: `Product Not Found With SubCategoryId:${req.params.subCategoryId}`,
+        statusCode: 404,
       });
+    }
+    res.status(200).json({
+      message: "Products Fetched Successfully",
+      statusCode: 200,
+      length: savedProduct.length,
+      savedProduct,
+    });
   } catch (error) {
     res
       .status(500)
@@ -368,21 +342,17 @@ exports.getProductByProductCategoryId = async (req, res) => {
       productCategoryId: req.params.productCategoryId,
     });
     if (!savedProduct[0]) {
-      return res
-        .status(404)
-        .json({
-          message: `Product Not Found With ProductCategoryId:${req.params.productCategoryId}`,
-          statusCode: 404,
-        });
-    }
-    res
-      .status(200)
-      .json({
-        message: "Products Fetched Successfully",
-        statusCode: 200,
-        length: savedProduct.length,
-        data: savedProduct,
+      return res.status(404).json({
+        message: `Product Not Found With ProductCategoryId:${req.params.productCategoryId}`,
+        statusCode: 404,
       });
+    }
+    res.status(200).json({
+      message: "Products Fetched Successfully",
+      statusCode: 200,
+      length: savedProduct.length,
+      data: savedProduct,
+    });
   } catch (error) {
     res
       .status(500)
@@ -434,14 +404,12 @@ exports.getTopProduct = async (req, res) => {
         .status(404)
         .json({ message: "Top Products Not Found", statusCode: 404 });
     }
-    res
-      .status(200)
-      .json({
-        message: "Top Product Fetched Successfully",
-        statusCode: 200,
-        length: savedProduct.length,
-        data: savedProduct,
-      });
+    res.status(200).json({
+      message: "Top Product Fetched Successfully",
+      statusCode: 200,
+      length: savedProduct.length,
+      data: savedProduct,
+    });
   } catch (error) {
     res
       .status(500)
@@ -459,14 +427,12 @@ exports.getTrendingProduct = async (req, res) => {
         .status(404)
         .json({ message: "Trending Products Not Found", statusCode: 404 });
     }
-    res
-      .status(200)
-      .json({
-        message: "Trending Product Fetched Successfully",
-        statusCode: 200,
-        length: savedProduct.length,
-        data: savedProduct,
-      });
+    res.status(200).json({
+      message: "Trending Product Fetched Successfully",
+      statusCode: 200,
+      length: savedProduct.length,
+      data: savedProduct,
+    });
   } catch (error) {
     res
       .status(500)
@@ -479,12 +445,10 @@ exports.deleteImage = async (req, res) => {
     const savedProduct = await Products.findOne({ _id: req.params.productId });
     const itemToBeRemoved = req.params.imageId.toString();
     if (!savedProduct) {
-      return res
-        .status(404)
-        .json({
-          message: `Product Not Found With ProductId:${req.body.productId}`,
-          statusCode: 404,
-        });
+      return res.status(404).json({
+        message: `Product Not Found With ProductId:${req.body.productId}`,
+        statusCode: 404,
+      });
     }
     const updatedImageArr = savedProduct.images.filter(
       (todoItem) => todoItem.Id !== itemToBeRemoved
@@ -499,13 +463,11 @@ exports.deleteImage = async (req, res) => {
     });
     savedProduct.images = updatedImageArr;
     const savedImg = await savedProduct.save();
-    res
-      .status(200)
-      .json({
-        message: `Product Image Deleted Successfully`,
-        data: savedImg,
-        statusCode: 200,
-      });
+    res.status(200).json({
+      message: `Product Image Deleted Successfully`,
+      data: savedImg,
+      statusCode: 200,
+    });
   } catch (error) {
     res
       .status(500)

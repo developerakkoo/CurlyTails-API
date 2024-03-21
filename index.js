@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
@@ -12,7 +13,6 @@ const path= require('path');
 app.use( express.static('public'));
 app.use("/public", express.static(path.join(__dirname, "public")));
 
-require('dotenv').config();
 //Routes
 app.use(helmet());
 //Api docs setup
