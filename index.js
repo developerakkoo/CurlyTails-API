@@ -52,6 +52,7 @@ const options = {
     apis: ["./Routes/*.js"],
 };
 
+/* This code block is setting up Swagger documentation for the API. */
 const specs = swaggerJsDoc(options);
 app.use(
     "/api-docs",
@@ -82,6 +83,8 @@ app.all("*", (req, res, next) => {
     res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
+/* The code block `app.use(function (req, res, next) { ... });` is setting up CORS (Cross-Origin
+Resource Sharing) headers in your Express application. */
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
