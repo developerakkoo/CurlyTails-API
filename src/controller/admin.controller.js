@@ -8,168 +8,107 @@ const productCategory = require("../models/productCategory.model");
 const Product = require("../models/product.model");
 const Refund = require("../models/refund.model");
 const Order = require("../models/order.model");
+const { sendResponse, asyncHandler } = require("../utils/helper.utils");
 require("dotenv").config();
 
-exports.postSignup = async (req, res, next) => {
-    try {
-        const adminData = {
-            email: req.body.email,
-            password: await bcrypt.hash(req.body.password, 12),
-        };
-        const checkAdmin = await Admin.findOne({ email: req.body.email });
-        if (checkAdmin) {
-            return res.status(406).json({
-                message: `Admin Already Exist with Email ${req.body.email} Please With Different Email `,
-                statusCode: 406,
-            });
-        }
-        const createdAdmin = await Admin.create(adminData);
-        postRes = {
-            adminId: createdAdmin._id,
-            email: createdAdmin.email,
-        };
-        res.status(201).json({
-            message: "Admin Created Successfully",
-            statusCode: 200,
-            data: postRes,
-        });
-    } catch (error) {
-        res.status(500).send({
-            message: error.message,
-            statusCode: 500,
-            status: "ERROR",
-        });
+exports.postSignup = asyncHandler(async (req, res, next) => {
+    const adminData = {
+        email: req.body.email,
+        password: await bcrypt.hash(req.body.password, 12),
+    };
+    const checkAdmin = await Admin.findOne({ email: req.body.email });
+    if (checkAdmin) {
+        return sendResponse(
+            res,
+            406,
+            null,
+            `Admin Already Exist with Email ${req.body.email} Please With Different Email `,
+        );
     }
-};
+    const createdAdmin = await Admin.create(adminData);
+    postRes = {
+        adminId: createdAdmin._id,
+        email: createdAdmin.email,
+    };
+    sendResponse(res, 201, postRes, "Admin Created Successfully");
+});
 
-exports.AdminLogin = async (req, res) => {
-    try {
-        const email = req.body.email;
-        const password = req.body.password;
-        const savedAdmin = await Admin.findOne({ email: email });
-        if (!savedAdmin) {
-            return res.status(404).json({
-                message: `Admin Not Found With This Email ${req.body.email}`,
-                statusCode: 404,
-            });
-        }
-        if (!(await bcrypt.compare(password, savedAdmin.password))) {
-            return res
-                .status(401)
-                .json({ message: `Incorrect Password`, statusCode: 401 });
-        }
-        const payload = {
-            userId: savedAdmin._id,
-            email: savedAdmin.email,
-        };
-        const token = await jwt.sign(payload, process.env.SECRET_KEY, {
-            expiresIn: "24h",
-        });
-        const postRes = {
-            Id: savedAdmin._id,
-            User: savedAdmin.name,
-            accessToken: token,
-        };
-        res.status(200).json({
-            message: `User login successfully`,
-            statusCode: 200,
-            data: postRes,
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: "ERROR",
-            statusCode: 500,
-            Message: error.message,
-        });
+exports.AdminLogin = asyncHandler(async (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    const savedAdmin = await Admin.findOne({ email: email });
+    if (!savedAdmin) {
+        return sendResponse(
+            res,
+            404,
+            null,
+            `Admin Not Found With This Email ${req.body.email}`,
+        );
     }
-};
-
-exports.updateAdmin = async (req, res) => {
-    try {
-        const savedAdmin = await Admin.findOne({
-            _id: req.params.adminId,
-        }).select("-password");
-        if (!savedAdmin) {
-            return res.status(404).json({
-                message: `Admin  Not Found With ID:${req.params.adminId}`,
-                statusCode: 404,
-            });
-        }
-        savedAdmin.name =
-            req.body.name != undefined ? req.body.name : savedAdmin.name;
-        savedAdmin.phoneNo =
-            req.body.phoneNo != undefined
-                ? req.body.phoneNo
-                : savedAdmin.phoneNo;
-        savedAdmin.email =
-            req.body.email != undefined ? req.body.email : savedAdmin.email;
-
-        const updatedAdmin = await savedAdmin.save();
-        res.status(201).json({
-            message: "Admin Updated Successfully",
-            statusCode: 201,
-            data: updatedAdmin,
-        });
-    } catch (error) {
-        res.status(500).json({
-            message: error.message,
-            statusCode: 500,
-            status: "ERROR",
-        });
+    if (!(await bcrypt.compare(password, savedAdmin.password))) {
+        return sendResponse(res, 401, null, `Incorrect Password`);
     }
-};
+    const payload = {
+        userId: savedAdmin._id,
+        email: savedAdmin.email,
+    };
+    const token = await jwt.sign(payload, process.env.SECRET_KEY, {
+        expiresIn: "24h",
+    });
+    const postRes = {
+        Id: savedAdmin._id,
+        User: savedAdmin.name,
+        accessToken: token,
+    };
+    sendResponse(res, 200, postRes, `Admin login successfully`);
+});
 
-exports.getAdminById = async (req, res) => {
-    try {
-        const savedAdmin = await Admin.findOne({
-            _id: req.params.adminId,
-        }).select("-password");
-        if (!savedAdmin) {
-            return res.status(404).json({
-                message: `Admin  Not Found With ID:${req.params.adminId}`,
-                statusCode: 404,
-            });
-        }
-
-        res.status(200).json({
-            message: "Admin Fetched Successfully",
-            statusCode: 200,
-            data: savedAdmin,
-        });
-    } catch (error) {
-        console.log(error, "?????????");
-
-        res.status(500).json({
-            message: error.message,
-            statusCode: 500,
-            status: "ERROR",
-        });
+exports.updateAdmin = asyncHandler(async (req, res) => {
+    const savedAdmin = await Admin.findOne({
+        _id: req.params.adminId,
+    }).select("-password");
+    if (!savedAdmin) {
+        return sendResponse(
+            res,
+            404,
+            null,
+            `Admin  Not Found With ID:${req.params.adminId}`,
+        );
     }
-};
+    savedAdmin.name =
+        req.body.name != undefined ? req.body.name : savedAdmin.name;
+    savedAdmin.phoneNo =
+        req.body.phoneNo != undefined ? req.body.phoneNo : savedAdmin.phoneNo;
+    savedAdmin.email =
+        req.body.email != undefined ? req.body.email : savedAdmin.email;
 
-exports.getAllAdmin = async (req, res) => {
-    try {
-        const savedAdmin = await Admin.find().select("-password");
-        if (savedAdmin.length == 0) {
-            return res
-                .status(404)
-                .json({ message: `Admins Not Found`, statusCode: 404 });
-        }
-        res.status(200).json({
-            message: "Admin Fetched Successfully",
-            statusCode: 200,
-            length: savedAdmin.length,
-            data: savedAdmin,
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            message: error.message,
-            statusCode: 500,
-            status: "ERROR",
-        });
+    const updatedAdmin = await savedAdmin.save();
+    sendResponse(res, 201, updatedAdmin, "Admin Updated Successfully");
+});
+
+exports.getAdminById = asyncHandler(async (req, res) => {
+    const savedAdmin = await Admin.findOne({
+        _id: req.params.adminId,
+    }).select("-password");
+    if (!savedAdmin) {
+        return sendResponse(
+            res,
+            404,
+            null,
+            `Admin  Not Found With ID:${req.params.adminId}`,
+        );
     }
-};
+
+    sendResponse(res, 200, savedAdmin, "Admin Fetched Successfully");
+});
+
+exports.getAllAdmin = asyncHandler(async (req, res) => {
+    const savedAdmin = await Admin.find().select("-password");
+    if (savedAdmin.length == 0) {
+        return sendResponse(res, 404, null, `Admins Not Found`);
+    }
+    sendResponse(res, 200, savedAdmin, "Admin Fetched Successfully");
+});
 
 // exports.getAllUserCount = async(req,res) =>{
 //     try {
