@@ -10,56 +10,51 @@ const {
 } = require("../utils/helper.utils");
 
 exports.postSignup = asyncHandler(async (req, res, next) => {
-    const userData = {
-        name: req.body.name,
-        email: req.body.email,
-        phoneNo: req.body.phoneNo,
-        password: await bcrypt.hash(req.body.password, 12),
-        address: req.body.address,
-    };
-    const createdUser = await User.create(userData);
+    // const userData = {
+    //     name: req.body.name,
+    //     email: req.body.email,
+    //     phoneNo: req.body.phoneNo,
+    //     password: await bcrypt.hash(req.body.password, 12),
+    //     address: req.body.address,
+    // };
+    const createdUser = await User.create({ phoneNo: req.body.phoneNo });
     const cartObj = {
         userId: createdUser._id,
     };
     await Cart.create(cartObj);
-    const postRes = {
-        userId: createdUser._id,
-        name: createdUser.name,
-        email: createdUser.email,
-        phoneNo: createdUser.phoneNo,
-        address: createdUser.address,
-    };
+    // const postRes = {
+    //     userId: createdUser._id,
+    //     name: createdUser.name,
+    //     email: createdUser.email,
+    //     phoneNo: createdUser.phoneNo,
+    //     address: createdUser.address,
+    // };
     sendResponse(res, 201, postRes, "User Created Successfully");
 });
 
 exports.loginUser = asyncHandler(async (req, res) => {
-    const email = req.body.email;
-    const password = req.body.password;
-    const savedUser = await User.findOne({ email: email });
+    // const password = req.body.password;
+    let savedUser = await User.findOne({ phoneNo: req.body.phoneNo });
     if (!savedUser) {
-        return sendResponse(
-            res,
-            404,
-            null,
-            `User not found with this email ${req.body.email}`,
-        );
+        savedUser = await User.create({ phoneNo: req.body.phoneNo });
     }
-    if (!(await bcrypt.compare(password, savedUser.password))) {
-        return sendResponse(res, 401, null`Incorrect Password`);
-    }
+    // if (!(await bcrypt.compare(password, savedUser.password))) {
+    //     return sendResponse(res, 401, null`Incorrect Password`);
+    // }
     const payload = {
         userId: savedUser._id,
-        email: savedUser.email,
+        phoneNo: savedUser.phoneNo,
     };
     const token = await jwt.sign(payload, process.env.SECRET_KEY, {
         expiresIn: "24h",
     });
-    const postRes = {
-        User: savedUser.name,
-        Id: savedUser._id,
-        accessToken: token,
-    };
-    sendResponse(res, 200, postRes, `User login successfully`);
+
+    sendResponse(
+        res,
+        200,
+        { userId: savedUser._id, token },
+        `User login successfully`,
+    );
 });
 
 exports.UpdateUsers = asyncHandler(async (req, res) => {
