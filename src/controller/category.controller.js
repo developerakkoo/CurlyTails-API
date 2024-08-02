@@ -2,9 +2,6 @@ const Category = require("../models/category.model");
 
 exports.addCategory = async (req, res) => {
   try {
-    console.log('====================================');
-    console.log(req.body);
-    console.log('====================================');
     const { filename } = req.file;
     let localPath =`public/${filename}`;
     let image_url = `https://${req.hostname}/public/${filename}`;
