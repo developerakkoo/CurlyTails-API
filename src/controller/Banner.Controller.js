@@ -12,9 +12,9 @@ exports.addBanner = async (req, res) => {
                 });
         }
         const { filename } = req.file;
-        let image_url = `https://${req.hostname}/upload/${filename}`;
+        let image_url = `https://${req.hostname}/public/${filename}`;
         if (process.env.NODE_ENV !== "production") {
-            image_url = `https://${req.hostname}:8000/upload/${filename}`;
+            image_url = `https://${req.hostname}:8000/public/${filename}`;
         }
         let bannerObj = {
             imageUrl: image_url
