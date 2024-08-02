@@ -44,14 +44,16 @@ route.get(
   productController.getProductByProductCategoryId
 );
 
-route.get("/search", productController.ProductSearchOption);
+// route.get("/search", productController.ProductSearchOption);
 
 route.delete(
   "/delete/image/:productId/:imageId",
   productController.deleteImage
 );
 
-route.get("/filter/product/:categoryId", productController.productFilter);
+route.get("/search", productController.productFilter);
+
+route.get("/get/filter/values", productController.getFilterValues)
 
 module.exports = { ProductRoutes: route };
 
