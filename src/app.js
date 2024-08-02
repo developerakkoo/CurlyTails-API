@@ -15,7 +15,6 @@ app.use("/public", express.static(path.join(__dirname, "public")));
 const morganMiddleware = require("./logger/morgan.logger");
 const { errorHandler } = require("./middleware/errorHandler.middleware");
 
-
 //Routes
 app.use(helmet());
 const { BASE_URL } = require("./constant");
@@ -76,11 +75,11 @@ const { subCategoryRoutes } = require("./routes/subCategory.route");
 // const { ConsultantRoutes } = require("./routes/category");
 const { BannerRoutes } = require("./routes/Banner.route");
 const { productCategoryRoutes } = require("./routes/productCategory.route");
+const {favoriteRoutes} = require('./routes/favorite.route')
 // const { BlogRoutes } = require("./routes/Blog.route");
 
 /*Api Logger */
 app.use(morganMiddleware);
-
 
 app.use(`${BASE_URL}/user`, UserRoutes);
 app.use(`${BASE_URL}/admin`, AdminRoutes);
@@ -98,6 +97,7 @@ app.use(`${BASE_URL}/cart`, CartRoutes);
 app.use(`${BASE_URL}/order`, OrderRoute);
 // app.use(`${BASE_URL}`,RefundRoutes);
 app.use(`${BASE_URL}/notification`, NotificationRoutes);
+app.use(`${BASE_URL}/favorite`, favoriteRoutes);
 
 app.all("*", (req, res, next) => {
     res.sendFile(path.join(__dirname, "public/index.html"));
@@ -118,4 +118,4 @@ app.use(function (req, res, next) {
 
 app.use(errorHandler);
 
-module.exports = {app}
+module.exports = { app };
