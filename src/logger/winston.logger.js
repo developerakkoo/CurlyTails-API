@@ -41,15 +41,7 @@ const colors = {
 // defined above to the severity levels.
 winston.addColors(colors);
 
-// Define MongoDB transport
-// const mongoDBTransport = new MongoDB({
-//   db: `${process.env.MONGODB_URI}/${DB_NAME}`,
-//   collection: 'logs', // Specify the collection name for logs
-//   options:{useUnifiedTopology:true},
-//   storeHost:true,
-//   decolorize:true,
-//   level: level(),
-// });
+
 
 // Chose the aspect of your log customizing the log format.
 const format = winston.format.combine(

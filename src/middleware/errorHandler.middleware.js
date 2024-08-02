@@ -14,7 +14,7 @@ const { apiError, asyncHandler } = require("../utils/helper.utils.js");
  * @description This middleware is responsible to catch the errors from any request handler wrapped inside the {@link asyncHandler}
  */
 const errorHandler = (err, req, res, next) => {
-    if (process.env.NODE_ENV !== "PROD") {
+    if (process.env.NODE_ENV !== "production") {
         console.log(err);
     }
     let error = err;
