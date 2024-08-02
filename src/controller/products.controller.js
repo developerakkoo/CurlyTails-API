@@ -1,8 +1,10 @@
 const Products = require("../models/product.model");
+const Favorite = require("../models/favorite.model");
 const APIFeatures = require("../utils/ApiFeature");
 const { apiResponse, asyncHandler } = require("../utils/helper.utils");
 const { clearImage } = require("../utils/deleteFile");
 const { generateCustomUuid } = require("custom-uuid");
+const mongoose = require("mongoose");
 
 exports.addProduct = async (req, res) => {
     try {
@@ -307,27 +309,12 @@ exports.productFilter = async (req, res) => {
             upperPrice,
             categoryId,
         } = req.query;
+        const { userId } = req.params; // Get the userId from request params
+
+        // Construct the base query for products
         let dbQuery = {};
         if (categoryId) {
             dbQuery.CategoryId = categoryId;
-        }
-        // Search based on user query
-        if (q) {
-            const words = q
-                .split(" ")
-                .map((word) => `\\b${word}\\b`)
-                .join("|");
-            dbQuery = {
-                ...dbQuery,
-                $or: [
-                    { name: { $regex: new RegExp(words, "i") } },
-                    { brand: { $regex: new RegExp(words, "i") } },
-                    { description: { $regex: new RegExp(words, "i") } },
-                    { LifeStage: { $regex: new RegExp(words, "i") } },
-                    { flavor: { $regex: new RegExp(words, "i") } },
-                    { vegNonVeg: { $regex: new RegExp(words, "i") } },
-                ],
-            };
         }
         if (lifeStage) {
             dbQuery.LifeStage = new RegExp(lifeStage, "i");
@@ -353,12 +340,80 @@ exports.productFilter = async (req, res) => {
                 $lte: upperPrice,
             };
         }
-        const productData = await Products.find(dbQuery);
+
+        // Aggregate products with average rating
+        const productsWithRatings = await Products.aggregate([
+            {
+                $match: dbQuery,
+            },
+            {
+                $lookup: {
+                    from: "productrattings", // Name of the ratings collection
+                    localField: "_id",
+                    foreignField: "productId",
+                    as: "ratings",
+                },
+            },
+            {
+                $addFields: {
+                    averageRating: {
+                        $ifNull: [
+                            {
+                                $avg: "$ratings.star",
+                            },
+                            0, // Default value if no ratings are present
+                        ],
+                    },
+                },
+            },
+            {
+                $lookup: {
+                    from: "favorites", // Name of the favorites collection
+                    let: { product_id: "$_id" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $eq: ["$productId", "$$product_id"] },
+                                        {
+                                            $eq: [
+                                                "$userId",
+                                                new mongoose.Types.ObjectId(userId),
+                                            ],
+                                        },
+                                    ],
+                                },
+                            },
+                        },
+                    ],
+                    as: "favorites",
+                },
+            },
+            {
+                $addFields: {
+                    isFavorite: {
+                        $cond: [
+                            { $gt: [{ $size: "$favorites" }, 0] },
+                            true,
+                            false,
+                        ],
+                    },
+                },
+            },
+            {
+                $project: {
+                    ratings: 0, // Optionally exclude ratings field if not needed
+                    favorites: 0, // Optionally exclude favorites field if not needed
+                },
+            },
+        ]);
+
         res.status(200).json({
             message: "Products Fetched Successfully",
             statusCode: 200,
-            length: productData.length,
-            data: productData,
+            length: productsWithRatings.length,
+            data: productsWithRatings,
         });
     } catch (error) {
         res.status(500).json({
@@ -547,27 +602,32 @@ exports.deleteImage = async (req, res) => {
     }
 };
 
-
 exports.getFilterValues = asyncHandler(async (req, res) => {
     // Fetch distinct values for each field
-    const [brands, lifeStages, breedSizes, flavors, vegNonVegOptions, priceRange] =
-        await Promise.all([
-            Products.distinct("brand").exec(),
-            Products.distinct("LifeStage").exec(),
-            Products.distinct("BreedSize").exec(),
-            Products.distinct("flavor").exec(),
-            Products.distinct("vegNonVeg").exec(),
-            Products.aggregate([
-                { $unwind: "$quantities" },
-                {
-                    $group: {
-                        _id: null,
-                        minPrice: { $min: "$quantities.price" },
-                        maxPrice: { $max: "$quantities.price" }
-                    }
-                }
-            ]).exec()
-        ]);
+    const [
+        brands,
+        lifeStages,
+        breedSizes,
+        flavors,
+        vegNonVegOptions,
+        priceRange,
+    ] = await Promise.all([
+        Products.distinct("brand").exec(),
+        Products.distinct("LifeStage").exec(),
+        Products.distinct("BreedSize").exec(),
+        Products.distinct("flavor").exec(),
+        Products.distinct("vegNonVeg").exec(),
+        Products.aggregate([
+            { $unwind: "$quantities" },
+            {
+                $group: {
+                    _id: null,
+                    minPrice: { $min: "$quantities.price" },
+                    maxPrice: { $max: "$quantities.price" },
+                },
+            },
+        ]).exec(),
+    ]);
 
     const minPrice = priceRange[0] ? priceRange[0].minPrice : 0;
     const maxPrice = priceRange[0] ? priceRange[0].maxPrice : 0;
@@ -583,7 +643,7 @@ exports.getFilterValues = asyncHandler(async (req, res) => {
                 vegNonVegOptions,
                 priceRange: { min: minPrice, max: maxPrice },
             },
-            "Filter data fetched successfully"
-        )
+            "Filter data fetched successfully",
+        ),
     );
 });

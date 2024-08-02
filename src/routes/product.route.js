@@ -3,20 +3,23 @@ const route = express.Router();
 const productController = require("../controller/products.controller");
 const Validation = require("../middleware/product.middleware");
 const Upload = require("../middleware/Upload");
+const {
+    postProductRatting,
+} = require("../controller/productRatting.controller");
 
 route.post(
-  "/add",
-  Upload.array("images"),
-  Validation.validateProduct,
-  productController.addProduct
+    "/add",
+    Upload.array("images"),
+    Validation.validateProduct,
+    productController.addProduct,
 );
 
 route.put("/update/:productId", productController.updateProduct);
 
 route.put(
-  "/update/images/:productId",
-  Upload.array("images"),
-  productController.updatedImage
+    "/update/images/:productId",
+    Upload.array("images"),
+    productController.updatedImage,
 );
 
 route.get("/getAll", productController.getAllProduct);
@@ -30,30 +33,34 @@ route.get("/get/:productId", productController.getProductById);
 route.delete("/delete/:productId", productController.deleteProduct);
 
 route.get(
-  "/get/CategoryId/:CategoryId",
-  productController.getProductByCategoryId
+    "/get/CategoryId/:CategoryId",
+    productController.getProductByCategoryId,
 );
 
 route.get(
-  "/get/subCategoryId/:subCategoryId",
-  productController.getProductBySubCategoryId
+    "/get/subCategoryId/:subCategoryId",
+    productController.getProductBySubCategoryId,
 );
 
 route.get(
-  "/get/productCategoryId/:productCategoryId",
-  productController.getProductByProductCategoryId
+    "/get/productCategoryId/:productCategoryId",
+    productController.getProductByProductCategoryId,
 );
 
 // route.get("/search", productController.ProductSearchOption);
 
 route.delete(
-  "/delete/image/:productId/:imageId",
-  productController.deleteImage
+    "/delete/image/:productId/:imageId",
+    productController.deleteImage,
 );
 
-route.get("/search", productController.productFilter);
+route.get("/search/:userId", productController.productFilter);
 
-route.get("/get/filter/values", productController.getFilterValues)
+route.get("/get/filter/values", productController.getFilterValues);
+
+/* Ratting */
+
+route.post("/add/ratting", postProductRatting);
 
 module.exports = { ProductRoutes: route };
 

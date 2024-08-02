@@ -54,6 +54,10 @@ const productSchema = new Schema(
                     type: Number,
                     required: true,
                 },
+                discountedPrice: {
+                    type: Number,
+                    required: true,
+                },
             },
         ],
         images: {
