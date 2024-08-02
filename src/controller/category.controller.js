@@ -2,7 +2,18 @@ const Category = require("../models/category.model");
 
 exports.addCategory = async (req, res) => {
   try {
+    console.log('====================================');
+    console.log(req.body);
+    console.log('====================================');
+    const { filename } = req.file;
+    let localPath =`public/${filename}`;
+    let image_url = `https://${req.hostname}/public/${filename}`;
+    if (process.env.NODE_ENV !== "production") {
+        image_url = `https://${req.hostname}:8000/public/${filename}`;
+    }
     const dataObj = {
+      image:image_url,
+      localPath:localPath,
       name: req.body.name,
       description: req.body.description,
     };

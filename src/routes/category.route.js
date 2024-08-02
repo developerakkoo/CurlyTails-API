@@ -2,11 +2,12 @@ const express = require("express");
 const route = express.Router();
 const CategoryController = require("../controller/category.controller");
 const CategoryMiddleware = require("../middleware/category.middleware");
+const uploadOwner = require("../middleware/Upload");
 
 route.post(
-  "/create",
-  CategoryMiddleware.validatePostCategory,
-  CategoryController.addCategory
+    "/create",
+    uploadOwner.single("file"),
+    CategoryController.addCategory,
 );
 
 route.put("/update/:categoryId", CategoryController.updateCategory);

@@ -1,8 +1,13 @@
 const User = require("../models/user.model");
+const userAddress = require("../models/userAddress.model");
 const Cart = require("../models/cart.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { sendResponse, asyncHandler } = require("../utils/helper.utils");
+const {
+    sendResponse,
+    asyncHandler,
+    apiError,
+} = require("../utils/helper.utils");
 
 exports.postSignup = asyncHandler(async (req, res, next) => {
     const userData = {
@@ -116,3 +121,135 @@ exports.deleteUsers = asyncHandler(async (req, res) => {
     await savedUser.deleteOne({ _id: req.params.userId });
     res.status(res, 200, null, "User Deleted Successfully");
 });
+
+/* Address */
+
+exports.addAddresses = asyncHandler(async (req, res) => {
+    const { type, address, selected, lng, lat } = req.body;
+    const savedAddress = await userAddress.create({
+        userId: req.query.userId || req.user._id,
+        type,
+        address,
+        selected,
+        location: {
+            type: "Point",
+            coordinates: [lng, lat],
+        },
+    });
+
+    return sendResponse(res, 201, savedAddress, "Address saved successfully");
+});
+
+exports.selectAddresses = asyncHandler(async (req, res) => {
+    const { addressId, selected } = req.body;
+    const selectedAddress = await userAddress.findByIdAndUpdate(
+        addressId,
+        {
+            $set: {
+                selected: selected,
+            },
+        },
+        {
+            new: true,
+        },
+    );
+
+    return sendResponse(
+        res,
+        200,
+        selectedAddress,
+        "Address selected successfully",
+    );
+});
+
+exports.getAllAddressesByUserId = asyncHandler(async (req, res) => {
+    const userId = req.params.userId || req.user._id;
+    const userAddresses = await userAddress.find({ userId: userId });
+    return sendResponse(
+        res,
+        200,
+        userAddresses,
+        "Address fetched successfully",
+    );
+});
+
+exports.getAddressesById = asyncHandler(async (req, res) => {
+    const { addressId } = req.params;
+    const userAddresses = await userAddress.findById(addressId);
+    return sendResponse(
+        res,
+        200,
+        userAddresses,
+        "Address fetched successfully",
+    );
+});
+
+exports.updateAddress = asyncHandler(async (req, res) => {
+    const { addressId } = req.body;
+    const savedAddress = await userAddress.findById(addressId);
+    if (!savedAddress) {
+        throw new apiError(404, "Address not found");
+    }
+    savedAddress.type =
+        req.body.type != undefined ? req.body.type : savedAddress.type;
+    savedAddress.address =
+        req.body.address != undefined ? req.body.address : savedAddress.address;
+    savedAddress.selected =
+        req.body.selected != undefined
+            ? req.body.selected
+            : savedAddress.selected;
+    const updatedAddress = await savedAddress.save();
+
+    return sendResponse(
+        res,
+        200,
+        updatedAddress,
+        "Address updated successfully",
+    );
+});
+
+exports.deleteAddress = asyncHandler(async (req, res) => {
+    const { addressId } = req.params;
+    const savedAddress = await userAddress.findById(addressId);
+    if (!savedAddress) {
+        throw new apiError(404, "Address not found");
+    }
+    if (savedAddress.userId.toString() != req.user._id.toString()) {
+        throw new apiError(
+            400,
+            "Address not deleted, you can only delete your address",
+        );
+    }
+    await userAddress.deleteOne({ _id: addressId });
+    return sendResponse(res, 200, {}, "Address deleted successfully");
+});
+
+// exports.fetchAddress = asyncHandler(async (req, res) => {
+//     const { address } = req.body;
+//     if (!address) {
+//         return sendResponse(res, 400, null, "Address is required");
+//     }
+//     const response = await axios.get(
+//         "https://maps.googleapis.com/maps/api/geocode/json",
+//         {
+//             params: {
+//                 address: address,
+//                 key: process.env.GOOGLE_MAPS_API_KEY,
+//             },
+//         },
+//     );
+
+//     const results = response.data.results;
+//     if (results.length === 0) {
+//         return sendResponse(res, 404, null, "No addresses found");
+//     }
+//     sendResponse(
+//         res,
+//         200,
+//         results.map((result) => ({
+//             formatted_address: result.formatted_address,
+//             location: result.geometry.location,
+//         })),
+//         "Address fetch successfully",
+//     );
+// });
