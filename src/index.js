@@ -1,11 +1,11 @@
 require("dotenv").config();
 const { app } = require("./app");
 const { connectDB } = require("./db/db.index");
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 connectDB()
     .then(() => {
-        const server = app.listen(8000);
+        const server = app.listen(PORT);
         console.log(
             `Server is running at port : ${PORT} in ${process.env.NODE_ENV} mode`,
         );
