@@ -1,260 +1,128 @@
 const Cart = require("../models/cart.model");
+const Product = require("../models/product.model");
 const { getIO } = require("../socket");
+const { asyncHandler, sendResponse } = require("../utils/helper.utils");
 
-exports.addToCart = async (req, res) => {
-  try {
-    const savedCart = await Cart.findOne({ userId: req.params.userId });
-    if (!savedCart) {
-      return res.status(404).json({
-        message: `Cart Not Found With This UserId:${req.params.userId}`,
-        statusCode: 404,
-      });
+exports.addToCart = asyncHandler(async (req, res) => {
+    const { userId, productId, size, quantity } = req.body;
+
+    // Find the product
+    const product = await Product.findById(productId);
+    if (!product) {
+        return res.status(404).json({ message: "Product not found" });
     }
-    // console.log(savedCart.cartItems.length);
-    let updatedCart;
-    if (!savedCart.cartItems.length == 0) {
-      // console.log('if>>');
-      for (let itemNo = 0; itemNo < savedCart.cartItems.length; itemNo++) {
-        // console.log(savedCart.cartItems[itemNo].productId)
-        // console.log(savedCart.cartItems.length);
-        // console.log(itemNo);
-        if (savedCart.cartItems[itemNo].productId == req.body.productId) {
-          savedCart.cartItems[itemNo].quantity += req.body.quantity;
 
-          savedCart.TotalItems = savedCart.TotalItems +=
-            req.body.quantity != undefined
-              ? req.body.quantity
-              : savedCart.TotalItems;
-
-          savedCart.SubTotal = savedCart.SubTotal +=
-            req.body.price * req.body.quantity != undefined
-              ? req.body.price * req.body.quantity
-              : savedCart.SubTotal;
-          // console.log(savedCart.cartItems[itemNo]);
-          updatedCart = await savedCart.save();
-          getIO().emit("cart:get", { data: updatedCart });
-          return res.status(201).json({
-            message: "Product Added To Cart Successfully",
-            statusCode: 201,
-            data: updatedCart,
-          });
-        }
-      }
+    // Find the price for the given size
+    const productPrice = product.quantities.find((q) => q.size === size)?.price;
+    if (productPrice === undefined) {
+        return res.status(404).json({ message: "Product size not found" });
     }
-    // console.log('else>>');
-    savedCart.cartItems.push({
-      productId: req.body.productId,
-      quantity: req.body.quantity,
-      price: req.body.price,
-    });
-    savedCart.TotalItems = savedCart.TotalItems +=
-      req.body.quantity != undefined ? req.body.quantity : savedCart.TotalItems;
 
-    savedCart.SubTotal = savedCart.SubTotal +=
-      req.body.price * req.body.quantity != undefined
-        ? req.body.price * req.body.quantity
-        : savedCart.SubTotal;
-    updatedCart = await savedCart.save();
-    getIO().emit("cart:get", { data: updatedCart });
-    res.status(201).json({
-      message: "Product Added To Cart Successfully",
-      statusCode: 201,
-      data: updatedCart,
-    });
-  } catch (error) {
-    console.log();
-    res
-      .status(500)
-      .json({ message: error.message, statusCode: 500, status: "ERROR" });
-  }
-};
-
-exports.updateCartProductQuantity = async (req, res) => {
-  try {
-    const savedCart = await Cart.findOne({ userId: req.params.userId });
-    if (!savedCart) {
-      return res.status(404).json({
-        message: `Cart Not Found With This UserId:${req.params.userId}`,
-        statusCode: 404,
-      });
+    // Find the cart for the user
+    let cart = await Cart.findOne({ userId });
+    if (!cart) {
+        cart = new Cart({ userId });
     }
-    let updatedCart;
-    if (req.body.updateQuantity == true) {
-      for (let itemNo = 0; itemNo < savedCart.cartItems.length; itemNo++) {
-        // console.log(savedCart.cartItems[itemNo].productId)
-        // console.log(savedCart.cartItems.length);
-        // console.log(itemNo);
 
-        if (savedCart.cartItems[itemNo].productId == req.body.productId) {
-          savedCart.cartItems[itemNo].quantity -= req.body.quantity;
-
-          savedCart.TotalItems = savedCart.TotalItems -=
-            req.body.quantity != undefined
-              ? req.body.quantity
-              : savedCart.TotalItems;
-
-          savedCart.SubTotal = savedCart.SubTotal -=
-            req.body.price * req.body.quantity != undefined
-              ? req.body.price * req.body.quantity
-              : savedCart.SubTotal;
-          if (savedCart.cartItems[itemNo].quantity === 0) {
-            let itemToBeRemoved = savedCart.cartItems[itemNo].toString();
-            savedCart.cartItems.splice(
-              savedCart.cartItems.findIndex((a) => a.id === itemToBeRemoved),
-              1
-            );
-            // savedCart.cartItems = savedCartItems;
-            updatedCart = await savedCart.save();
-            getIO().emit("cart:update", { data: updatedCart });
-            return res.status(201).json({
-              message: "Product Deleted From Cart Successfully",
-              statusCode: 201,
-              data: updatedCart,
-            });
-          }
-          // console.log(savedCart.cartItems[itemNo]);
-          updatedCart = await savedCart.save();
-          getIO().emit("cart:update", { data: updatedCart });
-          return res.status(201).json({
-            message: "Product Remove From Cart Successfully",
-            statusCode: 201,
-            data: updatedCart,
-          });
-        }
-      }
-    }
-    return res.status(404).json({
-      message: "Product Not Found With This Product Id",
-      statusCode: 404,
-      productId: req.body.productId,
-    });
-  } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ message: error.message, statusCode: 500, status: "ERROR" });
-  }
-};
-
-exports.deleteProductFromCart = async (req, res) => {
-  try {
-    const savedCart = await Cart.findOne({ userId: req.params.userId });
-    if (!savedCart) {
-      return res.status(404).json({
-        message: `Cart Not Found With This UserId:${req.params.userId}`,
-        statusCode: 404,
-      });
-    }
-    const result = savedCart.cartItems.filter(
-      (product) =>
-        !req.body.productId.some(
-          (id) => id.toString() === product.productId.toString()
-        )
+    // Check if the item already exists in the cart
+    const itemIndex = cart.cartItems.findIndex(
+        (item) => item.productId.toString() === productId && item.size === size
     );
-    if (result.length == 0) {
-      return res.status(404).json({
-        msg: `Product Not Found With This ProductId:${req.body.productId}`,
-      });
-    }
-    let total = (savedCart.TotalItems -= result[0].quantity);
-    let itemToBeRemoved = req.body.productId.toString();
-    savedCart.TotalItems = total != undefined ? total : savedCart.TotalItems;
 
-    savedCart.SubTotal = savedCart.SubTotal -=
-      result[0].price * result[0].quantity != undefined
-        ? result[0].price * result[0].quantity
-        : savedCart.SubTotal;
-    savedCart.cartItems.splice(
-      savedCart.cartItems.findIndex((a) => a.id === itemToBeRemoved),
-      1
+    if (itemIndex > -1) {
+        // Update existing item
+        cart.cartItems[itemIndex].quantity += quantity;
+    } else {
+        // Add new item
+        cart.cartItems.push({ productId, size, quantity, price: productPrice });
+    }
+
+    // Update total items and subtotal
+    cart.TotalItems = cart.cartItems.reduce(
+        (total, item) => total + item.quantity,
+        0
     );
-    updatedCart = await savedCart.save();
-    getIO().emit("cart:delete", { data: updatedCart });
-    res.status(200).json({
-      msg: "Product Removed From Cart",
-      statusCode: 200,
-      data: updatedCart,
-    });
-  } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ message: error.message, statusCode: 500, status: "ERROR" });
-  }
-};
+    cart.SubTotal = cart.cartItems.reduce(
+        (total, item) => total + item.price * item.quantity, // Calculate subtotal correctly
+        0
+    );
 
-exports.getAllCarts = async (req, res) => {
-  try {
-    const savedCart = await Cart.find().select("-__v");
-    if (savedCart.length == 0) {
-      return res
-        .status(404)
-        .json({ message: "Carts Not Found", statusCode: 404 });
-    }
-    res.status(200).json({
-      message: "All Carts Fetched Successfully",
-      statusCode: 200,
-      length: savedCart.length,
-      data: savedCart,
-    });
-  } catch (error) {
-    console.log();
-    res
-      .status(500)
-      .json({ message: error.message, statusCode: 500, status: "ERROR" });
-  }
-};
+    await cart.save();
+    sendResponse(res, 200, cart, "Item added to cart successfully");
+});
 
-exports.getCartById = async (req, res) => {
-  try {
-    const savedCart = await Cart.findOne({ _id: req.params.cartId })
-      .select("-__v")
-      .populate({
-        path: "cartItems.productId", // populating product Id
-        select: ("-__v", "-updatedAt"),
-      });
-    if (!savedCart) {
-      return res.status(404).json({
-        message: `Cart Not Found With This cartId:${req.params.cartId}`,
-        statusCode: 404,
-      });
-    }
-    res.status(200).json({
-      message: "Cart Fetched Successfully",
-      statusCode: 200,
-      data: savedCart,
-    });
-  } catch (error) {
-    console.log();
-    res
-      .status(500)
-      .json({ message: error.message, statusCode: 500, status: "ERROR" });
-  }
-};
 
-exports.getCartByUserId = async (req, res) => {
-  try {
-    const savedCart = await Cart.findOne({ userId: req.params.userId })
-      .select("-__v")
-      .populate({
-        path: "cartItems.productId", // populating product Id
-        select: ("-__v", "-updatedAt"),
-      });
-    if (!savedCart) {
-      return res.status(404).json({
-        message: `Cart Not Found With This userId:${req.params.userId}`,
-        statusCode: 404,
-      });
+exports.removeFromCart = asyncHandler(async (req, res) => {
+    const { userId, productId, size } = req.body;
+
+    // Find the cart for the user
+    const cart = await Cart.findOne({ userId });
+    if (!cart) {
+        return res.status(404).json({ message: "Cart not found" });
     }
-    res.status(200).json({
-      message: "Cart Fetched Successfully",
-      statusCode: 200,
-      data: savedCart,
+
+    // Find the index of the item in the cart
+    const itemIndex = cart.cartItems.findIndex(
+        (item) => item.productId.toString() === productId && item.size === size
+    );
+
+    if (itemIndex === -1) {
+        return res.status(404).json({ message: "Item not found in cart" });
+    }
+
+    // Get the item price
+    const itemPrice = cart.cartItems[itemIndex].price;
+
+    // Decrement the quantity of the item
+    if (cart.cartItems[itemIndex].quantity > 1) {
+        cart.cartItems[itemIndex].quantity -= 1;
+    } else {
+        // Remove the item if the quantity is 1
+        cart.cartItems.splice(itemIndex, 1);
+    }
+
+    // Update total items and subtotal
+    cart.TotalItems = cart.cartItems.reduce(
+        (total, item) => total + item.quantity,
+        0
+    );
+    cart.SubTotal = cart.cartItems.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+    );
+
+    const updatedCart = await cart.save();
+    sendResponse(res, 200, updatedCart, "Item quantity updated successfully");
+});
+
+
+exports.clearCart = asyncHandler(async (req, res) => {
+    const { userId } = req.params;
+
+    // Find the cart for the user
+    const cart = await Cart.findOne({ userId });
+    if (!cart) {
+        return res.status(404).json({ message: "Cart not found" });
+    }
+
+    // Clear the cart
+    cart.cartItems = [];
+    cart.TotalItems = 0;
+    cart.SubTotal = 0;
+
+    await cart.save();
+    sendResponse(res, 200, cart, "Cart cleared successfully");
+});
+
+exports.getCart = asyncHandler(async (req, res) => {
+    const { userId } = req.params;
+    // Find the cart for the user
+    const cart = await Cart.findOne({ userId }).populate({
+        path: "cartItems.productId",
+        // select: "name brand description price", // Specify which fields to include from Product
     });
-  } catch (error) {
-    console.log();
-    res
-      .status(500)
-      .json({ message: error.message, statusCode: 500, status: "ERROR" });
-  }
-};
+    if (!cart) {
+        return res.status(404).json({ message: "Cart not found" });
+    }
+    sendResponse(res, 200, cart, "Cart fetched successfully");
+});
