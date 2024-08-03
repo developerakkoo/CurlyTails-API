@@ -11,10 +11,10 @@ const OrderSchema = new Schema(
             require: [true, "UserId Is Require"],
             ref: "User",
         },
-        AddressId: {
-            type: String,
-            require: [true, "AddressId Is Require"],
+        addressId: {
+            type: Schema.Types.ObjectId,
             ref: "UserAddress",
+            require: [true, "AddressId Is Require"],
         },
         phoneNumber: {
             type: String,

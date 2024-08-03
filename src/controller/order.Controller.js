@@ -14,6 +14,7 @@ const {
 const { getIO } = require("../socket");
 const razorpay = require("razorpay");
 const { sendNotification } = require("./notification.controller");
+const { ObjectId } = require("mongoose").Types;
 
 let instance = new razorpay({
     key_id: process.env.RAZORPAY_ID,
@@ -166,9 +167,8 @@ exports.initiatePayment = asyncHandler(async (req, res, next) => {
         currency: "INR",
     };
     instance.orders.create(options, function (err, order) {
-        console.log("ORDER: " + order);
         if (err) {
-            return res.status(400).json(new apiResponse(40, null, err.message));
+            throw new apiError(400, err.message);
         }
         return res
             .status(201)
@@ -286,28 +286,95 @@ exports.UpdateOrderDeliveryStatus = async (req, res) => {
     }
 };
 
-exports.getAllOrders = async (req, res) => {
-    try {
-        const savedOrder = await Order.find().limit(10).sort({ createdAt: -1 });
-        if (savedOrder.length == 0) {
-            return res
-                .status(404)
-                .json({ message: "Orders Not Found", statusCode: 404 });
-        }
-        res.status(200).json({
-            message: "All Order Fetched Successfully",
-            statusCode: 200,
-            count: savedOrder.length,
-            data: savedOrder,
-        });
-    } catch (error) {
-        res.status(500).json({
-            Message: error.message,
-            statusCode: 500,
-            status: "ERROR",
-        });
+exports.getAllOrders = asyncHandler(async (req, res) => {
+    let dbQuery = {};
+    const {
+        pageNumber = 1,
+        pageSize = 10,
+        q,
+        startDate,
+        populate,
+        status,
+        userId,
+    } = req.query;
+    const endDate = req.query.endDate || moment().format("YYYY-MM-DD");
+    const skip = (Number(pageNumber) - 1) * Number(pageSize);
+
+    // Search based on user query
+    if (q) {
+        dbQuery = {
+            $or: [{ orderId: { $regex: `^${q}`, $options: "i" } }],
+        };
     }
-};
+
+    // Sort by date range
+    if (startDate) {
+        const sDate = new Date(startDate);
+        const eDate = new Date(endDate);
+        sDate.setHours(0, 0, 0, 0);
+        eDate.setHours(23, 59, 59, 999);
+        dbQuery.createdAt = {
+            $gte: sDate,
+            $lte: eDate,
+        };
+    }
+
+    //sort by status
+    if (status) {
+        dbQuery.status = Number(status);
+    }
+
+    //sort by userId
+    if (userId) {
+        dbQuery.userId = new ObjectId(userId);
+    }
+
+    const dataCount = await Order.countDocuments(dbQuery);
+    const orders = await Order.find(dbQuery)
+        .populate({
+            path: "userId",
+            select: "name email phoneNo",
+        })
+        .populate({ path: "addressId", select: "-createdAt -updatedAt -__v" })
+        .populate({
+            path: "orderItems.productId", // Populate productId inside orderItems
+            select: "-createdAt -updatedAt -__v", // Specify which fields to remove from the Product model
+            populate: [
+                {
+                    path: "CategoryId",
+                    select: "name image description isTopCategory",
+                },
+                {
+                    path: "subCategoryId",
+                    select: "name description", // Specify which fields to select from the Category model
+                },
+                {
+                    path: "productCategoryId",
+                    select: "name description",
+                },
+            ],
+        });
+    const startItem = skip + 1;
+    const endItem = Math.min(
+        startItem + pageSize - 1,
+        startItem + orders.length - 1,
+    );
+    const totalPages = Math.ceil(dataCount / pageSize);
+    return res.status(200).json(
+        new apiResponse(
+            200,
+            {
+                content: orders,
+                startItem,
+                endItem,
+                totalPages,
+                pagesize: orders.length,
+                totalDoc: dataCount,
+            },
+            "ORDER_FETCHED_SUCCESSFULLY",
+        ),
+    );
+});
 
 exports.getOrdersById = async (req, res) => {
     try {
