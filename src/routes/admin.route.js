@@ -38,6 +38,14 @@ route.get("/get-yearly-earnings", adminController.yearlyEarnings);
 
 route.get("/get-total-earnings", adminController.totalEarnings);
 
+/* delivery charges and gst data routes */
+
+route.post("/data/add", adminController.createData);
+
+route.get("/data/get", adminController.getData);
+
+route.put("/data/update/:id", adminController.updateData);
+
 module.exports = { AdminRoutes: route };
 
 /**

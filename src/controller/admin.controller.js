@@ -8,7 +8,13 @@ const productCategory = require("../models/productCategory.model");
 const Product = require("../models/product.model");
 const Refund = require("../models/refund.model");
 const Order = require("../models/order.model");
-const { sendResponse, asyncHandler } = require("../utils/helper.utils");
+const {
+    sendResponse,
+    asyncHandler,
+    apiError,
+    apiResponse,
+} = require("../utils/helper.utils");
+const Data = require("../models/data.model");
 require("dotenv").config();
 
 exports.postSignup = asyncHandler(async (req, res, next) => {
@@ -408,3 +414,51 @@ exports.totalEarnings = async (req, res) => {
         });
     }
 };
+
+/***** Gst and platform fee data  *****/
+exports.createData = asyncHandler(async (req, res) => {
+    const { gstPercentage, gstIsActive, deliveryCharges } = req.body;
+
+    const data = await Data.create({
+        gstPercentage,
+        gstIsActive,
+        deliveryCharges,
+    });
+    res.status(200).json(
+        new apiResponse(200, data, "Data created successfully"),
+    );
+});
+
+exports.getData = asyncHandler(async (req, res) => {
+    const data = await Data.find();
+    if (!data) {
+        return res
+            .status(404)
+            .json(new apiResponse(404, null, "Data not found"));
+    }
+    res.status(200).json(
+        new apiResponse(200, data[0], "Data fetched successfully"),
+    );
+});
+
+exports.updateData = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    const { gstPercentage, gstIsActive, deliveryCharges } = req.body;
+    const data = await Data.findByIdAndUpdate(
+        id,
+        {
+            gstPercentage,
+            gstIsActive,
+            deliveryCharges,
+        },
+        { new: true },
+    );
+    if (!data) {
+        return res
+            .status(404)
+            .json(new apiResponse(404, null, "Data not found"));
+    }
+    res.status(200).json(
+        new apiResponse(200, data, "Data updated successfully"),
+    );
+});
