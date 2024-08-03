@@ -3,8 +3,9 @@ const Schema = mongoose.Schema;
 const CarSchema = new Schema(
     {
         userId: {
-            type: String,
-            require: [true, "Title Is Require"],
+            type: Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
         },
         cartItems: [
             {

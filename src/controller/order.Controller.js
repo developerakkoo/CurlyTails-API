@@ -1,82 +1,234 @@
 const Cart = require("../models/cart.model");
 const Order = require("../models/order.model");
-const Billing = require("../models/Billing.model");
-const { generateCustomUuid } = require("custom-uuid");
+const dataModel = require("../models/data.model");
+const productModel = require("../models/product.model");
+const { v4: uuidv4 } = require("uuid");
+const moment = require("moment");
 const Refund = require("../models/refund.model");
+const promoCodeModel = require("../models/promoCode.model");
+const {
+    apiError,
+    apiResponse,
+    asyncHandler,
+} = require("../utils/helper.utils");
 const { getIO } = require("../socket");
-exports.placeOrder = async (req, res) => {
-    try {
-        const savedCart = await Cart.findOne({ userId: req.params.userId });
-        // console.log(savedCart);
-        if (!savedCart) {
-            return res.status(404).json({
-                message: `Cart Not Found With This UserId:${req.params.userId}`,
-                statusCode: 404,
-            });
-        }
-        let createdOrder;
-        // const savedBill = await Billing.findOne({userId:req.params.userId});
-        // if (!savedBill) {
-        //     return res.status(404).json({message:`Bill Not Found With This UserId:${req.params.userId}`,statusCode:404});
-        // }
-        if (req.body.cartItems) {
-            const orderObj = {
-                OrderId: Math.ceil(Math.random() * 1000000 + 1984567),
-                // BillingId:savedBill._id,
-                userId: savedCart.userId,
-                orderItems: req.body.cartItems,
-                TotalItems: req.body.TotalItems,
-                SubTotal: req.body.SubTotal,
-            };
-            const idsToRemove = req.body.productIds;
-            let removedOrderedProductsFromCart = savedCart.cartItems.filter(
-                (product) =>
-                    !idsToRemove.some(
-                        (id) => id.toString() === product._id.toString(),
-                    ),
-            );
-            createdOrder = await Order.create(orderObj);
+const razorpay = require("razorpay");
+const { sendNotification } = require("./notification.controller");
 
-            savedCart.cartItems = removedOrderedProductsFromCart;
-            savedCart.SubTotal = savedCart.SubTotal - req.body.SubTotal;
-            savedCart.TotalItems = savedCart.TotalItems - req.body.TotalItems;
-            await savedCart.save();
-        } else {
-            const orderObj = {
-                OrderId: Math.ceil(Math.random() * 1000000 + 1984567),
-                // BillingId:savedBill._id,
-                userId: savedCart.userId,
-                orderItems: savedCart.cartItems,
-                TotalItems: savedCart.TotalItems,
-                SubTotal: savedCart.SubTotal,
-            };
-            createdOrder = await Order.create(orderObj);
-            savedCart.cartItems = [];
-            savedCart.SubTotal = 0;
-            savedCart.TotalItems = 0;
-            await savedCart.save();
-        }
-        // }
-        // // savedCart.__v = tem != undefined
-        // // ? tem
-        // // :savedCart.__v = tem
-        // console.log(savedCart);
-        const recentOrders = await Order.find({}).limit(10).sort("-1");
-        getIO().emit("admin:recentOrders", recentOrders);
-        res.status(200).json({
-            msg: "Order Placed Successfully",
-            statusCode: 200,
-            data: createdOrder,
-        });
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({
-            Message: error.message,
-            statusCode: 500,
-            status: "ERROR",
-        });
+let instance = new razorpay({
+    key_id: process.env.RAZORPAY_ID,
+    key_secret: process.env.RAZORPAY_SECRET,
+});
+
+exports.CalculateAmountToPay = asyncHandler(async (req, res) => {
+    const data = await dataModel.find();
+    if (!data || data.length === 0) {
+        return res
+            .status(500)
+            .json(
+                new apiResponse(
+                    500,
+                    null,
+                    "Server error: Missing configuration data",
+                ),
+            );
     }
-};
+
+    const { gstPercentage, gstIsActive } = data[0];
+    let deliveryCharges = data[0].deliveryCharges;
+    const { userId, code } = req.body;
+
+    // Find the user's cart
+    const cart = await Cart.findOne({ userId });
+    if (!cart || cart.cartItems.length === 0) {
+        return res
+            .status(400)
+            .json(new apiResponse(400, null, "Your cart is empty."));
+    }
+
+    // Calculate the subtotal (total product cost) from cartItems
+    const subtotal = (
+        await Promise.all(
+            cart.cartItems.map(async (item) => {
+                const product = await productModel.findById(item.productId); // Assuming `dishModel` is for Product
+                return item.price * item.quantity;
+            }),
+        )
+    ).reduce((total, price) => total + price, 0);
+
+    // Calculate GST
+    let gstAmount = 0;
+    if (gstIsActive) {
+        gstAmount = (subtotal * gstPercentage) / 100;
+    }
+
+    // Remove delivery charges calculation
+    // const deliveryCharges = 0;
+
+    // Remove platform fee calculation
+    // const platformFee = 0;
+
+    // Calculate the initial total amount to pay
+    let totalAmountToPay = subtotal + gstAmount + deliveryCharges; //+ platformFee;
+
+    let discount = 0;
+    let promoCodeId = null;
+    let promoCodeDetails = null;
+    let promoCodeData;
+
+    // If a promo code is provided, validate and apply it
+    if (code) {
+        const promoCode = await promoCodeModel.findOne({ code });
+        if (!promoCode || !promoCode.isActive) {
+            throw new apiError(400, "Invalid promo code");
+        }
+        if (
+            moment(promoCode.expiry, "DD-MM-YYYY").isBefore(
+                moment(),
+                "DD-MM-YYYY",
+            )
+        ) {
+            throw new apiError(400, "Promo code expired");
+        }
+        if (subtotal < promoCode.minOrderAmount) {
+            throw new apiError(
+                400,
+                "Order total needs to be greater than the minimum order amount",
+            );
+        }
+
+        switch (promoCode.codeType) {
+            case 1: // FREE_DELIVERY
+                discount = deliveryCharges;
+                promoCodeDetails = "FREE_DELIVERY";
+                totalAmountToPay -= deliveryCharges;
+                deliveryCharges = 0;
+                break;
+            case 2: // GET_OFF
+                discount = promoCode.discountAmount;
+                promoCodeDetails = "GET_OFF";
+                totalAmountToPay -= promoCode.discountAmount;
+                break;
+            case 3: // NEW_USER
+                const userOrderExist = await Order.findOne({ userId });
+                if (userOrderExist) {
+                    throw new apiError(
+                        400,
+                        "This code is only valid on the first order",
+                    );
+                }
+                discount = promoCode.discountAmount;
+                promoCodeDetails = "NEW_USER";
+                totalAmountToPay -= promoCode.discountAmount;
+                break;
+            default:
+                throw new apiError(400, "Invalid promo code type");
+        }
+
+        promoCodeId = promoCode._id;
+        promoCodeData = promoCode;
+    }
+
+    // Adjust totalAmountToPay in case it goes negative
+    if (totalAmountToPay < 0) {
+        totalAmountToPay = 0;
+    }
+
+    // Construct the detailed breakdown
+    const breakdown = {
+        subtotal,
+        gstAmount,
+        deliveryCharges,
+        // platformFee,
+        discount,
+        totalAmountToPay: Number(totalAmountToPay.toFixed(2)),
+        promoCodeId,
+        promoCodeDetails: promoCodeData,
+    };
+
+    // Return the calculated amounts and breakdown
+    return res
+        .status(200)
+        .json(
+            new apiResponse(200, breakdown, "Amount calculated successfully"),
+        );
+});
+
+exports.initiatePayment = asyncHandler(async (req, res, next) => {
+    const { amount } = req.body;
+    if (!amount) {
+        return res
+            .status(400)
+            .json(new apiResponse(400, null, "AMOUNT_REQUIRED_FOR_PAYMENT"));
+    }
+    let options = {
+        amount: amount,
+        currency: "INR",
+    };
+    instance.orders.create(options, function (err, order) {
+        console.log("ORDER: " + order);
+        if (err) {
+            return res.status(400).json(new apiResponse(40, null, err.message));
+        }
+        return res
+            .status(201)
+            .json(
+                new apiResponse(201, order, "PAYMENT_INITIATED_SUCCESSFULLY"),
+            );
+    });
+});
+
+exports.placeOrder = asyncHandler(async (req, res) => {
+    const { userId, addressId, phoneNumber, priceDetails, paymentId } =
+        req.body;
+
+    // Generate UUIDv4
+    const uuid = uuidv4();
+    // Convert UUID to uppercase
+    const uppercaseUuid = uuid.toUpperCase();
+    // Extract first 6 characters
+    const orderIdPrefix = uppercaseUuid.substring(0, 6);
+
+    // Find the user's cart
+    const cart = await Cart.findOne({ userId });
+    if (!cart || cart.cartItems.length === 0) {
+        return res
+            .status(400)
+            .json(new apiResponse(400, null, "Cart is empty"));
+    }
+
+    const newOrder = await Order.create({
+        orderId: orderIdPrefix,
+        userId,
+        addressId,
+        phoneNumber,
+        orderItems: cart.cartItems,
+        priceDetails,
+        promoCode: priceDetails.promoCodeId,
+        paymentId,
+        orderTimeline: [
+            {
+                title: "Order Placed",
+                status: "PENDING",
+                dateTime: moment().format("MMMM Do YYYY, h:mm:ss a"),
+            },
+        ],
+    });
+    sendNotification(newOrder.userId, "New Order", newOrder); // send notification to hotel owner
+
+    // Clear the cart
+    await cart.updateOne({
+        $set: {
+            cartItems: [],
+            TotalItems: 0,
+            SubTotal: 0,
+        },
+    });
+
+    return res
+        .status(200)
+        .json(new apiResponse(200, newOrder, "ORDER PLACED SUCCESSFULLY"));
+});
 exports.CancelOrder = async (req, res) => {
     try {
         const savedOrder = await Order.findOne({ userId: req.params.userId });

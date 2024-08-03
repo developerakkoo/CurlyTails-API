@@ -2,7 +2,11 @@ const express = require("express");
 const route = express.Router();
 const OrderController = require("../controller/order.Controller");
 
-route.post("/place/:userId", OrderController.placeOrder);
+route.post("/calculate/amount-to-pay", OrderController.CalculateAmountToPay);
+
+route.post("/initiate/payment", OrderController.initiatePayment);
+
+route.post("/place", OrderController.placeOrder);
 
 route.get("/getAll", OrderController.getAllOrders);
 
@@ -15,8 +19,8 @@ route.get("/get-DeliveryStatus", OrderController.getOrdersByDeliveryStatus);
 route.get("/get-userId/:userId", OrderController.getOrdersByUserId);
 
 route.put(
-  "/update/deliveryStatus/:orderId",
-  OrderController.UpdateOrderDeliveryStatus
+    "/update/deliveryStatus/:orderId",
+    OrderController.UpdateOrderDeliveryStatus,
 );
 
 route.put("/cancel/:userId", OrderController.CancelOrder);
