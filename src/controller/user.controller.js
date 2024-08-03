@@ -119,10 +119,10 @@ exports.deleteUsers = asyncHandler(async (req, res) => {
 
 /* Address */
 
-exports.addAddresses = asyncHandler(async (req, res) => {
+exports.addAddress = asyncHandler(async (req, res) => {
     const { type, address, selected, lng, lat } = req.body;
     const savedAddress = await userAddress.create({
-        userId: req.query.userId || req.user._id,
+        userId: req.body.userId || req.user._id,
         type,
         address,
         selected,
@@ -168,7 +168,7 @@ exports.getAllAddressesByUserId = asyncHandler(async (req, res) => {
     );
 });
 
-exports.getAddressesById = asyncHandler(async (req, res) => {
+exports.getAddressById = asyncHandler(async (req, res) => {
     const { addressId } = req.params;
     const userAddresses = await userAddress.findById(addressId);
     return sendResponse(

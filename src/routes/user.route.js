@@ -16,6 +16,20 @@ route.get("/get/:userId", UserController.getUsersById);
 
 route.delete("/delete/:userId", UserController.deleteUsers);
 
+/* Address routes */
+
+route.post("/address/add", UserController.addAddress);
+
+route.get("/address/getAll/:userId", UserController.getAllAddressesByUserId);
+
+route.get("/address/get/:addressId", UserController.getAddressById);
+
+route.put("/address/select", UserController.selectAddresses);
+
+route.put("/address/update", UserController.updateAddress);
+
+route.delete("/address/delete/:addressId", UserController.deleteAddress);
+
 module.exports = { UserRoutes: route };
 
 /**
