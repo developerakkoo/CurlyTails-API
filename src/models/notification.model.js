@@ -1,19 +1,25 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const { Schema, model } = require("mongoose");
 
-
-const notificationSchema = new Schema({
-    userId:{
-        type: String,
-        required: [true, 'UserId is required']
+const notificationSchema = new Schema(
+    {
+        userId: {
+            type: Schema.Types.ObjectId,
+            required: true,
+        },
+        title: {
+            type: String,
+            required: true,
+        },
+        content: {
+            type: String,
+            required: true,
+        },
+        read: {
+            type: Boolean,
+            default: false,
+        },
     },
+    { timestamps: true },
+);
 
-
-    message:{
-        type: String,
-        required: [true, 'Description is required']
-    },
-},{ timestamps: true})
-
-
-module.exports = mongoose.model('notification', notificationSchema);
+module.exports = model("Notification", notificationSchema);

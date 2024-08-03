@@ -1,14 +1,15 @@
-const route = require("express").Router();
+const router = require("express").Router();
 const notificationController = require("../controller/notification.controller");
 
-route.post("/post", notificationController.postNotification);
+router.get("/get/byId", notificationController.getNotificationById);
 
-route.get("/get/:Id", notificationController.getNotificationById);
+router.get(
+    "/get/all/user/:userId",
+    notificationController.getAllNotificationsByUserId,
+);
 
-route.get("/getAll", notificationController.getAllNotification);
+router.put("/read/:id", notificationController.markNotificationAsRead);
 
-// route.put('/update/refund-status/:Id',notificationController.updateRefundRequestStatus);
+router.delete("/delete/:id", notificationController.deleteNotificationById);
 
-route.delete("/delete/:Id", notificationController.deleteNotification);
-
-module.exports = { NotificationRoutes: route };
+module.exports = { notificationRoutes: router };
