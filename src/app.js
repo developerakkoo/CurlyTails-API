@@ -75,8 +75,8 @@ const { subCategoryRoutes } = require("./routes/subCategory.route");
 // const { ConsultantRoutes } = require("./routes/category");
 const { BannerRoutes } = require("./routes/Banner.route");
 const { productCategoryRoutes } = require("./routes/productCategory.route");
-const {favoriteRoutes} = require('./routes/favorite.route')
-// const { BlogRoutes } = require("./routes/Blog.route");
+const { favoriteRoutes } = require("./routes/favorite.route");
+const { promoCodeRoutes } = require("./routes/promoCode.route");
 
 /*Api Logger */
 app.use(morganMiddleware);
@@ -89,7 +89,7 @@ app.use(`${BASE_URL}/product`, ProductRoutes);
 app.use(`${BASE_URL}/category`, CategoryRoutes);
 app.use(`${BASE_URL}/subcategory`, subCategoryRoutes);
 app.use(`${BASE_URL}/banner`, BannerRoutes);
-// app.use(`${BASE_URL}`,BlogRoutes);
+app.use(`${BASE_URL}/promoCode`, promoCodeRoutes);
 // app.use(`${BASE_URL}`,ConsultantRoutes);
 // app.use(`${BASE_URL}`,PharmacyRoutes);
 app.use(`${BASE_URL}/product-category`, productCategoryRoutes);
