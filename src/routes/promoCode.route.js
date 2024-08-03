@@ -8,6 +8,8 @@ router.put("/update/:promoCodeId", promoCodeController.updatedPromoCode);
 
 router.get("/get/:promoCodeId", promoCodeController.getPromoCode);
 
+router.get("/getAll", promoCodeController.getAllPromoCodes);
+
 router.delete("/delete/:promoCodeId", promoCodeController.deletePromoCode);
 
 module.exports = { promoCodeRoutes: router };
