@@ -462,3 +462,75 @@ exports.updateData = asyncHandler(async (req, res) => {
         new apiResponse(200, data, "Data updated successfully"),
     );
 });
+
+const moment = require("moment");
+
+exports.getDashboardStats = asyncHandler(async (req, res) => {
+    const { sort = "dayOfMonth" } = req.query;
+    const startDate = moment().startOf(sort); // Today's date at 00:00:00
+    const endDate = moment().endOf(sort);
+
+    const DateFilterPipeline = [
+        {
+            $match: {
+                createdAt: {
+                    $gte: startDate.toDate(),
+                    $lte: endDate.toDate(),
+                },
+            },
+        },
+    ];
+
+    // Aggregate and count documents based on date range and status
+    const [
+        totalOrders,
+        totalDeliveredOrders,
+        totalCanceledOrders,
+        totalUsers,
+        totalRevenue,
+        totalProducts,
+    ] = await Promise.all([
+        Order.countDocuments(DateFilterPipeline[0].$match),
+        Order.countDocuments({
+            ...DateFilterPipeline[0].$match,
+            orderStatus: 3, // Delivered
+        }),
+        Order.countDocuments({
+            ...DateFilterPipeline[0].$match,
+            orderStatus: 5, // Canceled
+        }),
+        User.countDocuments(DateFilterPipeline[0].$match),
+        Order.aggregate([
+            {
+                $match: DateFilterPipeline[0].$match,
+            },
+            {
+                $group: {
+                    _id: null,
+                    sum_totalPrice: {
+                        $sum: "$priceDetails.totalAmountToPay", // Correct field based on schema
+                    },
+                },
+            },
+        ]),
+        Product.countDocuments(DateFilterPipeline),
+    ]);
+
+    res.status(200).json(
+        new apiResponse(
+            200,
+            {
+                totalOrders,
+                totalDeliveredOrders,
+                totalCanceledOrders,
+                totalUsers,
+                totalRevenue:
+                    totalRevenue.length > 0
+                        ? totalRevenue[0].sum_totalPrice
+                        : 0,
+                totalProducts,
+            },
+            "Dashboard data fetched successfully",
+        ),
+    );
+});

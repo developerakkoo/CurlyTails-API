@@ -46,6 +46,9 @@ route.get("/data/get", adminController.getData);
 
 route.put("/data/update/:id", adminController.updateData);
 
+/* Dashboard routes */
+route.get("/dashboard-data", adminController.getDashboardStats);
+
 module.exports = { AdminRoutes: route };
 
 /**
