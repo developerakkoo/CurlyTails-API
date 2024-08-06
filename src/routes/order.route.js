@@ -8,6 +8,8 @@ route.post("/initiate/payment", OrderController.initiatePayment);
 
 route.post("/place", OrderController.placeOrder);
 
+route.put("/update", OrderController.updatedOrder);
+
 route.get("/getAll", OrderController.getAllOrders);
 
 route.get("/get/:Id", OrderController.getOrdersById);
@@ -17,11 +19,6 @@ route.get("/get-orderId/:orderId", OrderController.getOrdersByOrderId);
 route.get("/get-DeliveryStatus", OrderController.getOrdersByDeliveryStatus);
 
 route.get("/get-userId/:userId", OrderController.getOrdersByUserId);
-
-route.put(
-    "/update/deliveryStatus/:orderId",
-    OrderController.UpdateOrderDeliveryStatus,
-);
 
 route.put("/cancel/:userId", OrderController.CancelOrder);
 

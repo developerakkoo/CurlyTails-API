@@ -10,6 +10,7 @@ const {
     apiError,
     apiResponse,
     asyncHandler,
+    sendResponse,
 } = require("../utils/helper.utils");
 const { getIO } = require("../socket");
 const razorpay = require("razorpay");
@@ -229,6 +230,67 @@ exports.placeOrder = asyncHandler(async (req, res) => {
         .status(200)
         .json(new apiResponse(200, newOrder, "ORDER PLACED SUCCESSFULLY"));
 });
+
+exports.updatedOrder = asyncHandler(async (req, res) => {
+    const { orderId, status } = req.body;
+    const savedOrder = await Order.findById(orderId);
+    if (!savedOrder) {
+        return sendResponse(res, 404, null, "Order not found");
+    }
+    const update = {
+        $set: {
+            status: status,
+        },
+    };
+    // Prepare timeline entry based on status
+    let timelineEntry = {};
+    switch (Number(status)) {
+        case 1:
+            timelineEntry = {
+                title: "Order Confirm",
+                dateTime: moment().format("MMMM Do YYYY, h:mm:ss a"),
+                status: "CONFIRMED",
+            };
+            break;
+        case 2:
+            timelineEntry = {
+                title: "In-Transit",
+                dateTime: moment().format("MMMM Do YYYY, h:mm:ss a"),
+                status: "IN_TRANSIT",
+            };
+            break;
+        case 3:
+            timelineEntry = {
+                title: "Order delivered",
+                dateTime: moment().format("MMMM Do YYYY, h:mm:ss a"),
+                status: "DELIVERED",
+            };
+        case 4:
+            timelineEntry = {
+                title: "Order Cancel",
+                dateTime: moment().format("MMMM Do YYYY, h:mm:ss a"),
+                status: "CANCELED",
+            };
+            break;
+        default:
+            break;
+    }
+
+    if (timelineEntry.title) {
+        update.$push = { orderTimeline: timelineEntry };
+    }
+
+    const order = await Order.findByIdAndUpdate(orderId, update, { new: true });
+    if (order.status === 2) {
+        sendNotification(savedOrder.userId, "Order In-Transit", order);
+    }
+    if (order.status === 3) {
+        sendNotification(savedOrder.userId, "Order delivered", order);
+    }
+
+    sendResponse(res, 200, order, "Order status updated successfully");
+});
+
 exports.CancelOrder = async (req, res) => {
     try {
         const savedOrder = await Order.findOne({ userId: req.params.userId });
