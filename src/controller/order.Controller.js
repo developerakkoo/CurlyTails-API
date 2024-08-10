@@ -281,11 +281,17 @@ exports.updatedOrder = asyncHandler(async (req, res) => {
     }
 
     const order = await Order.findByIdAndUpdate(orderId, update, { new: true });
+    if (order.status === 1) {
+        sendNotification(savedOrder.userId, "Order confirmed", order);
+    }
     if (order.status === 2) {
         sendNotification(savedOrder.userId, "Order In-Transit", order);
     }
     if (order.status === 3) {
         sendNotification(savedOrder.userId, "Order delivered", order);
+    }
+    if (order.status === 4) {
+        sendNotification(savedOrder.userId, "Order canceled", order);
     }
 
     sendResponse(res, 200, order, "Order status updated successfully");
