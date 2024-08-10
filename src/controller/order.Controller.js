@@ -265,6 +265,7 @@ exports.updatedOrder = asyncHandler(async (req, res) => {
                 dateTime: moment().format("MMMM Do YYYY, h:mm:ss a"),
                 status: "DELIVERED",
             };
+            break;
         case 4:
             timelineEntry = {
                 title: "Order Cancel",
