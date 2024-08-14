@@ -1,0 +1,3034 @@
+{
+	"info": {
+		"_postman_id": "9855b39f-ccf5-4a11-b7a0-77334672e9a8",
+		"name": "Curlytails",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20766281"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "admin/singUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Admin3\",\r\n    \"email\": \"admin3@est.com\",\r\n    \"phoneNo\":1234567890,\r\n    \"password\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/admin/singUp",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"admin",
+								"singUp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"admin@test.com\",\r\n    \"password\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/admin/login",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"admin",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin/update/648ffb25a7e5fbbbf497059d",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"1000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/admin/update/648ffb25a7e5fbbbf497059d",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"admin",
+								"update",
+								"648ffb25a7e5fbbbf497059d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin/delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/admin/delete/648ffb25a7e5fbbbf497059d",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"admin",
+								"delete",
+								"648ffb25a7e5fbbbf497059d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8000/App/admin/verify",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phonenumber\":9637957346,\r\n    \"code\":3275\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/App/admin/verify",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"App",
+								"admin",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin/get/648ffb25a7e5fbbbf497059d",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/admin/get/648ffb25a7e5fbbbf497059d",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"admin",
+								"get",
+								"648ffb25a7e5fbbbf497059d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin/get-yearly-earnings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/admin/get-yearly-earnings",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"admin",
+								"get-yearly-earnings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin/getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/admin/getAll",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"admin",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin/getAll/usersCount",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/admin/getAll/usersCount",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"admin",
+								"getAll",
+								"usersCount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "categoryCount",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/admin/getAll/categoryCount",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"admin",
+								"getAll",
+								"categoryCount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "subCategoryCount",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/admin/getAll/subCategoryCount",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"admin",
+								"getAll",
+								"subCategoryCount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "productCategoryCount",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/admin/getAll/productCategoryCount",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"admin",
+								"getAll",
+								"productCategoryCount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "productsCount",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/admin/getAll/productsCount",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"admin",
+								"getAll",
+								"productsCount"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll/refundreq?page=1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/admin/getAll/refundreq?page=1",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"admin",
+								"getAll",
+								"refundreq"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/orders?page=1",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/admin/getAll/orders?page=1",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"admin",
+								"getAll",
+								"orders"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin/get-monthly-earnings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/admin/get-monthly-earnings",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"admin",
+								"get-monthly-earnings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "dashboard-data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/admin/dashboard-data?sort=year",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"dashboard-data"
+							],
+							"query": [
+								{
+									"key": "sort",
+									"value": "year"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "get/Top-category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/Top-category",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"Top-category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create/category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Guinea Pig",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Guinea Pig Category",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "curlietails/category/guinra pig.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/category/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll/category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/category/getAll",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"category",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get/category/648ae30f44b813b77040cb4f",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/category/648ae30f44b813b77040cb4f",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"category",
+								"648ae30f44b813b77040cb4f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update/category/648ae30f44b813b77040cb4f",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\":\"spciale category\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/update/category/648ae30f44b813b77040cb4f",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update",
+								"category",
+								"648ae30f44b813b77040cb4f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete/category/648ae30f44b813b77040cb4f",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/delete/category/648ae30f44b813b77040cb4f",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"delete",
+								"category",
+								"648ae30f44b813b77040cb4f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SubCategory",
+			"item": [
+				{
+					"name": "create/subCategory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"CategoryId\":\"66aca0a02a33dd890f62b3ae\",\r\n    \"name\":\" Cat Food\",\r\n    \"description\":\"Cat Food items\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/subcategory/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subcategory",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll/subCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/subcategory/getAll",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subcategory",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get/subcategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/subCategory/648af1c861a22dce66a80884",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"subCategory",
+								"648af1c861a22dce66a80884"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update/subCategory",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isTrendingSUBCategory\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/update/subCategory/648bfa6746d5f3caa2a32031",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update",
+								"subCategory",
+								"648bfa6746d5f3caa2a32031"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete/category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/delete/subCategory/648af3747bfab4309eb93e1f",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"delete",
+								"subCategory",
+								"648af3747bfab4309eb93e1f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get/subCategory/category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/subCategory/category/648ae333f492db182c353bc9",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"subCategory",
+								"category",
+								"648ae333f492db182c353bc9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-trending/subCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get-trending/subCategory",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get-trending",
+								"subCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-top/subCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get-top/subCategory",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get-top",
+								"subCategory"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ProductCategory",
+			"item": [
+				{
+					"name": "create/productCategory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"CategoryId\":\"66aca0a02a33dd890f62b3ae\",\r\n    \"subCategoryId\":\"66aca3912a33dd890f62b3cb\",\r\n    \"name\":\"Wet Food\",\r\n    \"description\":\"Wet Food\"\r\n} ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/product-category/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product-category",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll/productCategory",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/product-category/getAll",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product-category",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update/productCategory",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"isTrendingProductCategory\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/update/productCategory/648bfdda4b3db960fd15cc20",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update",
+								"productCategory",
+								"648bfdda4b3db960fd15cc20"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getById/productCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/productCategory/648c02d64b3db960fd15cc69",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"productCategory",
+								"648c02d64b3db960fd15cc69"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get/productCategory/category/648ae333f492db182c353bc9",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/productCategory/category/648ae340f492db182c353bcb",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"productCategory",
+								"category",
+								"648ae340f492db182c353bcb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get/productCategory/subCategory/648af1f661a22dce66a8088e",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/productCategory/subCategory/648bfa6746d5f3caa2a32031",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"productCategory",
+								"subCategory",
+								"648bfa6746d5f3caa2a32031"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete/productCategory/648c02d64b3db960fd15cc69",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/delete/productCategory/648c02d64b3db960fd15cc69",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"delete",
+								"productCategory",
+								"648c02d64b3db960fd15cc69"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-top/productCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get-top/productCategory",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get-top",
+								"productCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-Trending/productCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get-Trending/productCategory",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get-Trending",
+								"productCategory"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "addProduct",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "CategoryId",
+									"value": "66aca0882a33dd890f62b3ab",
+									"type": "text"
+								},
+								{
+									"key": "subCategoryId",
+									"value": "66aca31c2a33dd890f62b3bf",
+									"type": "text"
+								},
+								{
+									"key": "productCategoryId",
+									"value": "66aca45d2a33dd890f62b3d7",
+									"type": "text"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": [
+										"curlietails/product/dro4.jpeg",
+										"curlietails/product/dro3.jpeg",
+										"curlietails/product/Dro2.jpeg",
+										"curlietails/product/d1.jpeg"
+									]
+								},
+								{
+									"key": "name",
+									"value": "Drools Real Chicken & Chicken Liver Chunks in Gravy Adult Dog Wet Food",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "Food for puppy",
+									"type": "text"
+								},
+								{
+									"key": "size",
+									"value": "250gm",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "300",
+									"type": "text"
+								},
+								{
+									"key": "brand",
+									"value": "Drools",
+									"type": "text"
+								},
+								{
+									"key": "LifeStage",
+									"value": "adult",
+									"type": "text"
+								},
+								{
+									"key": "BreedSize",
+									"value": "mini",
+									"type": "text"
+								},
+								{
+									"key": "flavor",
+									"value": "multiple",
+									"type": "text"
+								},
+								{
+									"key": "vegNonVeg",
+									"value": "nonveg",
+									"type": "text"
+								},
+								{
+									"key": "quantities",
+									"value": "[{  \"size\": \"100g\",  \"price\": 100,\"discountedPrice\":90},{\"size\": \"800g\",\"price\": 640,\"discountedPrice\":600},{\"size\": \"1kg\",\"price\": 1000,\"discountedPrice\":900}, { \"size\": \"2kg\",\"price\": 299,\"discountedPrice\":250}]",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/product/add",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll/product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/getAll/product",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"getAll",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get/product/648c1b171143fc41d1064140",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/product/648c1b171143fc41d1064140",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"product",
+								"648c1b171143fc41d1064140"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product/CategoryId/648ae340f492db182c353bcb",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/product/CategoryId/648ae340f492db182c353bcb",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"product",
+								"CategoryId",
+								"648ae340f492db182c353bcb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product/subCategoryId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/product/subCategoryId/648bfa2e46d5f3caa2a3202d",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"product",
+								"subCategoryId",
+								"648bfa2e46d5f3caa2a3202d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "product/productCategoryId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/product/productCategoryId/648b03ef5901070bc494f1cb",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"product",
+								"productCategoryId",
+								"648b03ef5901070bc494f1cb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update/product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isTrendingProduct\":true\r\n   \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/update/product/648c2bccc40f75627c469840",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update",
+								"product",
+								"648c2bccc40f75627c469840"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete/product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/delete/product/648c2bd2c40f75627c469842",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"delete",
+								"product",
+								"648c2bd2c40f75627c469842"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-trending/product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get-trending/product",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get-trending",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-top/product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get-top/product",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get-top",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filter product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/product/filter/66aca0882a33dd890f62b3ab?productCategoryId=66aca44e2a33dd890f62b3d2",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"filter",
+								"66aca0882a33dd890f62b3ab"
+							],
+							"query": [
+								{
+									"key": "brand",
+									"value": "Royal Canin",
+									"disabled": true
+								},
+								{
+									"key": "flavor",
+									"value": "Chicken ",
+									"disabled": true
+								},
+								{
+									"key": "lifeStage",
+									"value": "Adult",
+									"disabled": true
+								},
+								{
+									"key": "breedSize",
+									"value": "large",
+									"disabled": true
+								},
+								{
+									"key": "vegNonVeg",
+									"value": "nonveg",
+									"disabled": true
+								},
+								{
+									"key": "productCategoryId",
+									"value": "66aca44e2a33dd890f62b3d2"
+								},
+								{
+									"key": "lowerPrice",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "upperPrice",
+									"value": "650",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "search/product",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/product/search/652a4eb362b0fa19475f77c1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"search",
+								"652a4eb362b0fa19475f77c1"
+							],
+							"query": [
+								{
+									"key": "LifeStage",
+									"value": "puppy",
+									"disabled": true
+								},
+								{
+									"key": "q",
+									"value": "Chicken",
+									"disabled": true
+								},
+								{
+									"key": "categoryId",
+									"value": "66aca0a02a33dd890f62b3ae",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "user/signUp",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"name\" : \"test1 name\",\r\n        \"email\": \"testname@gmail.com\",\r\n        \"phoneNo\":96377346,\r\n        \"address\":\"kop\",\r\n        \"password\": \"0000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/user/singUp",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"user",
+								"singUp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user/login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phoneNo\": 96379573248\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/user/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/getAll/user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/getAll/user",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"getAll",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user/get/648d78e6c57c44a62f294366",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/user/get/66acd10e50d8e51f8cc0df10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"get",
+								"66acd10e50d8e51f8cc0df10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update/user/648d78e6c57c44a62f294366",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"111111\",\r\n    \"address\":\"pune\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/update/user/648d78e6c57c44a62f294366",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update",
+								"user",
+								"648d78e6c57c44a62f294366"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete/user/648d78e6c57c44a62f294366",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/delete/user/648d78e6c57c44a62f294366",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"delete",
+								"user",
+								"648d78e6c57c44a62f294366"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "App/User/verify",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phonenumber\":9637957346,\r\n    \"code\":8327\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/App/User/verify",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"App",
+								"User",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Banner",
+			"item": [
+				{
+					"name": "add/banner",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "curlietails/banners/4.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/banner/add",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"banner",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll/banner",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/banner/getAll",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"banner",
+								"getAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get/banner/649185f47f817452cba5f2f3",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/banner/649185f47f817452cba5f2f3",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"banner",
+								"649185f47f817452cba5f2f3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update/banner/649185f47f817452cba5f2f3",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "test files/defult_profile.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8000/update/banner/649185f47f817452cba5f2f3",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update",
+								"banner",
+								"649185f47f817452cba5f2f3"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete/banner",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/delete/banner/649185f47f817452cba5f2f3",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"delete",
+								"banner",
+								"649185f47f817452cba5f2f3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update-Top-Trending/banner",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isTrendingBanner\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/update-Top-Trending/banner/6495394197c49f31ace4121c",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update-Top-Trending",
+								"banner",
+								"6495394197c49f31ace4121c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-Trending/banner",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get-Trending/banner",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get-Trending",
+								"banner"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-Top/banner",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get-Top/banner",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get-Top",
+								"banner"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Blog",
+			"item": [
+				{
+					"name": "post/blog",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "test files/test.jpeg"
+								},
+								{
+									"key": "title",
+									"value": "best cat food",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "dog",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8000/post/blog",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"post",
+								"blog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll/Blog",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/getAll/Blog",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"getAll",
+								"Blog"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get/Blog",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/Blog/64919253902a96b690031520",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"Blog",
+								"64919253902a96b690031520"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update/blogImage",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "test files/marguerite-729510_1280.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8000/update/blogImage/64919253902a96b690031520",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update",
+								"blogImage",
+								"64919253902a96b690031520"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update/blog",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isTopBlog\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/update/blog/649192b70c8497a282011e9c",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update",
+								"blog",
+								"649192b70c8497a282011e9c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete/blog",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/delete/blog/649298c16f4b899f65d52421",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"delete",
+								"blog",
+								"649298c16f4b899f65d52421"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-top/Blog",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get-top/Blog",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get-top",
+								"Blog"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Consultant",
+			"item": [
+				{
+					"name": "get/consultant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/consultant/64929392b9ac3c959b6972d2",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"consultant",
+								"64929392b9ac3c959b6972d2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll/consultant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/getAll/consultant",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"getAll",
+								"consultant"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add/consultant",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Dr.test\",\r\n    \"expertise\":\"mbbs\",\r\n    \"description\":\"dog specilist\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/add/consultant",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"add",
+								"consultant"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update/consultant/image",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "test files/marguerite-729510_1280.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8000/update/consultant/image/64929392b9ac3c959b6972d2",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update",
+								"consultant",
+								"image",
+								"64929392b9ac3c959b6972d2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update/consultant/details",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"isActive\":false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/update/consultant/details/64953b8b6afc5519180885f1",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update",
+								"consultant",
+								"details",
+								"64953b8b6afc5519180885f1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete/consultant",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/delete/consultant/64929392b9ac3c959b6972d2",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"delete",
+								"consultant",
+								"64929392b9ac3c959b6972d2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-Top/consultant",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get-Top/consultant",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get-Top",
+								"consultant"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Pharmacy",
+			"item": [
+				{
+					"name": "getAll/pharmacy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/getAll/pharmacy",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"getAll",
+								"pharmacy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get/pharmacy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/pharmacy/6492b40cd41841fb14d564d4",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"pharmacy",
+								"6492b40cd41841fb14d564d4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add/pharmacy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"BrandName\":\"emcure\",\r\n    \"medicineName\":\"dolo500\",\r\n    \"description\":\"best for feaver\",\r\n    \"price\":150\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/add/pharmacy",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"add",
+								"pharmacy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add/image/pharmacy",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "test files/marguerite-729510_1280.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8000/add/image/pharmacy/6492b40cd41841fb14d564d4",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"add",
+								"image",
+								"pharmacy",
+								"6492b40cd41841fb14d564d4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update/pharmacy/details",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"inStock\":false\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/update/pharmacy/details/6492b40cd41841fb14d564d4",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update",
+								"pharmacy",
+								"details",
+								"6492b40cd41841fb14d564d4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete/pharmacy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/delete/pharmacy/6492b40cd41841fb14d564d4",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"delete",
+								"pharmacy",
+								"6492b40cd41841fb14d564d4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cart",
+			"item": [
+				{
+					"name": "add-to-cart/6496887ec83c6c58aad6c655",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\":\"66acd10e50d8e51f8cc0df10\",\r\n    \"productId\":\"66acae69a7240bb30ecce6e0\",\r\n    \"quantity\":1,\r\n    \"size\":\"2kg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/cart/add",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cart",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll/cart",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/getAll/cart",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"getAll",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get/cart-by-cart-Id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/cart/clear/66acd10e50d8e51f8cc0df10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cart",
+								"clear",
+								"66acd10e50d8e51f8cc0df10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get/cart-By-userId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/cart/get/66acd10e50d8e51f8cc0df10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cart",
+								"get",
+								"66acd10e50d8e51f8cc0df10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update/cart-product-quantity",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"updateQuantity\":true,\r\n    \"productId\":\"648c1b171143fc41d1064140\",\r\n    \"quantity\":1,\r\n    \"price\":150\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/update/cart/64969a591cedd77d0efd2eaf",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update",
+								"cart",
+								"64969a591cedd77d0efd2eaf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete-product/cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\":\"66acd10e50d8e51f8cc0df10\",\r\n    \"productId\":\"66acafc7a7240bb30ecce6ec\",\r\n    \"size\":\"100g\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/cart/remove",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cart",
+								"remove"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "calculate amount-to-pay",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\":\"66acd10e50d8e51f8cc0df10\"//,\r\n    // \"code\":\"TAIL\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/order/calculate/amount-to-pay",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"order",
+								"calculate",
+								"amount-to-pay"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "initiate payment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"amount\":105\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/order/initiate/payment",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"order",
+								"initiate",
+								"payment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "place/order",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"66acd10e50d8e51f8cc0df10\",\r\n    \"addressId\": \"66adcfbc88288a29a62599da\",\r\n    \"phoneNumber\": 1234567892,\r\n    \"priceDetails\":  {\r\n        \"subtotal\": 299,\r\n        \"gstAmount\": 0,\r\n        \"deliveryCharges\": 40,\r\n        \"discount\": 0,\r\n        \"totalAmountToPay\": 339,\r\n        \"promoCodeId\": null\r\n    },\r\n    \"paymentId\": \"order_OgMYM8JVVDDyzE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/order/place",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"order",
+								"place"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll/order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/order/getAll",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"order",
+								"getAll"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "66acd10e50d8e51f8cc0df10",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get/order/id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/order/65f556cb16b30c0cba422252",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"order",
+								"65f556cb16b30c0cba422252"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-orderId/order",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get-orderId/order/SHIKYKAR3M3CHB41TP42",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get-orderId",
+								"order",
+								"SHIKYKAR3M3CHB41TP42"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get-DeliveryStatus/order?isDelivered=false",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get-DeliveryStatus/order?isDelivered=false",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get-DeliveryStatus",
+								"order"
+							],
+							"query": [
+								{
+									"key": "isDelivered",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update order status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"orderId\": \"66b75ae543550511b53a5189\",\r\n    \"status\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/order/update",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"order",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete/order",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/delete/order/649940c53398f388179d2632",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"delete",
+								"order",
+								"649940c53398f388179d2632"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancel/order",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\":\"I got another best deal on curlytails\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/cancel/order/64969a591cedd77d0efd2eaf",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"cancel",
+								"order",
+								"64969a591cedd77d0efd2eaf"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Refund",
+			"item": [
+				{
+					"name": "getAll/refund",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/getAll/refund",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"getAll",
+								"refund"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get/refund",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/get/refund/649947d857db0231721b6d11",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"get",
+								"refund",
+								"649947d857db0231721b6d11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post/refund",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\":\"64969a591cedd77d0efd2eaf\",\r\n    \"OrderId\":\"64992d0550bed16c473027a8\",\r\n    \"description\":\"I got another best deal on curlytails\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/post/refund",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"post",
+								"refund"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete/refund",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/delete/refund/6499437ec5894dcf18af320c",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"delete",
+								"refund",
+								"6499437ec5894dcf18af320c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update/refund-status",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\":\"reject\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8000/update/refund-status/64993fcc4f9f3a9f44505968",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"update",
+								"refund-status",
+								"64993fcc4f9f3a9f44505968"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notification",
+			"item": []
+		},
+		{
+			"name": "fav",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"652a4eb362b0fa19475f77c1\",\r\n    \"productId\": \"66acae69a7240bb30ecce6e0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/favorite/add",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"favorite",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "remove",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"652a4eb362b0fa19475f77c1\",\r\n    \"productId\": \"66acae69a7240bb30ecce6e0\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/favorite/remove",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"favorite",
+								"remove"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/v1/favorite/getAll?userId=652a4eb362b0fa19475f77c1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"favorite",
+								"getAll"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "652a4eb362b0fa19475f77c1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "promp code",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Black friday sale\",\r\n    \"code\": \"TAIL\",\r\n    \"codeType\": 1,\r\n    \"discountAmount\": 200,\r\n    \"minOrderAmount\": 700,\r\n    \"description\": \"Free delivery\",\r\n    \"expiry\": \"25-08-2024\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/promoCode/add",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"promoCode",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "userAddress",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\":\"66acd10e50d8e51f8cc0df10\",\r\n    \"type\": \"HOME\",\r\n    \"address\": \"test address 2\",\r\n    \"lat\": 18.50074,\r\n    \"lng\": 73.79012,\r\n    \"selected\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/user/address/add",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"address",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "data",
+			"item": [
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"gstPercentage\": 5,\r\n    \"gstIsActive\": true,\r\n    \"deliveryCharges\": 40\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/v1/admin/data/add",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"data",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "verifyUser/sendOtp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"phonenumber\":9637957346\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8000/App/verifyUser/sendOtp",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"App",
+						"verifyUser",
+						"sendOtp"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "https://api.curlietails.com",
+			"type": "string"
+		},
+		{
+			"key": "url",
+			"value": "http://localhost:8000",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}
