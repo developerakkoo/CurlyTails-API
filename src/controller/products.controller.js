@@ -205,7 +205,7 @@ exports.getAllProduct = async (req, res) => {
 
 exports.getProductById = async (req, res) => {
     try {
-        const savedProduct = await Products.find({
+        const savedProduct = await Products.findOne({
             _id: req.params.productId,
         });
         if (!savedProduct) {
