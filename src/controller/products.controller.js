@@ -182,7 +182,9 @@ exports.updatedImage = async (req, res) => {
 
 exports.getAllProduct = async (req, res) => {
     try {
-        const savedProduct = await Products.find();
+        const savedProduct = await Products.find(
+            
+        );
         // if (savedProduct.length == 0) {
         // return res.status(404).json({message:'Products Not Found',statusCode:404});
         // }
@@ -203,7 +205,7 @@ exports.getAllProduct = async (req, res) => {
 
 exports.getProductById = async (req, res) => {
     try {
-        const savedProduct = await Products.findOne({
+        const savedProduct = await Products.find({
             _id: req.params.productId,
         });
         if (!savedProduct) {
