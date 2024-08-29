@@ -237,12 +237,12 @@ exports.deleteProduct = async (req, res) => {
                 statusCode: 404,
             });
         }
-        savedProduct.images.forEach((element) => {
-            const url = element.link.split(`http://192.168.0.113:8000`); //local server
-            // const url = element.split("https://localhost/");//live server
-            // console.log(url);
-            clearImage(url[1]);
-        });
+        // savedProduct.images.forEach((element) => {
+        //     const url = element.link.split(`http://192.168.0.113:8000`); //local server
+        //     // const url = element.split("https://localhost/");//live server
+        //     // console.log(url);
+        //     clearImage(url[1]);
+        // });
         await savedProduct.deleteOne({ _id: req.params.productId });
         res.status(200).json({
             message: `Product Deleted Successfully With ProductId:${req.params.productId}`,

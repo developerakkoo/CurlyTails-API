@@ -47,7 +47,7 @@ route.get(
     productController.getProductByProductCategoryId,
 );
 
-// route.get("/search", productController.ProductSearchOption);
+route.get("/search", productController.ProductSearchOption);
 
 route.delete(
     "/delete/image/:productId/:imageId",
