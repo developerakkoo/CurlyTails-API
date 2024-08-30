@@ -472,7 +472,7 @@ exports.getOrdersById = async (req, res) => {
 exports.getOrdersByOrderId = async (req, res) => {
     try {
         const savedOrder = await Order.findOne({
-            OrderId: req.params.orderId,
+            orderId: req.params.orderId,
         }).populate("orderItems.productId");
         if (savedOrder.length == 0) {
             return res
