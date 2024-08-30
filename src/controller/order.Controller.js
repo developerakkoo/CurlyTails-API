@@ -310,7 +310,7 @@ exports.CancelOrder = async (req, res) => {
         const updatedOrder = await savedOrder.save();
         const refundObj = {
             userId: savedOrder._id,
-            orderId: savedOrder.OrderId,
+            orderId: savedOrder.orderId,
             description: req.body.description,
         };
         await Refund.create(refundObj);
