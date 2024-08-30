@@ -144,8 +144,8 @@ exports.deleteBanner = async (req, res, next) => {
                 .json({ msg: "Banner Not Found", statusCode: 404 });
         }
         //Removing Image From Server
-        let temp = banner.imageUrl.split("http");
-        let path = temp[1].split("://localhost");
+        let temp = banner.imageUrl.split("https");
+        let path = temp[1].split("://api.curlietails.com");
         deleteImage.clearImage(path[1]);
         /********************************************************/
         await banner.deleteOne({ _id: req.params.bannerId });
