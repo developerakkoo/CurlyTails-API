@@ -448,7 +448,7 @@ exports.getAllOrders = asyncHandler(async (req, res) => {
 exports.getOrdersById = async (req, res) => {
     try {
         const savedOrder = await Order.findOne({ _id: req.params.Id }).populate(
-            "orderItems.productId",
+            "orderItems.productId userId addressId",
         );
         if (savedOrder.length == 0) {
             return res
