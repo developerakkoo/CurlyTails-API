@@ -207,7 +207,7 @@ exports.getProductById = async (req, res) => {
     try {
         const savedProduct = await Products.findOne({
             _id: req.params.productId,
-        });
+        }).populate(["subCategoryId", "productCategoryId"]);
         if (!savedProduct) {
             return res.status(404).json({
                 message: `Product Not Found With ProductId:${req.params.productId}`,
